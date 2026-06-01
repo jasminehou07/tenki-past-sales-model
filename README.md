@@ -42,7 +42,15 @@ work/.venv/bin/python -m pip install -r requirements.txt
 
 ## Run
 
-Open the interactive page locally:
+Open the interactive page on GitHub Pages:
+
+```text
+https://jasminehou07.github.io/tenki-sales-model/
+```
+
+No local Python server is needed for the GitHub Pages version.
+
+To open the interactive page locally:
 
 ```bash
 python3 -m http.server 8877
