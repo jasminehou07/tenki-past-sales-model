@@ -133,6 +133,10 @@ button:hover {
   margin: 14px 0;
 }
 
+.inline-metrics {
+  margin: 0;
+}
+
 .metric {
   padding: 16px;
   border: 1px solid var(--line);
