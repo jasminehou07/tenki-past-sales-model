@@ -9,6 +9,7 @@ work/
 # Raw TENKI exports should stay local unless intentionally published.
 TENKI/
 *.parquet
+data/japan_holidays_raw.csv
 
 # Local notebook/editor files.
 .ipynb_checkpoints/

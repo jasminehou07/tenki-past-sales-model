@@ -4,9 +4,9 @@ This repository contains a first-pass model for predicting historical daily
 Rakuten sales by genre using TENKI sales, ranking, and event parquet exports.
 
 The pipeline aggregates item-level sales to `genre_id x date`, adds calendar,
-Rakuten event, ranking, price, and lagged demand features, then trains a
-time-based backtest model on earlier history and evaluates it on the final 180
-days.
+Rakuten event, Japan holiday, ranking, price, and lagged demand features, then
+trains a time-based backtest model on earlier history and evaluates it on the
+final 180 days.
 
 ## Contents
 
@@ -20,6 +20,7 @@ days.
 - `outputs/sales_event_feature_importance.csv`: feature importance table
 - `outputs/sales_event_feature_importance.png`: feature importance chart
 - `outputs/sales_event_model.joblib`: trained model artifact
+- `data/japan_holidays.csv`: official Japan holiday calendar used for holiday lookahead features
 
 ## Data
 
@@ -81,14 +82,15 @@ work/.venv/bin/python outputs/sales_event_model.py
 - Test period starts: 2025-12-03
 - Data through: 2026-05-31
 - Genres: 100
-- R2: 0.831
-- WAPE: 28.6%
-- MAE: 112,177 yen daily genre sales
-- Quantity R2: 0.820
-- Quantity WAPE: 25.3%
-- Quantity MAE: 14.3 items per daily genre row
+- Sales R2: 0.841
+- Sales WAPE: 28.2%
+- Sales MAE: 110,585 yen daily genre sales
+- Quantity R2: 0.815
+- Quantity WAPE: 25.9%
+- Quantity MAE: 14.6 items per daily genre row
 
 This pass uses genre one-hot encoding, all event types from `events.parquet`,
-pre-event and post-event timing windows, and an absolute-error gradient boosting
-objective. The strongest signals are recent demand, active item count, and
-Rakuten event timing.
+pre-event and post-event timing windows, official Japan holidays, combined
+promo-or-holiday lookahead features, and an absolute-error gradient boosting
+objective. The strongest signals are recent demand, active item count, Rakuten
+event timing, and distance to upcoming promo/holiday days.

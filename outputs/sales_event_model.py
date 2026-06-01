@@ -33,7 +33,8 @@ from sklearn.preprocessing import OneHotEncoder
 DEFAULT_DATA_DIR = Path("/Users/jasminehou/Downloads/TENKI")
 DEFAULT_CACHE_DIR = Path("work/model_cache")
 DEFAULT_OUTPUT_DIR = Path("outputs")
-CACHE_NAME = "daily_genre_dataset_v3.parquet"
+DEFAULT_HOLIDAY_FILE = Path("data/japan_holidays.csv")
+CACHE_NAME = "daily_genre_dataset_v4.parquet"
 
 
 def parse_args() -> argparse.Namespace:
@@ -41,6 +42,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--data-dir", type=Path, default=DEFAULT_DATA_DIR)
     parser.add_argument("--cache-dir", type=Path, default=DEFAULT_CACHE_DIR)
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
+    parser.add_argument("--holiday-file", type=Path, default=DEFAULT_HOLIDAY_FILE)
     parser.add_argument("--rebuild-cache", action="store_true")
     parser.add_argument("--test-days", type=int, default=180)
     parser.add_argument(
@@ -101,6 +103,53 @@ def add_event_timing_features(event_daily: pd.DataFrame, min_date: pd.Timestamp,
         days_to.append(future.min() if len(future) else 999)
     out["days_since_event"] = np.clip(days_since, 0, 30)
     out["days_to_event"] = np.clip(days_to, 0, 30)
+    return out
+
+
+def add_holiday_features(holiday_file: Path, min_date: pd.Timestamp, max_date: pd.Timestamp) -> pd.DataFrame:
+    holidays = pd.read_csv(holiday_file)
+    holidays["date"] = pd.to_datetime(holidays["date"])
+    out = pd.DataFrame({"date": pd.date_range(min_date, max_date, freq="D")})
+    out = out.merge(holidays.assign(is_holiday=1), on="date", how="left")
+    out["is_holiday"] = out["is_holiday"].fillna(0)
+    out["holiday_name"] = out["holiday_name"].fillna("")
+
+    timing_features: dict[str, pd.Series] = {}
+    for days in [1, 2, 3, 7, 14]:
+        timing_features[f"holiday_in_{days}d"] = out["is_holiday"].shift(-days).fillna(0)
+        timing_features[f"holiday_after_{days}d"] = out["is_holiday"].shift(days).fillna(0)
+    for window in [3, 7, 14]:
+        timing_features[f"holiday_count_next_{window}d"] = (
+            out["is_holiday"].shift(-1).rolling(window, min_periods=1).sum().shift(-(window - 1)).fillna(0)
+        )
+        timing_features[f"holiday_count_prev_{window}d"] = (
+            out["is_holiday"].shift(1).rolling(window, min_periods=1).sum().fillna(0)
+        )
+
+    holiday_dates = out.loc[out["is_holiday"].eq(1), "date"].to_numpy()
+    days_since: list[int] = []
+    days_to: list[int] = []
+    for date in out["date"].to_numpy():
+        diffs = (holiday_dates - date).astype("timedelta64[D]").astype(int)
+        past = diffs[diffs <= 0]
+        future = diffs[diffs >= 0]
+        days_since.append(abs(past.max()) if len(past) else 999)
+        days_to.append(future.min() if len(future) else 999)
+    timing_features["days_since_holiday"] = np.clip(days_since, 0, 30)
+    timing_features["days_to_holiday"] = np.clip(days_to, 0, 30)
+    return pd.concat([out.drop(columns=["holiday_name"]), pd.DataFrame(timing_features)], axis=1)
+
+
+def add_combined_upcoming_features(df: pd.DataFrame) -> pd.DataFrame:
+    out = df.copy()
+    for days in [1, 2, 3, 7, 14]:
+        event_col = f"event_count_next_{days}d"
+        holiday_col = f"holiday_count_next_{days}d"
+        if event_col in out.columns and holiday_col in out.columns:
+            out[f"promo_or_holiday_count_next_{days}d"] = out[event_col] + out[holiday_col]
+            out[f"any_promo_or_holiday_next_{days}d"] = (out[f"promo_or_holiday_count_next_{days}d"] > 0).astype(int)
+    if "days_to_event" in out.columns and "days_to_holiday" in out.columns:
+        out["days_to_promo_or_holiday"] = np.minimum(out["days_to_event"], out["days_to_holiday"])
     return out
 
 
@@ -194,7 +243,7 @@ def add_lag_features(df: pd.DataFrame) -> pd.DataFrame:
     return out
 
 
-def build_dataset(data_dir: Path, cache_dir: Path, rebuild_cache: bool) -> pd.DataFrame:
+def build_dataset(data_dir: Path, cache_dir: Path, rebuild_cache: bool, holiday_file: Path = DEFAULT_HOLIDAY_FILE) -> pd.DataFrame:
     cache_dir.mkdir(parents=True, exist_ok=True)
     cache_path = cache_dir / CACHE_NAME
     if cache_path.exists() and not rebuild_cache:
@@ -208,12 +257,22 @@ def build_dataset(data_dir: Path, cache_dir: Path, rebuild_cache: bool) -> pd.Da
         pd.Timestamp(sales["date"].min()),
         pd.Timestamp(sales["date"].max()),
     )
+    holiday_daily = add_holiday_features(
+        holiday_file,
+        pd.Timestamp(sales["date"].min()),
+        pd.Timestamp(sales["date"].max()),
+    )
 
     dataset = sales.merge(rankings, on=["genre_id", "date"], how="left")
     dataset = dataset.merge(event_daily, on="date", how="left")
+    dataset = dataset.merge(holiday_daily, on="date", how="left")
     event_cols = [c for c in dataset.columns if c.startswith("event_")]
     for col in event_cols + ["event_count", "any_event"]:
         dataset[col] = dataset[col].fillna(0)
+    holiday_cols = [c for c in dataset.columns if "holiday" in c]
+    for col in holiday_cols:
+        dataset[col] = dataset[col].fillna(0)
+    dataset = add_combined_upcoming_features(dataset)
     dataset = add_calendar_features(dataset)
     dataset = add_lag_features(dataset)
     dataset = dataset.sort_values(["date", "genre_id"]).reset_index(drop=True)
@@ -258,7 +317,7 @@ def main() -> None:
     args = parse_args()
     args.output_dir.mkdir(parents=True, exist_ok=True)
 
-    dataset = build_dataset(args.data_dir, args.cache_dir, args.rebuild_cache)
+    dataset = build_dataset(args.data_dir, args.cache_dir, args.rebuild_cache, args.holiday_file)
     dataset = dataset.dropna(subset=["sales_lag_28d", "sales_roll_mean_28d"]).copy()
     dataset = dataset.fillna(
         {
@@ -324,7 +383,7 @@ def main() -> None:
             "max_date": str(dataset["date"].max().date()),
             "test_start": str(test["date"].min().date()),
             "target": "daily genre sales yen",
-            "model": "one-hot genre + event timing features + absolute-error histogram gradient boosting on log sales",
+            "model": "one-hot genre + upcoming promotion/holiday features + absolute-error histogram gradient boosting on log sales",
         }
     )
 
@@ -343,7 +402,7 @@ def main() -> None:
             "max_date": str(dataset["date"].max().date()),
             "test_start": str(test["date"].min().date()),
             "target": "daily genre quantity sold",
-            "model": "one-hot genre + event timing features + absolute-error histogram gradient boosting on log quantity",
+            "model": "one-hot genre + upcoming promotion/holiday features + absolute-error histogram gradient boosting on log quantity",
         }
     )
 
