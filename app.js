@@ -374,27 +374,49 @@ function escapeHtml(value) {
 
 function renderRows() {
   const rows = [...state.filtered].sort((a, b) => b.error - a.error).slice(0, 250);
+  const quantityByKey = new Map(
+    state.filteredQuantity.map((row) => [`${row.date}|${row.genre}`, row]),
+  );
   el.rows.innerHTML = rows
-    .map(
-      (row) => `
+    .map((row) => {
+      const quantity = quantityByKey.get(`${row.date}|${row.genre}`);
+      return `
         <tr>
           <td>${row.date}</td>
           <td>${escapeHtml(genreLabel(row.genre))}</td>
           <td>${fmtCurrency.format(row.sales)}</td>
           <td>${fmtCurrency.format(row.predicted)}</td>
           <td>${fmtCurrency.format(row.error)}</td>
+          <td>${quantity ? fmtNumber.format(Math.round(quantity.sales)) : "--"}</td>
+          <td>${quantity ? fmtNumber.format(Math.round(quantity.predicted)) : "--"}</td>
+          <td>${quantity ? fmtNumber.format(Math.round(quantity.error)) : "--"}</td>
         </tr>
-      `,
-    )
+      `;
+    })
     .join("");
 }
 
 function downloadFilteredCsv() {
-  const header = "date,genre_id,genre_label,sales,predicted_sales,absolute_error";
+  const quantityByKey = new Map(
+    state.filteredQuantity.map((row) => [`${row.date}|${row.genre}`, row]),
+  );
+  const header =
+    "date,genre_id,genre_label,sales,predicted_sales,sales_absolute_error,quantity,predicted_quantity,quantity_absolute_error";
   const body = state.filtered
-    .map((row) =>
-      [row.date, row.genre, csvCell(genreLabel(row.genre)), row.sales, row.predicted, row.error].join(","),
-    )
+    .map((row) => {
+      const quantity = quantityByKey.get(`${row.date}|${row.genre}`);
+      return [
+        row.date,
+        row.genre,
+        csvCell(genreLabel(row.genre)),
+        row.sales,
+        row.predicted,
+        row.error,
+        quantity?.sales ?? "",
+        quantity?.predicted ?? "",
+        quantity?.error ?? "",
+      ].join(",");
+    })
     .join("\n");
   const blob = new Blob([`${header}\n${body}\n`], { type: "text/csv" });
   const url = URL.createObjectURL(blob);

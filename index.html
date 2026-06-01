@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>TENKI Sales Model</title>
-    <link rel="stylesheet" href="styles.css?v=quantity-section" />
+    <link rel="stylesheet" href="styles.css?v=prediction-quantity-table" />
   </head>
   <body>
     <header class="topbar">
@@ -142,7 +142,10 @@
                 <th>Genre</th>
                 <th>Actual Sales</th>
                 <th>Predicted Sales</th>
-                <th>Absolute Error</th>
+                <th>Sales Error</th>
+                <th>Actual Quantity</th>
+                <th>Predicted Quantity</th>
+                <th>Quantity Error</th>
               </tr>
             </thead>
             <tbody id="predictionRows"></tbody>
@@ -151,6 +154,6 @@
       </section>
     </main>
 
-    <script src="app.js"></script>
+    <script src="app.js?v=prediction-quantity-table"></script>
   </body>
 </html>
