@@ -1,0 +1,16 @@
+.DS_Store
+__pycache__/
+*.py[cod]
+
+# Local runtime and generated cache.
+work/
+.venv/
+
+# Raw TENKI exports should stay local unless intentionally published.
+TENKI/
+*.parquet
+
+# Local notebook/editor files.
+.ipynb_checkpoints/
+.vscode/
+.idea/
