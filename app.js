@@ -1,9 +1,12 @@
 const state = {
   predictions: [],
+  quantityPredictions: [],
   features: [],
   genreLabels: new Map(),
   metrics: {},
+  quantityMetrics: {},
   filtered: [],
+  filteredQuantity: [],
 };
 
 const fmtCurrency = new Intl.NumberFormat("en-US", {
@@ -25,11 +28,13 @@ const el = {
   endDate: document.getElementById("endDate"),
   viewMode: document.getElementById("viewMode"),
   salesChart: document.getElementById("salesChart"),
+  quantityChart: document.getElementById("quantityChart"),
   errorChart: document.getElementById("errorChart"),
   featureBars: document.getElementById("featureBars"),
   rows: document.getElementById("predictionRows"),
   downloadCsv: document.getElementById("downloadCsv"),
   chartCaption: document.getElementById("chartCaption"),
+  quantityCaption: document.getElementById("quantityCaption"),
   errorCaption: document.getElementById("errorCaption"),
   tableCaption: document.getElementById("tableCaption"),
   metricR2: document.getElementById("metricR2"),
@@ -71,11 +76,13 @@ function parseCsvLine(line) {
 }
 
 async function loadData() {
-  const [predictionText, featureText, labelText, metrics] = await Promise.all([
+  const [predictionText, quantityText, featureText, labelText, metrics, quantityMetrics] = await Promise.all([
     fetch("outputs/sales_event_predictions.csv").then((res) => res.text()),
+    fetch("outputs/quantity_event_predictions.csv").then((res) => res.text()),
     fetch("outputs/sales_event_feature_importance.csv").then((res) => res.text()),
     fetch("data/genre_labels.csv").then((res) => res.text()),
     fetch("outputs/sales_event_metrics.json").then((res) => res.json()),
+    fetch("outputs/quantity_event_metrics.json").then((res) => res.json()),
   ]);
 
   state.predictions = parseCsv(predictionText).map((row) => ({
@@ -85,12 +92,20 @@ async function loadData() {
     predicted: Number(row.predicted_sales),
     error: Number(row.absolute_error),
   }));
+  state.quantityPredictions = parseCsv(quantityText).map((row) => ({
+    date: row.date,
+    genre: row.genre_id,
+    sales: Number(row.sales_items),
+    predicted: Number(row.predicted_sales_items),
+    error: Number(row.absolute_error),
+  }));
   state.features = parseCsv(featureText).map((row) => ({
     name: row.feature,
     value: Number(row.importance_mean),
   }));
   state.genreLabels = new Map(parseCsv(labelText).map((row) => [row.genre_id, row.label]));
   state.metrics = metrics;
+  state.quantityMetrics = quantityMetrics;
 }
 
 function setupControls() {
@@ -124,10 +139,18 @@ function updateMetrics() {
 }
 
 function filterRows() {
+  return filterPredictionRows(state.predictions);
+}
+
+function filterQuantityRows() {
+  return filterPredictionRows(state.quantityPredictions);
+}
+
+function filterPredictionRows(rows) {
   const genre = el.genreSelect.value;
   const start = el.startDate.value;
   const end = el.endDate.value;
-  let selected = state.predictions.filter((row) => {
+  let selected = rows.filter((row) => {
     return (genre === "all" || row.genre === genre) && row.date >= start && row.date <= end;
   });
   if (genre === "all") selected = aggregateByDate(selected);
@@ -188,13 +211,18 @@ function summarizeRows(rows) {
 
 function updateView() {
   state.filtered = filterRows();
+  state.filteredQuantity = filterQuantityRows();
   const summary = summarizeRows(state.filtered);
+  const quantitySummary = summarizeRows(state.filteredQuantity);
   const selectedGenreLabel =
     el.genreSelect.value === "all" ? "all genres" : genreLabel(el.genreSelect.value);
   const unit = el.viewMode.value === "weekly" ? "weekly" : "daily";
 
   el.status.textContent = `${fmtNumber.format(state.filtered.length)} ${unit} rows`;
   el.chartCaption.textContent = `${selectedGenreLabel}, ${fmtCurrency.format(summary.sales)} actual sales`;
+  el.quantityCaption.textContent =
+    `${selectedGenreLabel}, ${fmtNumber.format(Math.round(quantitySummary.sales))} actual items, ` +
+    `${fmtPct.format(quantitySummary.wape)} WAPE`;
   el.errorCaption.textContent = `${fmtPct.format(summary.wape)} WAPE in selected range`;
   el.tableCaption.textContent = `${unit} rows sorted by largest error`;
 
@@ -202,6 +230,15 @@ function updateView() {
     { key: "sales", label: "Actual", color: "#246b52" },
     { key: "predicted", label: "Predicted", color: "#b97912" },
   ]);
+  drawLineChart(
+    el.quantityChart,
+    state.filteredQuantity,
+    [
+      { key: "sales", label: "Actual", color: "#246b52" },
+      { key: "predicted", label: "Predicted", color: "#b97912" },
+    ],
+    shortCount,
+  );
   drawLineChart(el.errorChart, state.filtered, [
     { key: "error", label: "Absolute Error", color: "#b23b3b" },
   ]);
@@ -209,7 +246,7 @@ function updateView() {
   renderRows();
 }
 
-function drawLineChart(canvas, rows, series) {
+function drawLineChart(canvas, rows, series, valueFormatter = shortMoney) {
   const ctx = canvas.getContext("2d");
   const ratio = window.devicePixelRatio || 1;
   const rect = canvas.getBoundingClientRect();
@@ -249,7 +286,7 @@ function drawLineChart(canvas, rows, series) {
     ctx.moveTo(pad.left, y);
     ctx.lineTo(width - pad.right, y);
     ctx.stroke();
-    ctx.fillText(shortMoney(value), 10, y + 4);
+    ctx.fillText(valueFormatter(value), 10, y + 4);
   }
 
   series.forEach((item) => {
@@ -281,6 +318,13 @@ function shortMoney(value) {
   if (abs >= 1_000_000) return `¥${(value / 1_000_000).toFixed(1)}M`;
   if (abs >= 1_000) return `¥${(value / 1_000).toFixed(0)}K`;
   return `¥${value.toFixed(0)}`;
+}
+
+function shortCount(value) {
+  const abs = Math.abs(value);
+  if (abs >= 1_000_000) return `${(value / 1_000_000).toFixed(1)}M`;
+  if (abs >= 1_000) return `${(value / 1_000).toFixed(1)}K`;
+  return fmtNumber.format(Math.round(value));
 }
 
 function renderFeatureBars() {
@@ -364,6 +408,15 @@ window.addEventListener("resize", () => {
       { key: "sales", label: "Actual", color: "#246b52" },
       { key: "predicted", label: "Predicted", color: "#b97912" },
     ]);
+    drawLineChart(
+      el.quantityChart,
+      state.filteredQuantity,
+      [
+        { key: "sales", label: "Actual", color: "#246b52" },
+        { key: "predicted", label: "Predicted", color: "#b97912" },
+      ],
+      shortCount,
+    );
     drawLineChart(el.errorChart, state.filtered, [
       { key: "error", label: "Absolute Error", color: "#b23b3b" },
     ]);

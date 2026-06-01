@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>TENKI Sales Model</title>
-    <link rel="stylesheet" href="styles.css?v=stacked-lines" />
+    <link rel="stylesheet" href="styles.css?v=quantity-section" />
   </head>
   <body>
     <header class="topbar">
@@ -70,6 +70,20 @@
             </div>
           </div>
           <canvas id="salesChart" height="340"></canvas>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>Actual vs Predicted Quantity Sold</h2>
+              <p id="quantityCaption">Daily holdout quantity predictions</p>
+            </div>
+            <div class="legend">
+              <span><i class="actual"></i>Actual</span>
+              <span><i class="predicted"></i>Predicted</span>
+            </div>
+          </div>
+          <canvas id="quantityChart" height="300"></canvas>
         </article>
 
         <article class="panel">

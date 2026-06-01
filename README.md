@@ -15,6 +15,8 @@ days.
 - `outputs/README_sales_event_model.md`: detailed model notes
 - `outputs/sales_event_metrics.json`: latest holdout metrics
 - `outputs/sales_event_predictions.csv`: actual vs predicted holdout sales
+- `outputs/quantity_event_metrics.json`: latest holdout metrics for quantity sold
+- `outputs/quantity_event_predictions.csv`: actual vs predicted holdout quantity sold
 - `outputs/sales_event_feature_importance.csv`: feature importance table
 - `outputs/sales_event_feature_importance.png`: feature importance chart
 - `outputs/sales_event_model.joblib`: trained model artifact
@@ -82,6 +84,9 @@ work/.venv/bin/python outputs/sales_event_model.py
 - R2: 0.834
 - WAPE: 28.7%
 - MAE: 112,351 yen daily genre sales
+- Quantity R2: 0.826
+- Quantity WAPE: 25.3%
+- Quantity MAE: 14.3 items per daily genre row
 
 This pass uses genre one-hot encoding, event timing features, and an
 absolute-error gradient boosting objective. The strongest signals are still

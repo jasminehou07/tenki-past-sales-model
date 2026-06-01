@@ -234,6 +234,25 @@ def metrics_frame(y_true: pd.Series, pred: np.ndarray) -> dict[str, float]:
     }
 
 
+def make_sales_model(preprocessor: ColumnTransformer) -> object:
+    return make_pipeline(
+        preprocessor,
+        HistGradientBoostingRegressor(
+            loss="absolute_error",
+            learning_rate=0.04,
+            max_iter=700,
+            max_leaf_nodes=63,
+            l2_regularization=0.03,
+            random_state=42,
+        ),
+    )
+
+
+def train_log_model(model: object, X_train: pd.DataFrame, y_train: pd.Series, X_test: pd.DataFrame) -> np.ndarray:
+    model.fit(X_train, np.log1p(y_train))
+    return np.expm1(model.predict(X_test)).clip(min=0)
+
+
 def main() -> None:
     args = parse_args()
     args.output_dir.mkdir(parents=True, exist_ok=True)
@@ -269,7 +288,14 @@ def main() -> None:
     feature_cols = [c for c in dataset.columns if c not in leakage_cols]
     categorical_cols = ["genre_id"]
     numeric_cols = [c for c in feature_cols if c not in categorical_cols]
-    preprocessor = ColumnTransformer(
+    sales_preprocessor = ColumnTransformer(
+        [
+            ("genre", OneHotEncoder(handle_unknown="ignore", sparse_output=False), categorical_cols),
+            ("numeric", "passthrough", numeric_cols),
+        ],
+        verbose_feature_names_out=False,
+    )
+    quantity_preprocessor = ColumnTransformer(
         [
             ("genre", OneHotEncoder(handle_unknown="ignore", sparse_output=False), categorical_cols),
             ("numeric", "passthrough", numeric_cols),
@@ -277,23 +303,15 @@ def main() -> None:
         verbose_feature_names_out=False,
     )
     X_train = train[feature_cols]
-    y_train = np.log1p(train["sales"])
     X_test = test[feature_cols]
-    y_test = test["sales"]
 
-    model = make_pipeline(
-        preprocessor,
-        HistGradientBoostingRegressor(
-            loss="absolute_error",
-            learning_rate=0.04,
-            max_iter=700,
-            max_leaf_nodes=63,
-            l2_regularization=0.03,
-            random_state=42,
-        ),
-    )
-    model.fit(X_train, y_train)
-    pred = np.expm1(model.predict(X_test)).clip(min=0)
+    model = make_sales_model(sales_preprocessor)
+    y_test = test["sales"]
+    pred = train_log_model(model, X_train, train["sales"], X_test)
+
+    quantity_model = make_sales_model(quantity_preprocessor)
+    quantity_y_test = test["sales_items"]
+    quantity_pred = train_log_model(quantity_model, X_train, train["sales_items"], X_test)
 
     metrics = metrics_frame(y_test, pred)
     metrics.update(
@@ -314,8 +332,31 @@ def main() -> None:
     predictions["absolute_error"] = (predictions["sales"] - predictions["predicted_sales"]).abs()
     predictions.to_csv(args.output_dir / "sales_event_predictions.csv", index=False)
 
+    quantity_metrics = metrics_frame(quantity_y_test, quantity_pred)
+    quantity_metrics.update(
+        {
+            "train_rows": int(len(train)),
+            "test_rows": int(len(test)),
+            "genres": int(dataset["genre_id"].nunique()),
+            "min_date": str(dataset["date"].min().date()),
+            "max_date": str(dataset["date"].max().date()),
+            "test_start": str(test["date"].min().date()),
+            "target": "daily genre quantity sold",
+            "model": "one-hot genre + absolute-error histogram gradient boosting on log quantity",
+        }
+    )
+
+    quantity_predictions = test[["date", "genre_id", "sales_items"]].copy()
+    quantity_predictions["predicted_sales_items"] = quantity_pred
+    quantity_predictions["absolute_error"] = (
+        quantity_predictions["sales_items"] - quantity_predictions["predicted_sales_items"]
+    ).abs()
+    quantity_predictions.to_csv(args.output_dir / "quantity_event_predictions.csv", index=False)
+
     with (args.output_dir / "sales_event_metrics.json").open("w", encoding="utf-8") as fh:
         json.dump(metrics, fh, indent=2)
+    with (args.output_dir / "quantity_event_metrics.json").open("w", encoding="utf-8") as fh:
+        json.dump(quantity_metrics, fh, indent=2)
 
     sample = X_test
     sample_y = np.log1p(y_test)
@@ -339,7 +380,14 @@ def main() -> None:
     ).sort_values("importance_mean", ascending=False)
     importance_df.to_csv(args.output_dir / "sales_event_feature_importance.csv", index=False)
 
-    joblib.dump({"model": model, "feature_cols": feature_cols}, args.output_dir / "sales_event_model.joblib")
+    joblib.dump(
+        {
+            "sales_model": model,
+            "quantity_model": quantity_model,
+            "feature_cols": feature_cols,
+        },
+        args.output_dir / "sales_event_model.joblib",
+    )
 
     top = importance_df.head(20).sort_values("importance_mean")
     plt.figure(figsize=(9, 7))
@@ -350,7 +398,7 @@ def main() -> None:
     plt.savefig(args.output_dir / "sales_event_feature_importance.png", dpi=160)
     plt.close()
 
-    print(json.dumps(metrics, indent=2))
+    print(json.dumps({"sales": metrics, "quantity": quantity_metrics}, indent=2))
 
 
 if __name__ == "__main__":
