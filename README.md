@@ -81,13 +81,14 @@ work/.venv/bin/python outputs/sales_event_model.py
 - Test period starts: 2025-12-03
 - Data through: 2026-05-31
 - Genres: 100
-- R2: 0.834
-- WAPE: 28.7%
-- MAE: 112,351 yen daily genre sales
-- Quantity R2: 0.826
+- R2: 0.831
+- WAPE: 28.6%
+- MAE: 112,177 yen daily genre sales
+- Quantity R2: 0.820
 - Quantity WAPE: 25.3%
 - Quantity MAE: 14.3 items per daily genre row
 
-This pass uses genre one-hot encoding, event timing features, and an
-absolute-error gradient boosting objective. The strongest signals are still
-recent demand, active item count, and Rakuten event timing.
+This pass uses genre one-hot encoding, all event types from `events.parquet`,
+pre-event and post-event timing windows, and an absolute-error gradient boosting
+objective. The strongest signals are recent demand, active item count, and
+Rakuten event timing.

@@ -1,9 +1,9 @@
 {
-  "mae": 14.276410356458507,
-  "rmse": 43.983544202865765,
-  "wape": 0.25267520651181213,
-  "median_absolute_pct_error": 0.2346350096730728,
-  "r2": 0.8256510624117737,
+  "mae": 14.298022012642871,
+  "rmse": 44.71776685573554,
+  "wape": 0.2530577067029037,
+  "median_absolute_pct_error": 0.23734269748189674,
+  "r2": 0.8197816222422079,
   "train_rows": 222033,
   "test_rows": 17897,
   "genres": 100,
@@ -11,5 +11,5 @@
   "max_date": "2026-05-31",
   "test_start": "2025-12-03",
   "target": "daily genre quantity sold",
-  "model": "one-hot genre + absolute-error histogram gradient boosting on log quantity"
+  "model": "one-hot genre + event timing features + absolute-error histogram gradient boosting on log quantity"
 }

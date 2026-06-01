@@ -1,9 +1,9 @@
 {
-  "mae": 112351.10211879367,
-  "rmse": 301484.6144639721,
-  "wape": 0.2868620501703054,
-  "median_absolute_pct_error": 0.2873351839825958,
-  "r2": 0.8337699294819542,
+  "mae": 112177.45618009786,
+  "rmse": 304006.79933832656,
+  "wape": 0.28641868620645783,
+  "median_absolute_pct_error": 0.28872731805630697,
+  "r2": 0.830976972881819,
   "train_rows": 222033,
   "test_rows": 17897,
   "genres": 100,
@@ -11,5 +11,5 @@
   "max_date": "2026-05-31",
   "test_start": "2025-12-03",
   "target": "daily genre sales yen",
-  "model": "one-hot genre + absolute-error histogram gradient boosting on log sales"
+  "model": "one-hot genre + event timing features + absolute-error histogram gradient boosting on log sales"
 }

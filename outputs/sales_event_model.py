@@ -33,7 +33,7 @@ from sklearn.preprocessing import OneHotEncoder
 DEFAULT_DATA_DIR = Path("/Users/jasminehou/Downloads/TENKI")
 DEFAULT_CACHE_DIR = Path("work/model_cache")
 DEFAULT_OUTPUT_DIR = Path("outputs")
-CACHE_NAME = "daily_genre_dataset_v2.parquet"
+CACHE_NAME = "daily_genre_dataset_v3.parquet"
 
 
 def parse_args() -> argparse.Namespace:
@@ -75,19 +75,20 @@ def add_event_timing_features(event_daily: pd.DataFrame, min_date: pd.Timestamp,
     for col in event_cols + ["event_count", "any_event"]:
         out[col] = out[col].fillna(0)
 
-    major_events = [
-        "event_zero-five",
-        "event_marathon",
-        "event_supersale",
-        "event_ichiba-day",
-        "event_wonderful-day",
-        "event_black-friday",
-        "event_thank-you",
-    ]
-    for col in [c for c in major_events if c in out.columns]:
-        for days in [1, 2, 3]:
-            out[f"{col}_in_{days}d"] = out[col].shift(-days).fillna(0)
-            out[f"{col}_after_{days}d"] = out[col].shift(days).fillna(0)
+    timing_features: dict[str, pd.Series] = {}
+    for col in event_cols:
+        for days in [1, 2, 3, 7]:
+            timing_features[f"{col}_in_{days}d"] = out[col].shift(-days).fillna(0)
+            timing_features[f"{col}_after_{days}d"] = out[col].shift(days).fillna(0)
+    for window in [3, 7, 14]:
+        timing_features[f"event_count_next_{window}d"] = (
+            out["event_count"].shift(-1).rolling(window, min_periods=1).sum().shift(-(window - 1)).fillna(0)
+        )
+        timing_features[f"event_count_prev_{window}d"] = (
+            out["event_count"].shift(1).rolling(window, min_periods=1).sum().fillna(0)
+        )
+    if timing_features:
+        out = pd.concat([out, pd.DataFrame(timing_features)], axis=1)
 
     event_dates = out.loc[out["any_event"].eq(1), "date"].to_numpy()
     days_since: list[int] = []
@@ -323,7 +324,7 @@ def main() -> None:
             "max_date": str(dataset["date"].max().date()),
             "test_start": str(test["date"].min().date()),
             "target": "daily genre sales yen",
-            "model": "one-hot genre + absolute-error histogram gradient boosting on log sales",
+            "model": "one-hot genre + event timing features + absolute-error histogram gradient boosting on log sales",
         }
     )
 
@@ -342,7 +343,7 @@ def main() -> None:
             "max_date": str(dataset["date"].max().date()),
             "test_start": str(test["date"].min().date()),
             "target": "daily genre quantity sold",
-            "model": "one-hot genre + absolute-error histogram gradient boosting on log quantity",
+            "model": "one-hot genre + event timing features + absolute-error histogram gradient boosting on log quantity",
         }
     )
 
