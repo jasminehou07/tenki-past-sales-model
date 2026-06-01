@@ -1,14 +1,15 @@
 {
-  "mae": 133704.29408220385,
-  "rmse": 352322.5607229036,
-  "wape": 0.34138239139336934,
-  "median_absolute_pct_error": 0.34898269714155455,
-  "r2": 0.7729820545187838,
+  "mae": 112351.10211879367,
+  "rmse": 301484.6144639721,
+  "wape": 0.2868620501703054,
+  "median_absolute_pct_error": 0.2873351839825958,
+  "r2": 0.8337699294819542,
   "train_rows": 222033,
   "test_rows": 17897,
   "genres": 100,
   "min_date": "2018-10-29",
   "max_date": "2026-05-31",
   "test_start": "2025-12-03",
-  "target": "daily genre sales yen"
+  "target": "daily genre sales yen",
+  "model": "one-hot genre + absolute-error histogram gradient boosting on log sales"
 }

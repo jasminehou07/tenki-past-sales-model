@@ -79,9 +79,10 @@ work/.venv/bin/python outputs/sales_event_model.py
 - Test period starts: 2025-12-03
 - Data through: 2026-05-31
 - Genres: 100
-- R2: 0.773
-- WAPE: 34.1%
-- MAE: 133,704 yen daily genre sales
+- R2: 0.834
+- WAPE: 28.7%
+- MAE: 112,351 yen daily genre sales
 
-The strongest signals in this pass are recent demand, active item count,
-`zero-five`, `marathon`, day-of-month effects, and overall event count.
+This pass uses genre one-hot encoding, event timing features, and an
+absolute-error gradient boosting objective. The strongest signals are still
+recent demand, active item count, and Rakuten event timing.

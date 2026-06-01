@@ -22,14 +22,18 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from sklearn.compose import ColumnTransformer
 from sklearn.ensemble import HistGradientBoostingRegressor
 from sklearn.inspection import permutation_importance
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import OneHotEncoder
 
 
 DEFAULT_DATA_DIR = Path("/Users/jasminehou/Downloads/TENKI")
 DEFAULT_CACHE_DIR = Path("work/model_cache")
 DEFAULT_OUTPUT_DIR = Path("outputs")
+CACHE_NAME = "daily_genre_dataset_v2.parquet"
 
 
 def parse_args() -> argparse.Namespace:
@@ -62,6 +66,41 @@ def active_events_by_day(events: pd.DataFrame) -> pd.DataFrame:
     expanded["event_count"] = expanded[event_cols].sum(axis=1)
     expanded["any_event"] = (expanded["event_count"] > 0).astype(int)
     return expanded
+
+
+def add_event_timing_features(event_daily: pd.DataFrame, min_date: pd.Timestamp, max_date: pd.Timestamp) -> pd.DataFrame:
+    all_dates = pd.DataFrame({"date": pd.date_range(min_date, max_date, freq="D")})
+    out = all_dates.merge(event_daily, on="date", how="left")
+    event_cols = [c for c in out.columns if c.startswith("event_")]
+    for col in event_cols + ["event_count", "any_event"]:
+        out[col] = out[col].fillna(0)
+
+    major_events = [
+        "event_zero-five",
+        "event_marathon",
+        "event_supersale",
+        "event_ichiba-day",
+        "event_wonderful-day",
+        "event_black-friday",
+        "event_thank-you",
+    ]
+    for col in [c for c in major_events if c in out.columns]:
+        for days in [1, 2, 3]:
+            out[f"{col}_in_{days}d"] = out[col].shift(-days).fillna(0)
+            out[f"{col}_after_{days}d"] = out[col].shift(days).fillna(0)
+
+    event_dates = out.loc[out["any_event"].eq(1), "date"].to_numpy()
+    days_since: list[int] = []
+    days_to: list[int] = []
+    for date in out["date"].to_numpy():
+        diffs = (event_dates - date).astype("timedelta64[D]").astype(int)
+        past = diffs[diffs <= 0]
+        future = diffs[diffs >= 0]
+        days_since.append(abs(past.max()) if len(past) else 999)
+        days_to.append(future.min() if len(future) else 999)
+    out["days_since_event"] = np.clip(days_since, 0, 30)
+    out["days_to_event"] = np.clip(days_to, 0, 30)
+    return out
 
 
 def build_sales_daily(sales_dir: Path) -> pd.DataFrame:
@@ -156,14 +195,18 @@ def add_lag_features(df: pd.DataFrame) -> pd.DataFrame:
 
 def build_dataset(data_dir: Path, cache_dir: Path, rebuild_cache: bool) -> pd.DataFrame:
     cache_dir.mkdir(parents=True, exist_ok=True)
-    cache_path = cache_dir / "daily_genre_dataset.parquet"
+    cache_path = cache_dir / CACHE_NAME
     if cache_path.exists() and not rebuild_cache:
         return pd.read_parquet(cache_path)
 
     sales = build_sales_daily(data_dir / "genre-sales")
     rankings = build_ranking_daily(data_dir / "genre-ranking")
     events = pd.read_parquet(data_dir / "events" / "events.parquet")
-    event_daily = active_events_by_day(events)
+    event_daily = add_event_timing_features(
+        active_events_by_day(events),
+        pd.Timestamp(sales["date"].min()),
+        pd.Timestamp(sales["date"].max()),
+    )
 
     dataset = sales.merge(rankings, on=["genre_id", "date"], how="left")
     dataset = dataset.merge(event_daily, on="date", how="left")
@@ -224,16 +267,30 @@ def main() -> None:
         "reviews_total",
     }
     feature_cols = [c for c in dataset.columns if c not in leakage_cols]
+    categorical_cols = ["genre_id"]
+    numeric_cols = [c for c in feature_cols if c not in categorical_cols]
+    preprocessor = ColumnTransformer(
+        [
+            ("genre", OneHotEncoder(handle_unknown="ignore", sparse_output=False), categorical_cols),
+            ("numeric", "passthrough", numeric_cols),
+        ],
+        verbose_feature_names_out=False,
+    )
     X_train = train[feature_cols]
     y_train = np.log1p(train["sales"])
     X_test = test[feature_cols]
     y_test = test["sales"]
 
-    model = HistGradientBoostingRegressor(
-        learning_rate=0.05,
-        max_iter=500,
-        l2_regularization=0.05,
-        random_state=42,
+    model = make_pipeline(
+        preprocessor,
+        HistGradientBoostingRegressor(
+            loss="absolute_error",
+            learning_rate=0.04,
+            max_iter=700,
+            max_leaf_nodes=63,
+            l2_regularization=0.03,
+            random_state=42,
+        ),
     )
     model.fit(X_train, y_train)
     pred = np.expm1(model.predict(X_test)).clip(min=0)
@@ -248,6 +305,7 @@ def main() -> None:
             "max_date": str(dataset["date"].max().date()),
             "test_start": str(test["date"].min().date()),
             "target": "daily genre sales yen",
+            "model": "one-hot genre + absolute-error histogram gradient boosting on log sales",
         }
     )
 
