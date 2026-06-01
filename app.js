@@ -336,7 +336,7 @@ function shortCount(value) {
 }
 
 function renderFeatureBars() {
-  const top = state.features.slice(0, 12);
+  const top = state.features.slice(0, 10);
   const max = Math.max(...top.map((item) => item.value), 1);
   el.featureBars.innerHTML = top
     .map((item) => {
