@@ -1,6 +1,7 @@
 const state = {
   predictions: [],
   features: [],
+  genreLabels: new Map(),
   metrics: {},
   filtered: [],
 };
@@ -47,9 +48,10 @@ function parseCsv(text) {
 }
 
 async function loadData() {
-  const [predictionText, featureText, metrics] = await Promise.all([
+  const [predictionText, featureText, labelText, metrics] = await Promise.all([
     fetch("outputs/sales_event_predictions.csv").then((res) => res.text()),
     fetch("outputs/sales_event_feature_importance.csv").then((res) => res.text()),
+    fetch("data/genre_labels.csv").then((res) => res.text()),
     fetch("outputs/sales_event_metrics.json").then((res) => res.json()),
   ]);
 
@@ -64,14 +66,17 @@ async function loadData() {
     name: row.feature,
     value: Number(row.importance_mean),
   }));
+  state.genreLabels = new Map(parseCsv(labelText).map((row) => [row.genre_id, row.label]));
   state.metrics = metrics;
 }
 
 function setupControls() {
-  const genres = [...new Set(state.predictions.map((row) => row.genre))].sort();
+  const genres = [...new Set(state.predictions.map((row) => row.genre))].sort((a, b) =>
+    genreLabel(a).localeCompare(genreLabel(b), "en"),
+  );
   el.genreSelect.innerHTML = [
     `<option value="all">All genres</option>`,
-    ...genres.map((genre) => `<option value="${genre}">${genre}</option>`),
+    ...genres.map((genre) => `<option value="${genre}">${escapeHtml(genreLabel(genre))}</option>`),
   ].join("");
 
   const dates = state.predictions.map((row) => row.date).sort();
@@ -161,11 +166,12 @@ function summarizeRows(rows) {
 function updateView() {
   state.filtered = filterRows();
   const summary = summarizeRows(state.filtered);
-  const genreLabel = el.genreSelect.value === "all" ? "all genres" : `genre ${el.genreSelect.value}`;
+  const selectedGenreLabel =
+    el.genreSelect.value === "all" ? "all genres" : genreLabel(el.genreSelect.value);
   const unit = el.viewMode.value === "weekly" ? "weekly" : "daily";
 
   el.status.textContent = `${fmtNumber.format(state.filtered.length)} ${unit} rows`;
-  el.chartCaption.textContent = `${genreLabel}, ${fmtCurrency.format(summary.sales)} actual sales`;
+  el.chartCaption.textContent = `${selectedGenreLabel}, ${fmtCurrency.format(summary.sales)} actual sales`;
   el.errorCaption.textContent = `${fmtPct.format(summary.wape)} WAPE in selected range`;
   el.tableCaption.textContent = `${unit} rows sorted by largest error`;
 
@@ -278,6 +284,19 @@ function friendlyFeature(name) {
     .replace(/\b\w/g, (char) => char.toUpperCase());
 }
 
+function genreLabel(id) {
+  if (id === "all") return "All genres";
+  return state.genreLabels.get(String(id)) || `Genre ${id}`;
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;");
+}
+
 function renderRows() {
   const rows = [...state.filtered].sort((a, b) => b.error - a.error).slice(0, 250);
   el.rows.innerHTML = rows
@@ -285,7 +304,7 @@ function renderRows() {
       (row) => `
         <tr>
           <td>${row.date}</td>
-          <td>${row.genre}</td>
+          <td>${escapeHtml(genreLabel(row.genre))}</td>
           <td>${fmtCurrency.format(row.sales)}</td>
           <td>${fmtCurrency.format(row.predicted)}</td>
           <td>${fmtCurrency.format(row.error)}</td>
@@ -296,9 +315,11 @@ function renderRows() {
 }
 
 function downloadFilteredCsv() {
-  const header = "date,genre_id,sales,predicted_sales,absolute_error";
+  const header = "date,genre_id,genre_label,sales,predicted_sales,absolute_error";
   const body = state.filtered
-    .map((row) => [row.date, row.genre, row.sales, row.predicted, row.error].join(","))
+    .map((row) =>
+      [row.date, row.genre, csvCell(genreLabel(row.genre)), row.sales, row.predicted, row.error].join(","),
+    )
     .join("\n");
   const blob = new Blob([`${header}\n${body}\n`], { type: "text/csv" });
   const url = URL.createObjectURL(blob);
@@ -307,6 +328,11 @@ function downloadFilteredCsv() {
   link.download = "filtered_sales_event_predictions.csv";
   link.click();
   URL.revokeObjectURL(url);
+}
+
+function csvCell(value) {
+  const text = String(value);
+  return /[",\n]/.test(text) ? `"${text.replaceAll('"', '""')}"` : text;
 }
 
 window.addEventListener("resize", () => {
