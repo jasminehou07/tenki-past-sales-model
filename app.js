@@ -40,11 +40,34 @@ const el = {
 
 function parseCsv(text) {
   const [headerLine, ...lines] = text.trim().split(/\r?\n/);
-  const headers = headerLine.split(",");
+  const headers = parseCsvLine(headerLine);
   return lines.map((line) => {
-    const values = line.split(",");
+    const values = parseCsvLine(line);
     return Object.fromEntries(headers.map((header, index) => [header, values[index]]));
   });
+}
+
+function parseCsvLine(line) {
+  const values = [];
+  let current = "";
+  let quoted = false;
+  for (let i = 0; i < line.length; i += 1) {
+    const char = line[i];
+    const next = line[i + 1];
+    if (char === '"' && quoted && next === '"') {
+      current += '"';
+      i += 1;
+    } else if (char === '"') {
+      quoted = !quoted;
+    } else if (char === "," && !quoted) {
+      values.push(current);
+      current = "";
+    } else {
+      current += char;
+    }
+  }
+  values.push(current);
+  return values;
 }
 
 async function loadData() {
