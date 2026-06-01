@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TENKI Sales Model</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Rakuten TENKI</p>
+        <h1>Sales Event Model</h1>
+      </div>
+      <div class="status" id="status">Loading model outputs</div>
+    </header>
+
+    <main>
+      <section class="controls" aria-label="Dashboard controls">
+        <label>
+          Genre
+          <select id="genreSelect"></select>
+        </label>
+        <label>
+          Start
+          <input id="startDate" type="date" />
+        </label>
+        <label>
+          End
+          <input id="endDate" type="date" />
+        </label>
+        <label>
+          View
+          <select id="viewMode">
+            <option value="daily">Daily</option>
+            <option value="weekly">Weekly</option>
+          </select>
+        </label>
+      </section>
+
+      <section class="metric-grid" aria-label="Model metrics">
+        <article class="metric">
+          <span>R2</span>
+          <strong id="metricR2">--</strong>
+        </article>
+        <article class="metric">
+          <span>WAPE</span>
+          <strong id="metricWape">--</strong>
+        </article>
+        <article class="metric">
+          <span>MAE</span>
+          <strong id="metricMae">--</strong>
+        </article>
+        <article class="metric">
+          <span>Holdout Rows</span>
+          <strong id="metricRows">--</strong>
+        </article>
+      </section>
+
+      <section class="workspace">
+        <article class="panel wide">
+          <div class="panel-head">
+            <div>
+              <h2>Actual vs Predicted Sales</h2>
+              <p id="chartCaption">Daily holdout predictions</p>
+            </div>
+            <div class="legend">
+              <span><i class="actual"></i>Actual</span>
+              <span><i class="predicted"></i>Predicted</span>
+            </div>
+          </div>
+          <canvas id="salesChart" height="340"></canvas>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>Genre Error</h2>
+              <p id="errorCaption">Absolute error by day</p>
+            </div>
+          </div>
+          <canvas id="errorChart" height="260"></canvas>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>Feature Influence</h2>
+              <p>Permutation importance</p>
+            </div>
+          </div>
+          <div id="featureBars" class="feature-bars"></div>
+        </article>
+      </section>
+
+      <section class="table-section">
+        <div class="panel-head">
+          <div>
+            <h2>Prediction Rows</h2>
+            <p id="tableCaption">Largest errors in the selected view</p>
+          </div>
+          <button id="downloadCsv" type="button">Download filtered CSV</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Genre</th>
+                <th>Actual Sales</th>
+                <th>Predicted Sales</th>
+                <th>Absolute Error</th>
+              </tr>
+            </thead>
+            <tbody id="predictionRows"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>

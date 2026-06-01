@@ -10,6 +10,7 @@ days.
 
 ## Contents
 
+- `index.html`, `styles.css`, `app.js`: interactive model dashboard
 - `outputs/sales_event_model.py`: training and evaluation pipeline
 - `outputs/README_sales_event_model.md`: detailed model notes
 - `outputs/sales_event_metrics.json`: latest holdout metrics
@@ -40,6 +41,20 @@ work/.venv/bin/python -m pip install -r requirements.txt
 ```
 
 ## Run
+
+Open the interactive page locally:
+
+```bash
+python3 -m http.server 8877
+```
+
+Then visit:
+
+```text
+http://127.0.0.1:8877/
+```
+
+Rebuild the model outputs:
 
 ```bash
 work/.venv/bin/python outputs/sales_event_model.py --rebuild-cache
