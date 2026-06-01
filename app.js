@@ -41,6 +41,10 @@ const el = {
   metricWape: document.getElementById("metricWape"),
   metricMae: document.getElementById("metricMae"),
   metricRows: document.getElementById("metricRows"),
+  quantityMetricR2: document.getElementById("quantityMetricR2"),
+  quantityMetricWape: document.getElementById("quantityMetricWape"),
+  quantityMetricMae: document.getElementById("quantityMetricMae"),
+  quantityMetricRows: document.getElementById("quantityMetricRows"),
 };
 
 function parseCsv(text) {
@@ -136,6 +140,10 @@ function updateMetrics() {
   el.metricWape.textContent = fmtPct.format(Number(state.metrics.wape));
   el.metricMae.textContent = fmtCurrency.format(Number(state.metrics.mae));
   el.metricRows.textContent = fmtNumber.format(Number(state.metrics.test_rows));
+  el.quantityMetricR2.textContent = Number(state.quantityMetrics.r2).toFixed(3);
+  el.quantityMetricWape.textContent = fmtPct.format(Number(state.quantityMetrics.wape));
+  el.quantityMetricMae.textContent = `${Number(state.quantityMetrics.mae).toFixed(1)} items`;
+  el.quantityMetricRows.textContent = fmtNumber.format(Number(state.quantityMetrics.test_rows));
 }
 
 function filterRows() {
