@@ -156,7 +156,7 @@ button:hover {
 
 .workspace {
   display: grid;
-  grid-template-columns: 1.35fr 0.9fr;
+  grid-template-columns: 1fr;
   gap: 14px;
 }
 
@@ -169,7 +169,7 @@ button:hover {
 }
 
 .wide {
-  grid-row: span 2;
+  grid-row: auto;
 }
 
 .panel {
