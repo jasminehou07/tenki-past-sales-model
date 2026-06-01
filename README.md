@@ -45,7 +45,7 @@ work/.venv/bin/python -m pip install -r requirements.txt
 Open the interactive page on GitHub Pages:
 
 ```text
-https://jasminehou07.github.io/tenki-sales-model/
+https://jasminehou07.github.io/tenki-past-sales-model/
 ```
 
 No local Python server is needed for the GitHub Pages version.
