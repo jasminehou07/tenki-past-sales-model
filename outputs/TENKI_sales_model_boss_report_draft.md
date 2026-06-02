@@ -46,7 +46,7 @@ The model uses two regimes because earlier years and later years appear meaningf
 
 ## Promotion Impact
 
-The model currently uses promotions that showed stronger relationship with sales or quantity movement. These were selected using promotion regression/correlation analysis.
+The table below compares promotions that were used in the model with additional promotions that were reviewed but not included. Promotions were kept when their relationship with sales or quantity movement was stronger in the regression/correlation analysis.
 
 | Promotion | Estimated Sales Lift | Estimated Quantity Lift | Used in Model |
 |---|---:|---:|---|
@@ -55,8 +55,12 @@ The model currently uses promotions that showed stronger relationship with sales
 | Shopping Marathon | 43.2% | 29.4% | Yes |
 | Black Friday | 165.4% | 81.7% | Yes |
 | Thanksgiving Festival | 339.9% | 102.7% | Yes |
+| Wonderful Day | 42.5% | 17.7% | No |
+| Rakuten Fashion sale | -12.5% | -7.0% | No |
+| Sports win campaign | 33.1% | 11.4% | No |
+| 18th Ichiba Day | -10.3% | -5.5% | No |
 
-These results suggest that promotion timing and promotion type are important for predicting fluctuations, especially for quantity sold and inventory planning.
+These results suggest that promotion timing and promotion type are important for predicting fluctuations, especially for quantity sold and inventory planning. Promotions marked "No" were still analyzed, but their measured relationship was weaker or less consistent, so they were not used as primary model features.
 
 ## Dashboard Sections
 
