@@ -6,8 +6,7 @@ This project builds an interactive model dashboard for analyzing and predicting 
 
 Current dashboard:
 
-- **Local dashboard:** `http://127.0.0.1:8877/?v=organized-dashboard`
-- **GitHub Pages:** `https://jasminehou07.github.io/tenki-past-sales-model/`
+- **Interactive model link:** `https://jasminehou07.github.io/tenki-past-sales-model/`
 
 ## Business Question
 
