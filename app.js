@@ -385,12 +385,16 @@ function confidenceForSelection(itemData) {
   const quantityRatios = quantityRows
     .filter((row) => row.predicted > 0 && row.sales > 0)
     .map((row) => clamp(row.sales / row.predicted, 0.15, 3));
-  const fallback = itemData ? 0.35 : 0.25;
+  const fallback = itemData ? 0.18 : 0.15;
+  const tighten = (value, fallbackValue) => {
+    const ratio = value || fallbackValue;
+    return 1 + (ratio - 1) * 0.55;
+  };
   return {
-    salesLow: quantile(salesRatios, 0.1) || 1 - fallback,
-    salesHigh: quantile(salesRatios, 0.9) || 1 + fallback,
-    quantityLow: quantile(quantityRatios, 0.1) || 1 - fallback,
-    quantityHigh: quantile(quantityRatios, 0.9) || 1 + fallback,
+    salesLow: tighten(quantile(salesRatios, 0.25), 1 - fallback),
+    salesHigh: tighten(quantile(salesRatios, 0.75), 1 + fallback),
+    quantityLow: tighten(quantile(quantityRatios, 0.25), 1 - fallback),
+    quantityHigh: tighten(quantile(quantityRatios, 0.75), 1 + fallback),
   };
 }
 
