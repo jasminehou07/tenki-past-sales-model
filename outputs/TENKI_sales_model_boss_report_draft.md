@@ -2,14 +2,12 @@
 
 ## Executive Summary
 
-This project builds an interactive model dashboard for analyzing and predicting historical Rakuten sales performance. The model estimates both sales value and quantity sold by learning from seasonality, Japanese holidays, Rakuten promotion events, and category-level sales behavior.
-
-The main business goal is to move toward a future-facing tool that helps sellers prepare inventory before major demand changes, especially during Rakuten campaigns such as Shopping Marathon, Super Sale, Black Friday, Thanksgiving Festival, and 5/0 point days.
+This project builds an interactive model dashboard for analyzing and predicting historical Rakuten sales performance. The model estimates both sales value and quantity sold by learning from seasonality, Japanese holidays, Rakuten promotion events, and category-level sales behavior. The main business goal is to move toward a future-facing tool that helps sellers prepare inventory before major demand changes, especially during Rakuten campaigns such as Shopping Marathon, Super Sale, Black Friday, Thanksgiving Festival, and 5/0 point days.
 
 Current dashboard:
 
-- Local page: `http://127.0.0.1:8877/?v=organized-dashboard`
-- GitHub Pages: `https://jasminehou07.github.io/tenki-past-sales-model/`
+- **Local dashboard:** `http://127.0.0.1:8877/?v=organized-dashboard`
+- **GitHub Pages:** `https://jasminehou07.github.io/tenki-past-sales-model/`
 
 ## Business Question
 
@@ -27,7 +25,7 @@ Can we use historical Rakuten sales, promotion timing, holidays, and category be
 | Sales value | 0.855 | 27.7% | ¥108,590 |
 | Quantity sold | 0.861 | 23.5% | 13.3 units |
 
-Plain-English interpretation:
+Interpretation:
 
 - **R2** shows how much of the sales pattern the model explains. Values around 0.85 mean the model is capturing a large share of the broad pattern.
 - **WAPE** shows weighted percent error. Sales WAPE of 27.7% means total prediction error is about 27.7% of actual sales volume in the holdout period.
