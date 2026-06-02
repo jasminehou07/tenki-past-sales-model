@@ -48,17 +48,17 @@ The model uses two regimes because earlier years and later years appear meaningf
 
 The table below compares promotions that were used in the model with additional promotions that were reviewed but not included. Promotions were kept when their relationship with sales or quantity movement was stronger in the regression/correlation analysis.
 
-| Promotion | Estimated Sales Lift | Estimated Quantity Lift | Used in Model |
-|---|---:|---:|---|
-| 5 and 0 day | 227.1% | 123.8% | Yes |
-| Rakuten Super Sale | 172.4% | 112.1% | Yes |
-| Shopping Marathon | 43.2% | 29.4% | Yes |
-| Black Friday | 165.4% | 81.7% | Yes |
-| Thanksgiving Festival | 339.9% | 102.7% | Yes |
-| Wonderful Day | 42.5% | 17.7% | No |
-| Rakuten Fashion sale | -12.5% | -7.0% | No |
-| Sports win campaign | 33.1% | 11.4% | No |
-| 18th Ichiba Day | -10.3% | -5.5% | No |
+| Promotion | Correlation | Estimated Sales Lift | Estimated Quantity Lift | Used in Model |
+|---|---:|---:|---:|---|
+| 5 and 0 day | 0.218 | 227.1% | 123.8% | Yes |
+| Rakuten Super Sale | 0.140 | 172.4% | 112.1% | Yes |
+| Shopping Marathon | 0.084 | 43.2% | 29.4% | Yes |
+| Black Friday | 0.059 | 165.4% | 81.7% | Yes |
+| Thanksgiving Festival | 0.051 | 339.9% | 102.7% | Yes |
+| Wonderful Day | 0.020 | 42.5% | 17.7% | No |
+| Rakuten Fashion sale | 0.014 | -12.5% | -7.0% | No |
+| Sports win campaign | 0.009 | 33.1% | 11.4% | No |
+| 18th Ichiba Day | 0.007 | -10.3% | -5.5% | No |
 
 These results suggest that promotion timing and promotion type are important for predicting fluctuations, especially for quantity sold and inventory planning. Promotions marked "No" were still analyzed, but their measured relationship was weaker or less consistent, so they were not used as primary model features.
 
