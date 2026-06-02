@@ -49,6 +49,11 @@ const el = {
   actualSalesRange: document.getElementById("actualSalesRange"),
   inventoryRange: document.getElementById("inventoryRange"),
   actualInventoryRange: document.getElementById("actualInventoryRange"),
+  summaryScope: document.getElementById("summaryScope"),
+  summaryMain: document.getElementById("summaryMain"),
+  summaryInventory: document.getElementById("summaryInventory"),
+  summaryAccuracy: document.getElementById("summaryAccuracy"),
+  summaryCaveat: document.getElementById("summaryCaveat"),
   metricR2: document.getElementById("metricR2"),
   metricWape: document.getElementById("metricWape"),
   metricMae: document.getElementById("metricMae"),
@@ -343,11 +348,48 @@ function updateView() {
   drawLineChart(el.errorChart, state.filtered, [
     { key: "error", label: "Absolute Error", color: "#b23b3b" },
   ]);
+  renderReportSummary(summary, quantitySummary, selectedGenreLabel);
   renderFeatureBars();
   renderConfidenceRange(summary, quantitySummary, selectedGenreLabel);
   renderStruggles();
   renderPromotions();
   renderRows();
+}
+
+function renderReportSummary(summary, quantitySummary, selectedGenreLabel) {
+  const itemData = getSelectedItemData();
+  const salesBase = itemData ? itemData.predictedSales : summary.predicted;
+  const quantityBase = itemData ? itemData.predictedQuantity : quantitySummary.predicted;
+  const actualSales = itemData ? itemData.actualSales : summary.sales;
+  const actualQuantity = itemData ? itemData.actualQuantity : quantitySummary.sales;
+  const confidence = confidenceForSelection(itemData);
+  const salesLow = salesBase * confidence.salesLow;
+  const salesHigh = salesBase * confidence.salesHigh;
+  const quantityLow = Math.round(quantityBase * confidence.quantityLow);
+  const quantityHigh = Math.round(quantityBase * confidence.quantityHigh);
+  const itemLabel = itemData ? `, ${itemData.label}` : "";
+  const salesGap = actualSales - salesBase;
+  const quantityGap = actualQuantity - quantityBase;
+  const salesDirection = salesGap >= 0 ? "above" : "below";
+  const quantityDirection = quantityGap >= 0 ? "above" : "below";
+  const trustLabel = summary.wape <= 0.2 ? "strong" : summary.wape <= 0.35 ? "moderate" : "needs caution";
+
+  el.summaryScope.textContent = `${selectedGenreLabel}${itemLabel}, ${el.startDate.value} to ${el.endDate.value}`;
+  el.summaryMain.textContent =
+    `The model predicts ${fmtCurrency.format(salesBase)} in sales for this period, with a planning range of ` +
+    `${fmtCurrency.format(salesLow)} to ${fmtCurrency.format(salesHigh)}. Actual sales were ${fmtCurrency.format(actualSales)}, ` +
+    `${fmtCurrency.format(Math.abs(salesGap))} ${salesDirection} the prediction.`;
+  el.summaryInventory.textContent =
+    `Prepare roughly ${fmtNumber.format(quantityLow)} to ${fmtNumber.format(quantityHigh)} units to cover expected demand. ` +
+    `Actual units sold were ${fmtNumber.format(Math.round(actualQuantity))}, ` +
+    `${fmtNumber.format(Math.round(Math.abs(quantityGap)))} units ${quantityDirection} the prediction.`;
+  el.summaryAccuracy.textContent =
+    `The selected category/date rows have ${fmtPct.format(summary.wape)} sales WAPE and ` +
+    `${fmtPct.format(quantitySummary.wape)} quantity WAPE, ` +
+    `so the current confidence read is ${trustLabel}.`;
+  el.summaryCaveat.textContent =
+    `Use this as a demand-planning estimate, not a final stock order. Accuracy will improve with product names, price changes, ` +
+    `discounts, stockout data, and a confirmed future Rakuten promotion calendar.`;
 }
 
 function renderConfidenceRange(summary, quantitySummary, selectedGenreLabel) {

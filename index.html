@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>TENKI Sales Model</title>
-    <link rel="stylesheet" href="styles.css?v=units-to-prepare-labels" />
+    <link rel="stylesheet" href="styles.css?v=report-summary" />
   </head>
   <body>
     <header class="topbar">
@@ -40,6 +40,33 @@
           Item
           <select id="itemSelect"></select>
         </label>
+      </section>
+
+      <section class="report-summary" aria-label="Report summary">
+        <div class="panel-head">
+          <div>
+            <h2>Report Summary</h2>
+            <p id="summaryScope">Summary for the selected view</p>
+          </div>
+        </div>
+        <div class="summary-grid">
+          <article>
+            <span>Main Takeaway</span>
+            <p id="summaryMain">--</p>
+          </article>
+          <article>
+            <span>Units to Prepare</span>
+            <p id="summaryInventory">--</p>
+          </article>
+          <article>
+            <span>Accuracy Read</span>
+            <p id="summaryAccuracy">--</p>
+          </article>
+          <article>
+            <span>Report Note</span>
+            <p id="summaryCaveat">--</p>
+          </article>
+        </div>
       </section>
 
       <section class="metric-grid" aria-label="Sales prediction metrics">
@@ -234,6 +261,6 @@
       </section>
     </main>
 
-    <script src="app.js?v=units-to-prepare-labels"></script>
+    <script src="app.js?v=report-summary"></script>
   </body>
 </html>
