@@ -21,6 +21,7 @@ final 180 days.
 - `outputs/sales_event_feature_importance.png`: feature importance chart
 - `outputs/sales_event_model.joblib`: trained model artifact
 - `data/japan_holidays.csv`: official Japan holiday calendar used for holiday lookahead features
+- `data/promotion_effects/`: promotion lift summaries copied from the TENKI dashboard
 
 ## Data
 
@@ -82,15 +83,15 @@ work/.venv/bin/python outputs/sales_event_model.py
 - Test period starts: 2025-12-03
 - Data through: 2026-05-31
 - Genres: 100
-- Sales R2: 0.841
-- Sales WAPE: 28.2%
-- Sales MAE: 110,585 yen daily genre sales
-- Quantity R2: 0.815
-- Quantity WAPE: 25.9%
-- Quantity MAE: 14.6 items per daily genre row
+- Sales R2: 0.848
+- Sales WAPE: 27.7%
+- Sales MAE: 108,395 yen daily genre sales
+- Quantity R2: 0.850
+- Quantity WAPE: 23.9%
+- Quantity MAE: 13.5 items per daily genre row
 
 This pass uses genre one-hot encoding, all event types from `events.parquet`,
 pre-event and post-event timing windows, official Japan holidays, combined
-promo-or-holiday lookahead features, and an absolute-error gradient boosting
-objective. The strongest signals are recent demand, active item count, Rakuten
-event timing, and distance to upcoming promo/holiday days.
+promo-or-holiday lookahead features, and promotion lift estimates from the TENKI
+dashboard by ranking group. The strongest signals are recent demand, active item
+count, Rakuten event timing, promotion lift, and ranking group.

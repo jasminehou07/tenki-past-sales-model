@@ -7,6 +7,7 @@ level using:
 - Rakuten events: `zero-five`, `marathon`, `supersale`, `ichiba-day`, and the other event windows in `events/events.parquet`
 - Japan holidays: same-day flags, nearby holiday windows, and days to/from the next holiday
 - combined lookahead: whether a promotion or holiday is coming in the next 3, 7, or 14 days
+- promotion lift estimates: ranking-group-specific sales and quantity lifts from the TENKI dashboard
 - ranking context: ranked item count, shop count, rank, and price summaries
 - recent demand: lagged and rolling sales/sales item features
 

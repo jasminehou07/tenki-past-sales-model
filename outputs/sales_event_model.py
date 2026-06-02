@@ -34,7 +34,8 @@ DEFAULT_DATA_DIR = Path("/Users/jasminehou/Downloads/TENKI")
 DEFAULT_CACHE_DIR = Path("work/model_cache")
 DEFAULT_OUTPUT_DIR = Path("outputs")
 DEFAULT_HOLIDAY_FILE = Path("data/japan_holidays.csv")
-CACHE_NAME = "daily_genre_dataset_v4.parquet"
+DEFAULT_PROMOTION_EFFECT_DIR = Path("data/promotion_effects")
+CACHE_NAME = "daily_genre_dataset_v5.parquet"
 
 
 def parse_args() -> argparse.Namespace:
@@ -43,6 +44,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--cache-dir", type=Path, default=DEFAULT_CACHE_DIR)
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
     parser.add_argument("--holiday-file", type=Path, default=DEFAULT_HOLIDAY_FILE)
+    parser.add_argument("--promotion-effect-dir", type=Path, default=DEFAULT_PROMOTION_EFFECT_DIR)
     parser.add_argument("--rebuild-cache", action="store_true")
     parser.add_argument("--test-days", type=int, default=180)
     parser.add_argument(
@@ -153,6 +155,78 @@ def add_combined_upcoming_features(df: pd.DataFrame) -> pd.DataFrame:
     return out
 
 
+def add_promotion_effect_features(df: pd.DataFrame, effect_dir: Path) -> pd.DataFrame:
+    out = df.copy()
+    lookup_file = effect_dir / "ranking_group_lookup.csv"
+    group_effect_file = effect_dir / "event_impact_by_group.csv"
+    summary_effect_file = effect_dir / "event_impact_summary.csv"
+
+    out["genre_id"] = out["genre_id"].astype(str)
+    if lookup_file.exists():
+        groups = pd.read_csv(lookup_file, usecols=["genre_id", "ranking_group"])
+        groups["genre_id"] = groups["genre_id"].astype(str)
+        out = out.merge(groups, on="genre_id", how="left")
+    else:
+        out["ranking_group"] = "Unknown"
+    out["ranking_group"] = out["ranking_group"].fillna("Unknown")
+
+    lift_cols = [
+        "sales_promo_lift_today",
+        "items_promo_lift_today",
+        "sales_promo_lift_next_3d",
+        "items_promo_lift_next_3d",
+        "sales_promo_lift_next_7d",
+        "items_promo_lift_next_7d",
+    ]
+    for col in lift_cols:
+        out[col] = 0.0
+
+    if not group_effect_file.exists():
+        return out
+
+    group_effects = pd.read_csv(group_effect_file)
+    group_effects = group_effects[group_effects["occurrences"].fillna(0) >= 3].copy()
+    if group_effects.empty:
+        return out
+
+    group_effects["sales_lift_pct"] = group_effects["sales_lift_pct"].clip(lower=-80, upper=400)
+    group_effects["items_lift_pct"] = group_effects["items_lift_pct"].clip(lower=-80, upper=400)
+    global_sales_lift: dict[str, float] = {}
+    global_items_lift: dict[str, float] = {}
+    if summary_effect_file.exists():
+        summary = pd.read_csv(summary_effect_file)
+        global_sales_lift = summary.set_index("event_name")["sales_lift_pct"].clip(lower=-80, upper=400).to_dict()
+        global_items_lift = summary.set_index("event_name")["items_lift_pct"].clip(lower=-80, upper=400).to_dict()
+
+    sales_maps = {
+        event: values.set_index("ranking_group")["sales_lift_pct"].to_dict()
+        for event, values in group_effects.groupby("event_name")
+    }
+    items_maps = {
+        event: values.set_index("ranking_group")["items_lift_pct"].to_dict()
+        for event, values in group_effects.groupby("event_name")
+    }
+
+    for event_name, sales_map in sales_maps.items():
+        event_col = f"event_{event_name}"
+        if event_col not in out.columns:
+            continue
+        sales_lift = out["ranking_group"].map(sales_map).fillna(global_sales_lift.get(event_name, 0.0))
+        items_lift = out["ranking_group"].map(items_maps.get(event_name, {})).fillna(global_items_lift.get(event_name, 0.0))
+        out["sales_promo_lift_today"] += out[event_col] * sales_lift
+        out["items_promo_lift_today"] += out[event_col] * items_lift
+        for days in [1, 2, 3, 7]:
+            upcoming_col = f"{event_col}_in_{days}d"
+            if upcoming_col not in out.columns:
+                continue
+            if days <= 3:
+                out["sales_promo_lift_next_3d"] += out[upcoming_col] * sales_lift
+                out["items_promo_lift_next_3d"] += out[upcoming_col] * items_lift
+            out["sales_promo_lift_next_7d"] += out[upcoming_col] * sales_lift
+            out["items_promo_lift_next_7d"] += out[upcoming_col] * items_lift
+    return out
+
+
 def build_sales_daily(sales_dir: Path) -> pd.DataFrame:
     frames: list[pd.DataFrame] = []
     sales_cols = [
@@ -243,7 +317,13 @@ def add_lag_features(df: pd.DataFrame) -> pd.DataFrame:
     return out
 
 
-def build_dataset(data_dir: Path, cache_dir: Path, rebuild_cache: bool, holiday_file: Path = DEFAULT_HOLIDAY_FILE) -> pd.DataFrame:
+def build_dataset(
+    data_dir: Path,
+    cache_dir: Path,
+    rebuild_cache: bool,
+    holiday_file: Path = DEFAULT_HOLIDAY_FILE,
+    promotion_effect_dir: Path = DEFAULT_PROMOTION_EFFECT_DIR,
+) -> pd.DataFrame:
     cache_dir.mkdir(parents=True, exist_ok=True)
     cache_path = cache_dir / CACHE_NAME
     if cache_path.exists() and not rebuild_cache:
@@ -273,6 +353,7 @@ def build_dataset(data_dir: Path, cache_dir: Path, rebuild_cache: bool, holiday_
     for col in holiday_cols:
         dataset[col] = dataset[col].fillna(0)
     dataset = add_combined_upcoming_features(dataset)
+    dataset = add_promotion_effect_features(dataset, promotion_effect_dir)
     dataset = add_calendar_features(dataset)
     dataset = add_lag_features(dataset)
     dataset = dataset.sort_values(["date", "genre_id"]).reset_index(drop=True)
@@ -317,7 +398,13 @@ def main() -> None:
     args = parse_args()
     args.output_dir.mkdir(parents=True, exist_ok=True)
 
-    dataset = build_dataset(args.data_dir, args.cache_dir, args.rebuild_cache, args.holiday_file)
+    dataset = build_dataset(
+        args.data_dir,
+        args.cache_dir,
+        args.rebuild_cache,
+        args.holiday_file,
+        args.promotion_effect_dir,
+    )
     dataset = dataset.dropna(subset=["sales_lag_28d", "sales_roll_mean_28d"]).copy()
     dataset = dataset.fillna(
         {
@@ -346,7 +433,7 @@ def main() -> None:
         "reviews_total",
     }
     feature_cols = [c for c in dataset.columns if c not in leakage_cols]
-    categorical_cols = ["genre_id"]
+    categorical_cols = ["genre_id", "ranking_group"]
     numeric_cols = [c for c in feature_cols if c not in categorical_cols]
     sales_preprocessor = ColumnTransformer(
         [
@@ -383,7 +470,7 @@ def main() -> None:
             "max_date": str(dataset["date"].max().date()),
             "test_start": str(test["date"].min().date()),
             "target": "daily genre sales yen",
-            "model": "one-hot genre + upcoming promotion/holiday features + absolute-error histogram gradient boosting on log sales",
+            "model": "one-hot genre + promotion-effect dashboard lift features + upcoming holiday features + absolute-error histogram gradient boosting on log sales",
         }
     )
 
@@ -402,7 +489,7 @@ def main() -> None:
             "max_date": str(dataset["date"].max().date()),
             "test_start": str(test["date"].min().date()),
             "target": "daily genre quantity sold",
-            "model": "one-hot genre + upcoming promotion/holiday features + absolute-error histogram gradient boosting on log quantity",
+            "model": "one-hot genre + promotion-effect dashboard lift features + upcoming holiday features + absolute-error histogram gradient boosting on log quantity",
         }
     )
 
