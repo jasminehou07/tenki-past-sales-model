@@ -560,11 +560,8 @@ function renderStruggles() {
 function renderPromotions() {
   const rows = [...state.promotions].sort((a, b) => b.actualSales - a.actualSales).slice(0, 12);
   el.promotionRows.innerHTML = rows
-    .map((row) => {
-      const source = row.source
-        ? `<a href="${escapeHtml(row.source)}" target="_blank" rel="noreferrer">Rules</a>`
-        : "--";
-      return `
+    .map(
+      (row) => `
         <tr>
           <td>${escapeHtml(row.name)}</td>
           <td>${row.maxPoint ? `${row.maxPoint.toFixed(0)}x` : "--"}</td>
@@ -573,10 +570,9 @@ function renderPromotions() {
           <td>${fmtCurrency.format(row.actualSales)}</td>
           <td>${fmtPct.format(row.salesWape)}</td>
           <td>${fmtPct.format(row.quantityWape)}</td>
-          <td>${source}</td>
         </tr>
-      `;
-    })
+      `,
+    )
     .join("");
 }
 
