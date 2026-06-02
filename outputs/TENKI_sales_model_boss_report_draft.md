@@ -88,10 +88,10 @@ Main limitations:
 
 ## Next Steps Plan
 
-1. Add the item-name / FTP-title file and update the item dropdown.
-2. Add price, discount, coupon, and point-back features.
-3. Add stockout or inventory availability data if available.
-4. Build a future promotion calendar input.
-5. Create client/store-specific model views once seller identifiers are available.
-6. Calibrate confidence ranges using true forecast error, not only display caps.
-7. Convert this report into a short boss-facing PDF or slide deck after item names are added.
+1. Build the next version of the model to predict future client sales, not only backtest past sales.
+2. Add client-specific inputs such as store, product, category, historical sales, quantity sold, and promotion participation.
+3. Add future-known business drivers, especially Rakuten promotion calendar dates, point multipliers, coupons, discounts, and holiday timing.
+4. Add product and pricing details so the model can forecast at a more useful item or client level.
+5. Validate the future forecast by training on earlier periods and testing on later unseen periods before using it for client planning.
+6. Turn the output into a client-ready planning view that shows predicted sales, units to prepare, confidence range, and categories/items that need caution.
+7. Use this current dashboard as the backtesting and explanation layer for why the future forecasting model can be trusted.
