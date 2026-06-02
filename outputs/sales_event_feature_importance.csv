@@ -1,297 +1,162 @@
 feature,display_name,importance_mean,importance_std
-sales_roll_mean_7d,Average sales over previous 7 days,0.5727613043512283,0.0054098301297291
-sales_lag_1d,Sales from 1 day earlier,0.3169068060267374,0.0075519405756454
-active_items,Active items that day,0.1395684492657499,0.0063957660094205
-event_max_point_multiplier,Largest active event point multiplier,0.1054638389899094,0.0033141434327863
-sales_roll_mean_28d,Average sales over previous 28 days,0.0880045518670341,0.000754758153525
-items_roll_mean_7d,Average quantity over previous 7 days,0.0687938229945255,0.0041991362200209
-items_roll_mean_28d,Average quantity over previous 28 days,0.0570313482447321,0.0031641655304625
-event_zero-five,5 and 0 day active today,0.022186944436065,0.0012246321822196
-items_lag_1d,Quantity from 1 day earlier,0.0119837290603311,0.0006972275564759
-ranking_group,Ranking group,0.0094131931701514,0.0003054291059835
-event_strength_score_in_1d,Active event strength score in 1 day,0.0087005553516173,0.0005237312429017
-sales_lag_14d,Sales from 14 days earlier,0.0084456768905106,0.0010555061652446
-event_count_prev_7d,Count_Prev_7D active today,0.0069965434800939,0.0011826521119085
-sales_promo_lift_today,Expected sales lift from today's promotion,0.0068502845841336,0.0011725783328492
-day_of_week,Day of week,0.0062493637777423,0.0007500800490654
-items_promo_lift_today,Expected quantity lift from today's promotion,0.0050387141232759,0.0013588517399594
-event_count_after_1d,Count 1 day ago,0.0045983062618121,0.0002502983375415
-genre_id,Genre,0.0042689718980634,0.0006861279392994
-sales_lag_28d,Sales from 28 days earlier,0.0042191438175066,0.0011640548757086
-ranked_shops,Ranked shops that day,0.0033889971072291,0.0005509907474075
-items_lag_14d,Quantity from 14 days earlier,0.0030635116263527,0.0001992562326554
-sales_lag_7d,Sales from 7 days earlier,0.0028521436853044,0.001063563333238
-max_price,Highest ranked item price,0.0025752824778275,0.0003001147268605
-days_to_promo_or_holiday,Days until next promotion or holiday,0.0025617212328202,0.0003174784163531
-active_shops,Active shops that day,0.0024518332777731,0.0004007367149297
-event_count,Number of active Rakuten events,0.0020704814809499,0.0005131297566157
-items_promo_lift_next_3d,Expected quantity lift from promotions in next 3 days,0.0019772076570415,0.0004387613126372
-min_price,Lowest ranked item price,0.0019280541416219,0.0005918342665042
-items_lag_7d,Quantity from 7 days earlier,0.0018601260188575,0.0005361408095226
-event_count_prev_3d,Count_Prev_3D active today,0.0015082943491827,0.0001870671382126
-day_of_month,Day of month,0.0010932017789835,0.0001944091514803
-event_strength_score_in_2d,Active event strength score in 2 days,0.0010907098819746,0.0001047653057729
-sales_promo_lift_next_3d,Expected sales lift from promotions in next 3 days,0.00098447006838,0.0001882842707256
-event_strength_score_next_3d,Active event strength score over next 3 days,0.000915727255869,0.0001506082270612
-is_holiday,Japan holiday that day,0.0008088547402756,0.0001830003634351
-items_promo_lift_next_7d,Expected quantity lift from promotions in next 7 days,0.0007783824410069,0.0002284212580121
-event_count_in_1d,Count in 1 day,0.0007594953215717,0.0001305620141546
-sales_promo_lift_next_7d,Expected sales lift from promotions in next 7 days,0.0006338829047414,0.0004095443640299
-event_marathon_in_1d,Shopping Marathon in 1 day,0.000621428239551,0.0001797533309615
-event_ichiba-day,18th Ichiba Day active today,0.0006179601806634,7.354570039529474e-05
-event_marathon_in_7d,Shopping Marathon in 7 days,0.0005672810853496,0.000197324680693
-event_ichiba-day_in_7d,18th Ichiba Day in 7 days,0.0005129347698629,6.800431889875644e-05
-holiday_in_1d,Japan holiday in 1 day,0.0004526352437543,0.0003137519955504
-event_supersale_after_7d,Rakuten Super Sale 7 days ago,0.0004275613998953,0.0002175990781575
-event_strength_score_next_7d,Active event strength score over next 7 days,0.0004202375376838,0.0002485322062532
-event_count_in_7d,Count in 7 days,0.0004054232731651,7.177912507764878e-05
-median_price,Median ranked item price,0.0003630394193851,0.0004973212453847
-event_supersale_after_2d,Rakuten Super Sale 2 days ago,0.0003560868929213,0.0001773525193479
-ranked_items,Ranked items that day,0.00035112585728,0.000228075622361
-event_bonus_point_multiplier_next_7d,Active event bonus point multiplier over next 7 days,0.0003278411235789,7.513397872830489e-05
-cos_dow,Weekly seasonality pattern,0.0003084343001435,0.000241534413496
-days_to_event,Days until next Rakuten event,0.0002460311735901,0.0001403620753201
-event_zero-five_in_2d,5 and 0 day in 2 days,0.0002445422910112,0.0001970463265605
-event_wonderful-day,Wonderful Day active today,0.0002423729298654,5.345624119294709e-05
-event_wonderful-day_after_3d,Wonderful Day 3 days ago,0.0002289115938212,5.001955355890907e-05
-event_fashionthesale_after_2d,Fashionthesale 2 days ago,0.000215826733068,4.4716396205594005e-05
-days_since_holiday,Days since previous Japan holiday,0.0002080005841779,0.0002982247084433
-event_marathon_in_3d,Shopping Marathon in 3 days,0.0002007312977668,0.0001254612926259
-event_point_cap_next_3d,Active event point cap over next 3 days,0.0001990180504083,4.6912264521593934e-05
-promo_or_holiday_count_next_14d,Promotions or holidays in next 14 days,0.0001937212529183,0.0001081601559186
-event_count_next_3d,Count_Next_3D active today,0.0001880948760312,7.045332350157759e-05
-event_zero-five_after_1d,5 and 0 day 1 day ago,0.0001679033227766,0.0003425322802168
-days_to_holiday,Days until next Japan holiday,0.0001650045961944,0.0003613123560517
-promo_or_holiday_count_next_3d,Promotions or holidays in next 3 days,0.0001515180372374,5.032966146856868e-05
-event_fashionthesale,Fashionthesale active today,0.000147659400256,1.8898934900024405e-05
-is_month_start,Start of month,0.0001370937555151,8.362713077628304e-05
-items_lag_28d,Quantity from 28 days earlier,0.0001239634307857,0.0002036804425945
-event_marathon_in_2d,Shopping Marathon in 2 days,0.0001202297108235,7.848640084930678e-05
-event_marathon_after_2d,Shopping Marathon 2 days ago,0.000117063938313,0.0001713338339627
-event_count_after_2d,Count 2 days ago,0.0001034684617019,7.794604363143259e-05
-event_wonderful-day_in_7d,Wonderful Day in 7 days,0.0001023581577403,9.035964471517294e-05
-event_supersale_after_3d,Rakuten Super Sale 3 days ago,0.0001022902049258,5.6683044340358167e-05
-holiday_after_2d,Japan holiday 2 days ago,0.0001014990859827,1.4024364289287792e-05
-event_shoparound_strength_next_3d,Active shop-around promotion strength over next 3 days,9.268077256265884e-05,4.243649378336895e-05
-event_ichiba-day_in_3d,18th Ichiba Day in 3 days,8.317789197751502e-05,8.192864261277998e-05
-event_wonderful-day_in_3d,Wonderful Day in 3 days,8.307355162027186e-05,8.785457666037637e-06
-event_supersale_after_1d,Rakuten Super Sale 1 day ago,8.247243594927678e-05,7.1516422106699724e-06
-event_thank-you_in_1d,Thanksgiving Festival in 1 day,7.313589172215362e-05,5.266742914966594e-05
-event_count_prev_14d,Count_Prev_14D active today,7.123139414941804e-05,0.000407373034182
-week_of_year,Week of year,6.848453980390357e-05,0.0004416736921922
-holiday_count_next_7d,Number of Japan holidays in next 7 days,6.844184325411895e-05,4.330559320165233e-05
-event_ichiba-day_after_3d,18th Ichiba Day 3 days ago,6.444038176440791e-05,1.3727606784374344e-05
-holiday_count_prev_14d,Number of Japan holidays in previous 14 days,6.298888181950346e-05,8.810545697364866e-05
-event_ichiba-day_after_1d,18th Ichiba Day 1 day ago,6.054730422115906e-05,7.616577941246481e-05
-event_fashionthesale_in_1d,Fashionthesale in 1 day,5.7451227693783305e-05,1.669267178626943e-05
-sin_month,Yearly seasonality pattern,5.23438652867636e-05,7.918222796790157e-05
-event_zero-five_in_1d,5 and 0 day in 1 day,5.041258015818784e-05,2.8034657112473663e-05
-holiday_count_prev_3d,Number of Japan holidays in previous 3 days,4.769709717216131e-05,7.835494593322762e-05
-event_ichiba-day_after_2d,18th Ichiba Day 2 days ago,4.528301674018298e-05,1.889836656167253e-05
-event_supersale_in_3d,Rakuten Super Sale in 3 days,4.44390383929294e-05,5.02348712682198e-05
-event_thank-you_after_1d,Thanksgiving Festival 1 day ago,4.4336664770594505e-05,2.1562292860864186e-05
-event_supersale_in_2d,Rakuten Super Sale in 2 days,3.1483046209790365e-05,8.662441030662985e-06
-holiday_in_3d,Japan holiday in 3 days,3.0578759551480594e-05,3.883633812162839e-05
-event_fashionthesale_after_7d,Fashionthesale 7 days ago,2.9549986190025023e-05,7.502295905801429e-06
-event_marathon_after_7d,Shopping Marathon 7 days ago,2.5601634976490927e-05,6.23436675421369e-05
-event_supersale_in_7d,Rakuten Super Sale in 7 days,2.357154733596545e-05,2.017886909799966e-05
-event_wonderful-day_after_1d,Wonderful Day 1 day ago,2.1788601925387675e-05,6.460674522837072e-06
-event_zero-five_in_7d,5 and 0 day in 7 days,1.768976008964529e-05,7.189032413939361e-05
-event_thank-you,Thanksgiving Festival active today,1.518862286773448e-05,1.3477939937495489e-05
-event_count_in_2d,Count in 2 days,1.360858143786281e-05,2.23441987695717e-05
-holiday_after_14d,Japan holiday 14 days ago,1.3417374233459789e-05,1.7783527859541185e-05
-holiday_count_next_3d,Number of Japan holidays in next 3 days,1.23052153134795e-05,5.57945556728626e-05
-event_count_in_3d,Count in 3 days,1.062254306107846e-05,1.218007934019389e-05
-event_wonderful-day_after_7d,Wonderful Day 7 days ago,9.78404767368879e-06,6.926878488514657e-06
-event_marathon_after_3d,Shopping Marathon 3 days ago,9.010199188441705e-06,6.922769274689107e-05
-event_fashionthesale_in_7d,Fashionthesale in 7 days,8.873212100124483e-06,5.9457762958764944e-06
-event_wonderful-day_after_2d,Wonderful Day 2 days ago,8.483957390281738e-06,1.3721587312630949e-05
-sin_dow,Weekly seasonality pattern,8.06559411339336e-06,0.0001380056415567
-holiday_in_14d,Japan holiday in 14 days,6.6309600953440295e-06,1.6365517164389804e-05
-holiday_after_1d,Japan holiday 1 day ago,3.1924298230734395e-06,2.837805405624894e-05
-event_ichiba-day_in_1d,18th Ichiba Day in 1 day,1.4842983897533912e-06,2.3998915173889836e-05
-event_ichiba-day_in_2d,18th Ichiba Day in 2 days,1.4450865469806118e-06,3.112279708458889e-06
-event_39shop_in_3d,39 Shop campaign in 3 days,0.0,0.0
-event_fathers-day_in_3d,Fathers Day in 3 days,0.0,0.0
-event_fathers-day_after_3d,Fathers Day 3 days ago,0.0,0.0
-quarter,Quarter,0.0,0.0
-year,Year,0.0,0.0
-is_weekend,Weekend,0.0,0.0
-event_39shop_in_1d,39 Shop campaign in 1 day,0.0,0.0
-event_39shop_after_1d,39 Shop campaign 1 day ago,0.0,0.0
-event_fathers-day_after_2d,Fathers Day 2 days ago,0.0,0.0
-best_rank,Best ranking position,0.0,0.0
-event_39shop_after_3d,39 Shop campaign 3 days ago,0.0,0.0
-event_fathers-day_in_2d,Fathers Day in 2 days,0.0,0.0
-event_39shop_in_2d,39 Shop campaign in 2 days,0.0,0.0
-event_fathers-day_after_7d,Fathers Day 7 days ago,0.0,0.0
-event_39shop_after_2d,39 Shop campaign 2 days ago,0.0,0.0
-event_fathers-day_after_1d,Fathers Day 1 day ago,0.0,0.0
-event_fathers-day_in_1d,Fathers Day in 1 day,0.0,0.0
-event_39shop_after_7d,39 Shop campaign 7 days ago,0.0,0.0
-event_39shop_in_7d,39 Shop campaign in 7 days,0.0,0.0
-event_fathers-day_in_7d,Fathers Day in 7 days,0.0,0.0
-event_mothers-day_after_2d,Mothers Day 2 days ago,0.0,0.0
-event_mothers-day_in_1d,Mothers Day in 1 day,0.0,0.0
-event_mothers-day_after_1d,Mothers Day 1 day ago,0.0,0.0
-any_promo_or_holiday_next_14d,Any promotion or holiday in next 14 days,0.0,0.0
-event_user-ranking,User Ranking active today,0.0,0.0
-event_bonus_point_multiplier_in_1d,Active event bonus point multiplier in 1 day,0.0,0.0
-event_bonus_point_multiplier_in_2d,Active event bonus point multiplier in 2 days,0.0,0.0
-event_bonus_point_multiplier_in_3d,Active event bonus point multiplier in 3 days,0.0,0.0
-event_bonus_point_multiplier_in_7d,Active event bonus point multiplier in 7 days,0.0,0.0
-event_requires_entry_count,Active events requiring entry,0.0,0.0
-event_shoparound_strength,Active shop-around promotion strength,0.0,0.0
-event_strength_score,Active event strength score,0.0,0.0
-event_point_cap,Active event point cap,0.0,0.0
-event_bonus_point_multiplier,Active event bonus point multiplier,0.0,0.0
-event_point-up,Point-up campaign active today,0.0,0.0
-event_shoparound_strength_in_1d,Active shop-around promotion strength in 1 day,0.0,0.0
-event_shoparound_strength_in_2d,Active shop-around promotion strength in 2 days,0.0,0.0
-event_shoparound_strength_in_3d,Active shop-around promotion strength in 3 days,0.0,0.0
-event_shoparound_strength_in_7d,Active shop-around promotion strength in 7 days,0.0,0.0
-event_eagles,Sports win campaign active today,0.0,0.0
-event_point_cap_in_1d,Active event point cap in 1 day,0.0,0.0
-event_point_cap_in_2d,Active event point cap in 2 days,0.0,0.0
+sales_roll_mean_7d,Average sales over previous 7 days,0.5770832655835603,0.0050113768432161
+sales_lag_1d,Sales from 1 day earlier,0.3204022486722581,0.0077212335543425
+active_items,Active items that day,0.1137811643106196,0.0061363799326116
+event_max_point_multiplier,Largest active event point multiplier,0.105742613597223,0.0030487432083288
+sales_roll_mean_28d,Average sales over previous 28 days,0.0936393321007608,0.0020203272337037
+items_roll_mean_28d,Average quantity over previous 28 days,0.0822782078007517,0.0043045193723421
+items_roll_mean_7d,Average quantity over previous 7 days,0.0677712201879562,0.0039964909326578
+event_zero-five,5 and 0 day active today,0.0204905109357587,0.0010703699450263
+sales_lag_14d,Sales from 14 days earlier,0.0120607942417202,0.0011837782654711
+event_strength_score_in_1d,Active event strength score in 1 day,0.0092689415146279,0.0007493174891675
+items_lag_1d,Quantity from 1 day earlier,0.0076568528230441,0.0011424642506656
+event_count_prev_7d,Number of Rakuten events in previous 7 days,0.0072184209943362,0.0010526171766187
+sales_promo_lift_today,Expected sales lift from today's promotion,0.0063121125025011,0.0013728028985123
+items_promo_lift_today,Expected quantity lift from today's promotion,0.0056741674884583,0.000942363258393
+days_to_promo_or_holiday,Days until next promotion or holiday,0.0053748853653313,0.0005945196726823
+day_of_week,Day of week,0.0052719061312875,0.0004707587268501
+event_count_after_1d,Number of Rakuten events in previous 1 day,0.004074932094704,0.0002200688437299
+genre_id,Genre,0.0032453113635123,0.0003161553381163
+ranking_group,Ranking group,0.002945851980252,0.0006048153613391
+event_count,Number of active Rakuten events,0.0026876047052863,0.0006670937881993
+min_price,Lowest ranked item price,0.0025891494769487,0.0003064879908109
+event_count_prev_3d,Number of Rakuten events in previous 3 days,0.002457190693896,0.0003714089879388
+items_promo_lift_next_3d,Expected quantity lift from promotions in next 3 days,0.0023983041831207,0.000352892488516
+ranked_shops,Ranked shops that day,0.0022345561250201,0.0002573428178353
+sales_lag_28d,Sales from 28 days earlier,0.0021160613441045,0.0006847493365453
+items_lag_14d,Quantity from 14 days earlier,0.0020007701243706,0.0003334424081947
+active_shops,Active shops that day,0.0017795379039797,0.0005493097956234
+day_of_month,Day of month,0.0016621675436849,0.0005205327230616
+cos_dow,Weekly seasonality pattern,0.00156088874677,0.0004236674293612
+mean_rank,Average ranking position,0.0013979772976089,0.0001975539895324
+max_price,Highest ranked item price,0.0012504909540635,0.0004717674580125
+items_lag_7d,Quantity from 7 days earlier,0.0011258980913521,0.0004212166611915
+event_strength_score_in_2d,Active event strength score in 2 days,0.0009894437571572,0.0001193256958238
+sales_promo_lift_next_3d,Expected sales lift from promotions in next 3 days,0.0009339435768607,0.0002862232966843
+event_strength_score_next_3d,Active event strength score over next 3 days,0.0009308977908283,0.0002060048198843
+event_count_in_1d,Count in 1 day,0.0008980605998832,0.0001123215330603
+is_holiday,Japan holiday that day,0.0007157601303261,0.0001838452725845
+median_price,Median ranked item price,0.0005866104369857,0.0001916303417662
+event_marathon_in_7d,Shopping Marathon in 7 days,0.00056933361242,0.0001991240845468
+days_since_event,Days since previous Rakuten event,0.0005161722785333,0.0001451180832554
+is_month_start,Start of month,0.0004260778251731,5.2487168946637415e-05
+holiday_in_1d,Japan holiday in 1 day,0.0004183076272176,8.721164608497011e-05
+event_supersale,Rakuten Super Sale active today,0.0004140513701391,0.0001973489907607
+sales_lag_7d,Sales from 7 days earlier,0.0004079473983775,0.0003661134108435
+event_strength_score_next_7d,Active event strength score over next 7 days,0.000402026155833,6.486046556262926e-05
+event_supersale_after_3d,Rakuten Super Sale 3 days ago,0.0003829451724891,0.0001475907417076
+event_zero-five_after_1d,5 and 0 day 1 day ago,0.0003655928171034,0.0002931875321747
+event_marathon_in_1d,Shopping Marathon in 1 day,0.0003546786887157,6.372255186929071e-05
+event_count_next_3d,Number of Rakuten events in next 3 days,0.0003518500797226,5.8601679252626154e-05
+items_lag_28d,Quantity from 28 days earlier,0.0003364444772867,0.0001799487463303
+holiday_count_next_3d,Number of Japan holidays in next 3 days,0.0002909825434383,8.510293361161753e-05
+event_zero-five_after_2d,5 and 0 day 2 days ago,0.0002833625800991,0.0001268183991207
+event_bonus_point_multiplier_next_7d,Active event bonus point multiplier over next 7 days,0.0002671334627263,0.0002406294913588
+sales_promo_lift_next_7d,Expected sales lift from promotions in next 7 days,0.0002478180997634,0.0003766222245333
+cos_month,Yearly seasonality pattern,0.0002453742402559,5.6638270356501355e-05
+items_promo_lift_next_7d,Expected quantity lift from promotions in next 7 days,0.0002257201105519,0.0001281311502682
+event_count_after_2d,Number of Rakuten events in previous 2 days,0.000220690170002,7.187999207378343e-05
+promo_or_holiday_count_next_7d,Promotions or holidays in next 7 days,0.0002006405740726,6.676070263835206e-05
+event_count_in_7d,Count in 7 days,0.0001975623825116,6.811487258846954e-05
+holiday_count_prev_14d,Number of Japan holidays in previous 14 days,0.0001943799856679,0.0001265005788395
+promo_or_holiday_count_next_14d,Promotions or holidays in next 14 days,0.0001848893584104,0.0001373295652415
+promo_or_holiday_count_next_3d,Promotions or holidays in next 3 days,0.0001679452840928,6.421146584816015e-05
+days_since_holiday,Days since previous Japan holiday,0.0001660336223151,0.0002274321103172
+event_zero-five_in_2d,5 and 0 day in 2 days,0.0001512803194768,0.000234214209429
+event_zero-five_in_1d,5 and 0 day in 1 day,0.0001304612206648,4.1482890027132784e-05
+event_point_cap_next_7d,Active event point cap over next 7 days,0.000130292962688,0.0001323021680291
+event_marathon_in_2d,Shopping Marathon in 2 days,0.00012336298433,8.003064515474746e-05
+holiday_count_next_14d,Number of Japan holidays in next 14 days,0.0001212416806824,7.078325136354947e-05
+event_count_after_7d,Number of Rakuten events in previous 7 days,0.0001204822969266,4.639343221008481e-05
+event_thank-you,Thanksgiving Festival active today,0.0001180274474751,1.8050025120414312e-05
+ranked_items,Ranked items that day,0.0001140326918522,0.0001540048662505
+event_supersale_in_3d,Rakuten Super Sale in 3 days,0.0001128591936894,3.676122934474632e-05
+days_to_holiday,Days until next Japan holiday,0.0001073255092796,0.00016693425096
+event_marathon_after_7d,Shopping Marathon 7 days ago,9.479346199170458e-05,0.000150655924243
+event_count_next_7d,Number of Rakuten events in next 7 days,8.747098198267356e-05,6.540724494116413e-05
+holiday_after_2d,Japan holiday 2 days ago,8.076185600487395e-05,1.6647622918393982e-05
+event_supersale_after_7d,Rakuten Super Sale 7 days ago,7.965179989739557e-05,9.562317024140928e-05
+days_to_event,Days until next Rakuten event,7.692937788044141e-05,1.594123521105971e-05
+event_count_in_2d,Count in 2 days,7.64485277092941e-05,3.037290072878728e-05
+event_thank-you_in_1d,Thanksgiving Festival in 1 day,7.080559243271001e-05,1.5560888042763264e-05
+sin_dow,Weekly seasonality pattern,6.910271565616633e-05,6.569700421076626e-05
+event_marathon_after_3d,Shopping Marathon 3 days ago,6.267104896557907e-05,4.195755946042322e-05
+event_supersale_after_1d,Rakuten Super Sale 1 day ago,6.0056429481902816e-05,1.7327059600675878e-05
+event_supersale_after_2d,Rakuten Super Sale 2 days ago,5.594849743832953e-05,6.772684175283746e-05
+event_marathon_in_3d,Shopping Marathon in 3 days,4.958089008488819e-05,2.5085341114201363e-05
+event_supersale_in_1d,Rakuten Super Sale in 1 day,4.292842410165143e-05,3.686206655363618e-05
+event_zero-five_in_7d,5 and 0 day in 7 days,4.171979032159267e-05,4.0742863423892e-05
+event_zero-five_after_3d,5 and 0 day 3 days ago,3.872774421731506e-05,1.4519650555567967e-05
+event_count_next_14d,Number of Rakuten events in next 14 days,3.865436202241667e-05,0.0001741689629493
+event_bonus_point_multiplier_next_3d,Active event bonus point multiplier over next 3 days,3.3774151732379745e-05,3.577298360280962e-05
+holiday_count_prev_3d,Number of Japan holidays in previous 3 days,3.134758120706405e-05,1.6168067297649436e-05
+event_point_cap_next_3d,Active event point cap over next 3 days,2.636491880363412e-05,4.563854250154981e-05
+event_thank-you_after_1d,Thanksgiving Festival 1 day ago,2.3890883603550073e-05,1.3511079246355778e-05
+holiday_after_14d,Japan holiday 14 days ago,9.334492670065586e-06,9.638924404211748e-06
+event_marathon_after_2d,Shopping Marathon 2 days ago,8.410305308381716e-06,2.4158564724487582e-05
+sin_month,Yearly seasonality pattern,7.69324280376349e-06,1.4216213707147176e-05
+event_thank-you_after_3d,Thanksgiving Festival 3 days ago,5.409790795685154e-06,6.961126720686102e-06
+event_supersale_in_2d,Rakuten Super Sale in 2 days,5.2957458674729455e-06,2.364228843891093e-06
+event_zero-five_after_7d,5 and 0 day 7 days ago,4.8887565615052255e-06,1.842061501921646e-05
+holiday_in_14d,Japan holiday in 14 days,4.629905458286565e-06,4.672879532232077e-06
+holiday_in_7d,Japan holiday in 7 days,4.264751790428179e-06,7.419611643558583e-06
+holiday_in_3d,Japan holiday in 3 days,2.6428616455520527e-06,4.629565518932097e-06
+event_black-friday_after_7d,Black Friday 7 days ago,8.963781771065271e-07,3.9408968374250675e-06
 event_point_cap_in_3d,Active event point cap in 3 days,0.0,0.0
 event_point_cap_in_7d,Active event point cap in 7 days,0.0,0.0
-event_singles-day,Singles Day active today,0.0,0.0
-event_barcelona,Barcelona active today,0.0,0.0
-event_mothers-day_after_7d,Mothers Day 7 days ago,0.0,0.0
-event_mothers-day_in_7d,Mothers Day in 7 days,0.0,0.0
-event_mothers-day_after_3d,Mothers Day 3 days ago,0.0,0.0
-event_mothers-day_in_3d,Mothers Day in 3 days,0.0,0.0
-any_promo_or_holiday_next_7d,Any promotion or holiday in next 7 days,0.0,0.0
-event_mothers-day_in_2d,Mothers Day in 2 days,0.0,0.0
-any_promo_or_holiday_next_3d,Any promotion or holiday in next 3 days,0.0,0.0
-event_black-friday,Black Friday active today,0.0,0.0
-event_singles-day_in_7d,Singles Day in 7 days,0.0,0.0
-event_point-up_in_2d,Point-up campaign in 2 days,0.0,0.0
-event_point-up_in_3d,Point-up campaign in 3 days,0.0,0.0
-event_point-up_after_3d,Point-up campaign 3 days ago,0.0,0.0
-event_point-up_in_7d,Point-up campaign in 7 days,0.0,0.0
-event_point-up_after_7d,Point-up campaign 7 days ago,0.0,0.0
-event_eagles_in_1d,Sports win campaign in 1 day,0.0,0.0
-event_eagles_after_1d,Sports win campaign 1 day ago,0.0,0.0
-event_eagles_in_2d,Sports win campaign in 2 days,0.0,0.0
-event_eagles_after_2d,Sports win campaign 2 days ago,0.0,0.0
-event_eagles_in_3d,Sports win campaign in 3 days,0.0,0.0
-event_eagles_after_3d,Sports win campaign 3 days ago,0.0,0.0
-event_eagles_in_7d,Sports win campaign in 7 days,0.0,0.0
-event_eagles_after_7d,Sports win campaign 7 days ago,0.0,0.0
-event_singles-day_in_1d,Singles Day in 1 day,0.0,0.0
-event_singles-day_after_1d,Singles Day 1 day ago,0.0,0.0
-event_singles-day_in_2d,Singles Day in 2 days,0.0,0.0
-event_singles-day_after_2d,Singles Day 2 days ago,0.0,0.0
-event_singles-day_in_3d,Singles Day in 3 days,0.0,0.0
-event_singles-day_after_3d,Singles Day 3 days ago,0.0,0.0
-event_singles-day_after_7d,Singles Day 7 days ago,0.0,0.0
-event_black-friday_in_1d,Black Friday in 1 day,0.0,0.0
-event_black-friday_after_1d,Black Friday 1 day ago,0.0,0.0
+event_strength_score,Active event strength score,0.0,0.0
+year,Year,0.0,0.0
+event_point_cap,Active event point cap,0.0,0.0
+event_bonus_point_multiplier,Active event bonus point multiplier,0.0,0.0
 event_black-friday_in_2d,Black Friday in 2 days,0.0,0.0
 event_black-friday_after_2d,Black Friday 2 days ago,0.0,0.0
-event_point-up_after_2d,Point-up campaign 2 days ago,0.0,0.0
-event_point-up_after_1d,Point-up campaign 1 day ago,0.0,0.0
-event_black-friday_after_3d,Black Friday 3 days ago,0.0,0.0
-event_point-up_in_1d,Point-up campaign in 1 day,0.0,0.0
-event_thanks-giving,Thanks Giving active today,0.0,0.0
-event_newyear-sale,Newyear Sale active today,0.0,0.0
-event_event,Event active today,0.0,0.0
-event_39shop,39 Shop campaign active today,0.0,0.0
-event_fathers-day,Fathers Day active today,0.0,0.0
-event_mothers-day,Mothers Day active today,0.0,0.0
+quarter,Quarter,0.0,0.0
+event_shoparound_strength,Active shop-around promotion strength,0.0,0.0
+is_weekend,Weekend,0.0,0.0
 any_event,Any Rakuten event active,0.0,0.0
-event_barcelona_in_1d,Barcelona in 1 day,0.0,0.0
-event_barcelona_after_1d,Barcelona 1 day ago,0.0,0.0
-event_barcelona_in_2d,Barcelona in 2 days,0.0,0.0
-event_barcelona_after_2d,Barcelona 2 days ago,0.0,0.0
-event_barcelona_in_3d,Barcelona in 3 days,0.0,0.0
-event_barcelona_after_3d,Barcelona 3 days ago,0.0,0.0
-event_barcelona_in_7d,Barcelona in 7 days,0.0,0.0
-event_barcelona_after_7d,Barcelona 7 days ago,0.0,0.0
-event_user-ranking_in_1d,User Ranking in 1 day,0.0,0.0
-event_user-ranking_after_1d,User Ranking 1 day ago,0.0,0.0
-event_user-ranking_in_2d,User Ranking in 2 days,0.0,0.0
-event_user-ranking_after_2d,User Ranking 2 days ago,0.0,0.0
-event_user-ranking_in_3d,User Ranking in 3 days,0.0,0.0
-event_user-ranking_after_3d,User Ranking 3 days ago,0.0,0.0
-event_user-ranking_in_7d,User Ranking in 7 days,0.0,0.0
-event_user-ranking_after_7d,User Ranking 7 days ago,0.0,0.0
 event_black-friday_in_3d,Black Friday in 3 days,0.0,0.0
-event_event_after_3d,Event 3 days ago,0.0,0.0
-event_thanks-giving_after_3d,Thanks Giving 3 days ago,0.0,0.0
-event_thanks-giving_in_3d,Thanks Giving in 3 days,0.0,0.0
+event_point_cap_in_1d,Active event point cap in 1 day,0.0,0.0
+event_black-friday_after_3d,Black Friday 3 days ago,0.0,0.0
 event_thank-you_in_3d,Thanksgiving Festival in 3 days,0.0,0.0
-event_newyear-sale_after_7d,Newyear Sale 7 days ago,0.0,0.0
-event_event_in_2d,Event in 2 days,0.0,0.0
-event_event_after_1d,Event 1 day ago,0.0,0.0
-event_thanks-giving_in_1d,Thanks Giving in 1 day,0.0,0.0
-event_thanks-giving_after_1d,Thanks Giving 1 day ago,0.0,0.0
-event_thanks-giving_in_2d,Thanks Giving in 2 days,0.0,0.0
-event_thanks-giving_after_2d,Thanks Giving 2 days ago,0.0,0.0
-event_event_in_1d,Event in 1 day,0.0,0.0
-event_event_in_3d,Event in 3 days,0.0,0.0
-event_thanks-giving_in_7d,Thanks Giving in 7 days,0.0,0.0
-event_thanks-giving_after_7d,Thanks Giving 7 days ago,0.0,0.0
-event_newyear-sale_in_1d,Newyear Sale in 1 day,0.0,0.0
-event_newyear-sale_after_1d,Newyear Sale 1 day ago,0.0,0.0
-event_newyear-sale_in_2d,Newyear Sale in 2 days,0.0,0.0
-event_newyear-sale_after_2d,Newyear Sale 2 days ago,0.0,0.0
-event_newyear-sale_in_3d,Newyear Sale in 3 days,0.0,0.0
-event_newyear-sale_after_3d,Newyear Sale 3 days ago,0.0,0.0
-event_event_after_2d,Event 2 days ago,0.0,0.0
-event_newyear-sale_in_7d,Newyear Sale in 7 days,0.0,0.0
-event_point-back,Point-back campaign active today,0.0,0.0
-event_event_after_7d,Event 7 days ago,0.0,0.0
-event_event_in_7d,Event in 7 days,0.0,0.0
+best_rank,Best ranking position,0.0,0.0
+event_thank-you_after_2d,Thanksgiving Festival 2 days ago,0.0,0.0
 event_thank-you_in_2d,Thanksgiving Festival in 2 days,0.0,0.0
-event_fashionthesale_in_2d,Fashionthesale in 2 days,0.0,0.0
+event_point_cap_in_2d,Active event point cap in 2 days,0.0,0.0
 event_black-friday_in_7d,Black Friday in 7 days,0.0,0.0
-event_point-back_after_7d,Point-back campaign 7 days ago,0.0,0.0
-event_point-back_in_7d,Point-back campaign in 7 days,0.0,0.0
-event_point-back_in_1d,Point-back campaign in 1 day,0.0,0.0
-event_point-back_after_3d,Point-back campaign 3 days ago,0.0,0.0
-event_point-back_in_3d,Point-back campaign in 3 days,0.0,0.0
-event_point-back_after_2d,Point-back campaign 2 days ago,0.0,0.0
-event_point-back_after_1d,Point-back campaign 1 day ago,0.0,0.0
-event_point-back_in_2d,Point-back campaign in 2 days,0.0,0.0
-is_month_end,End of month,-2.401874218405098e-07,2.564499898342343e-06
-event_black-friday_after_7d,Black Friday 7 days ago,-1.2786975215561823e-06,1.0184391213947604e-05
-event_fashionthesale_in_3d,Fashionthesale in 3 days,-2.383429130348169e-06,1.081673923065406e-05
-event_zero-five_after_7d,5 and 0 day 7 days ago,-2.6044552355886097e-06,5.145712786213296e-05
-holiday_in_7d,Japan holiday in 7 days,-2.750834294795723e-06,1.59996945633001e-05
-holiday_in_2d,Japan holiday in 2 days,-2.823653971928408e-06,3.300620320367169e-06
-event_supersale_in_1d,Rakuten Super Sale in 1 day,-3.83471272447089e-06,1.0412728813809038e-05
-promo_or_holiday_count_next_7d,Promotions or holidays in next 7 days,-4.565331671746442e-06,0.0001055530033138
-event_zero-five_in_3d,5 and 0 day in 3 days,-5.327959626777456e-06,6.001413294465402e-05
-holiday_count_next_14d,Number of Japan holidays in next 14 days,-6.095732315802849e-06,5.0509135582671406e-05
-event_ichiba-day_after_7d,18th Ichiba Day 7 days ago,-7.235041751951776e-06,7.3513797303012926e-06
-event_zero-five_after_3d,5 and 0 day 3 days ago,-1.1538985365611156e-05,2.6108311731660736e-05
-event_wonderful-day_in_2d,Wonderful Day in 2 days,-1.2121982715385116e-05,9.56148589294536e-06
-event_wonderful-day_in_1d,Wonderful Day in 1 day,-1.5096610310716408e-05,2.135247660318903e-06
-event_thank-you_after_3d,Thanksgiving Festival 3 days ago,-1.557634132258734e-05,1.2193628169745892e-05
-event_fashionthesale_after_3d,Fashionthesale 3 days ago,-1.699654180646881e-05,1.868839817135419e-06
-holiday_after_7d,Japan holiday 7 days ago,-2.063111087977631e-05,5.386255380315391e-05
-event_thank-you_after_2d,Thanksgiving Festival 2 days ago,-2.2200567403629633e-05,1.0157055187415907e-05
-event_fashionthesale_after_1d,Fashionthesale 1 day ago,-2.5170868481150244e-05,1.609121729872282e-05
-event_strength_score_in_3d,Active event strength score in 3 days,-2.913447844612449e-05,5.895778920075124e-05
-event_zero-five_after_2d,5 and 0 day 2 days ago,-3.557753820337961e-05,3.1696532999957954e-05
-event_thank-you_in_7d,Thanksgiving Festival in 7 days,-4.5341287190114875e-05,3.099278610278129e-05
-event_bonus_point_multiplier_next_3d,Active event bonus point multiplier over next 3 days,-4.6996595875814506e-05,3.7735114240242493e-05
-event_point_cap_next_7d,Active event point cap over next 7 days,-5.6966657026991105e-05,2.5650763146309553e-05
-event_marathon,Shopping Marathon active today,-5.757464872897522e-05,6.972823244855508e-05
-event_supersale,Rakuten Super Sale active today,-6.233113526397105e-05,8.13389977160805e-05
-event_count_after_7d,Count 7 days ago,-7.016443473695233e-05,0.00012418962859
-holiday_count_prev_7d,Number of Japan holidays in previous 7 days,-7.394268768610158e-05,3.45196738599195e-05
-holiday_after_3d,Japan holiday 3 days ago,-9.62560426583492e-05,3.441662589327154e-05
-event_thank-you_after_7d,Thanksgiving Festival 7 days ago,-0.0001104789454418,4.458100680077994e-05
-event_marathon_after_1d,Shopping Marathon 1 day ago,-0.0001222481547999,8.144360658759728e-05
-cos_month,Yearly seasonality pattern,-0.000166289346212,6.901677510339148e-05
-event_shoparound_strength_next_7d,Active shop-around promotion strength over next 7 days,-0.0001900611850601,0.0001145333879701
-event_count_next_7d,Count_Next_7D active today,-0.0002129725756801,7.767434757850689e-05
-mean_rank,Average ranking position,-0.0002168125081166,0.0004278962360526
-event_count_next_14d,Count_Next_14D active today,-0.0002332166101102,5.772114251665568e-05
-event_strength_score_in_7d,Active event strength score in 7 days,-0.0002639758148227,0.0001931572733927
-event_count_after_3d,Count 3 days ago,-0.000269728675536,0.0001750736597205
-days_since_event,Days since previous Rakuten event,-0.0003943823471247,0.0001315632060866
-month,Month,-0.0010159939108991,0.0003887980307268
+event_bonus_point_multiplier_in_1d,Active event bonus point multiplier in 1 day,0.0,0.0
+event_bonus_point_multiplier_in_3d,Active event bonus point multiplier in 3 days,0.0,0.0
+event_shoparound_strength_in_7d,Active shop-around promotion strength in 7 days,0.0,0.0
+holiday_in_2d,Japan holiday in 2 days,0.0,0.0
+event_shoparound_strength_in_3d,Active shop-around promotion strength in 3 days,0.0,0.0
+event_shoparound_strength_in_2d,Active shop-around promotion strength in 2 days,0.0,0.0
+event_black-friday,Black Friday active today,0.0,0.0
+event_shoparound_strength_in_1d,Active shop-around promotion strength in 1 day,0.0,0.0
+any_promo_or_holiday_next_3d,Any promotion or holiday in next 3 days,0.0,0.0
+event_requires_entry_count,Active events requiring entry,0.0,0.0
+event_black-friday_after_1d,Black Friday 1 day ago,0.0,0.0
+event_bonus_point_multiplier_in_7d,Active event bonus point multiplier in 7 days,0.0,0.0
+event_black-friday_in_1d,Black Friday in 1 day,0.0,0.0
+any_promo_or_holiday_next_7d,Any promotion or holiday in next 7 days,0.0,0.0
+event_bonus_point_multiplier_in_2d,Active event bonus point multiplier in 2 days,0.0,0.0
+any_promo_or_holiday_next_14d,Any promotion or holiday in next 14 days,0.0,0.0
+event_count_in_3d,Count in 3 days,-2.756634430722827e-07,1.4481352786785856e-05
+event_shoparound_strength_next_3d,Active shop-around promotion strength over next 3 days,-4.384019712144749e-07,1.177685839756106e-05
+is_month_end,End of month,-2.1440932934435607e-06,3.10880615707954e-06
+holiday_after_7d,Japan holiday 7 days ago,-8.706662063384663e-06,2.181347250011529e-05
+holiday_after_1d,Japan holiday 1 day ago,-9.119914274124951e-06,3.9203442686315974e-05
+event_zero-five_in_3d,5 and 0 day in 3 days,-1.2390026741226912e-05,2.6665973392942255e-05
+event_strength_score_in_3d,Active event strength score in 3 days,-1.3231976127503486e-05,1.4434490294288113e-05
+holiday_after_3d,Japan holiday 3 days ago,-1.4351793606959264e-05,2.9691956699187083e-05
+holiday_count_next_7d,Number of Japan holidays in next 7 days,-1.733075443448584e-05,4.646465899515116e-05
+holiday_count_prev_7d,Number of Japan holidays in previous 7 days,-4.046125103320808e-05,3.093024282755773e-05
+event_shoparound_strength_next_7d,Active shop-around promotion strength over next 7 days,-4.315664327936286e-05,3.710131566203102e-05
+event_count_prev_14d,Number of Rakuten events in previous 14 days,-4.36625231277965e-05,0.0005960385667434
+event_supersale_in_7d,Rakuten Super Sale in 7 days,-4.915886513543466e-05,3.5605804085047646e-05
+event_marathon,Shopping Marathon active today,-6.315180399609765e-05,5.548688070054305e-05
+event_strength_score_in_7d,Active event strength score in 7 days,-7.352901263295575e-05,0.0001774943630573
+event_count_after_3d,Number of Rakuten events in previous 3 days,-7.763402768024008e-05,6.548022684987075e-05
+event_marathon_after_1d,Shopping Marathon 1 day ago,-8.66116408335671e-05,6.210769012600717e-05
+event_thank-you_after_7d,Thanksgiving Festival 7 days ago,-0.0001160598542383,2.8653161812640173e-05
+event_thank-you_in_7d,Thanksgiving Festival in 7 days,-0.0001513723937362,3.563045016551195e-05
+week_of_year,Week of year,-0.0004675249324683,0.0002989386401346
+month,Month,-0.0008238194355544,0.0001697271195684

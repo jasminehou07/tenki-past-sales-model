@@ -49,6 +49,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--promotion-effect-dir", type=Path, default=DEFAULT_PROMOTION_EFFECT_DIR)
     parser.add_argument("--event-strength-file", type=Path, default=DEFAULT_EVENT_STRENGTH_FILE)
     parser.add_argument(
+        "--promotion-correlation-threshold",
+        type=float,
+        default=0.03,
+        help="Minimum absolute train-period correlation required to keep individual promotion features.",
+    )
+    parser.add_argument(
         "--regime-cutoff",
         type=str,
         default="2024-01-01",
@@ -459,6 +465,14 @@ def readable_feature_name(name: str) -> str:
         "39shop": "39 Shop campaign",
         "point-back": "Point-back campaign",
         "point-up": "Point-up campaign",
+        "fashionthesale": "Rakuten Fashion sale",
+        "mothers-day": "Mother's Day seasonal event",
+        "fathers-day": "Father's Day seasonal event",
+        "newyear-sale": "New Year sale",
+        "singles-day": "Singles Day sale",
+        "user-ranking": "User ranking event",
+        "barcelona": "Sports event",
+        "thanks-giving": "Thanksgiving sale",
     }
     direct_names = {
         "genre_id": "Genre",
@@ -516,6 +530,13 @@ def readable_feature_name(name: str) -> str:
             return f"{metric} over next {days_text(strength_match.group(3))}"
         return f"{metric} in {days_text(strength_match.group(3))}"
 
+    count_match = re.fullmatch(r"(event|holiday)_count_(next|prev|after)_(\d+)d", name)
+    if count_match:
+        kind = "Rakuten events" if count_match.group(1) == "event" else "Japan holidays"
+        if count_match.group(2) == "next":
+            return f"Number of {kind} in next {days_text(count_match.group(3))}"
+        return f"Number of {kind} in previous {days_text(count_match.group(3))}"
+
     for prefix, label in [("sales", "sales"), ("items", "quantity")]:
         lag_match = re.fullmatch(rf"{prefix}_lag_(\d+)d", name)
         if lag_match:
@@ -533,12 +554,6 @@ def readable_feature_name(name: str) -> str:
             return f"{event_label} {days_text(event_match.group(3))} ago"
         return f"{event_label} active today"
 
-    count_match = re.fullmatch(r"(event|holiday)_count_(next|prev)_(\d+)d", name)
-    if count_match:
-        kind = "Rakuten events" if count_match.group(1) == "event" else "Japan holidays"
-        direction = "next" if count_match.group(2) == "next" else "previous"
-        return f"Number of {kind} in {direction} {days_text(count_match.group(3))}"
-
     holiday_match = re.fullmatch(r"holiday_(in|after)_(\d+)d", name)
     if holiday_match:
         if holiday_match.group(1) == "in":
@@ -553,6 +568,85 @@ def readable_feature_name(name: str) -> str:
         return f"Any promotion or holiday in next {days_text(any_match.group(1))}"
 
     return name.replace("_", " ").replace("-", " ").title()
+
+
+def event_names_from_strength_file(strength_file: Path) -> list[str]:
+    if not strength_file.exists():
+        return []
+    return pd.read_csv(strength_file)["event_name"].dropna().astype(str).tolist()
+
+
+def promotion_feature_event_name(feature: str, event_names: list[str]) -> str | None:
+    for event_name in event_names:
+        if feature == f"event_{event_name}":
+            return event_name
+        if re.fullmatch(rf"event_{re.escape(event_name)}_(?:in|after)_\d+d", feature):
+            return event_name
+    return None
+
+
+def write_promotion_regression_effects(
+    output_dir: Path,
+    train: pd.DataFrame,
+    event_strength_file: Path,
+    threshold: float,
+) -> set[str]:
+    event_names = event_names_from_strength_file(event_strength_file)
+    rows: list[dict[str, object]] = []
+    log_sales = np.log1p(train["sales"])
+    log_quantity = np.log1p(train["sales_items"])
+    for event_name in event_names:
+        col = f"event_{event_name}"
+        if col not in train.columns:
+            continue
+        x = train[col].fillna(0).astype(float)
+        active_rows = int(x.sum())
+        if active_rows == 0 or active_rows == len(train):
+            sales_corr = 0.0
+            quantity_corr = 0.0
+            sales_beta = 0.0
+            quantity_beta = 0.0
+        else:
+            sales_corr = float(np.corrcoef(x, log_sales)[0, 1])
+            quantity_corr = float(np.corrcoef(x, log_quantity)[0, 1])
+            sales_beta = float(log_sales[x.eq(1)].mean() - log_sales[x.eq(0)].mean())
+            quantity_beta = float(log_quantity[x.eq(1)].mean() - log_quantity[x.eq(0)].mean())
+        combined_corr = max(abs(sales_corr), abs(quantity_corr))
+        rows.append(
+            {
+                "event_name": event_name,
+                "display_name": readable_feature_name(col).replace(" active today", ""),
+                "active_rows": active_rows,
+                "active_days": int(train.loc[x.eq(1), "date"].nunique()),
+                "sales_correlation": sales_corr,
+                "quantity_correlation": quantity_corr,
+                "combined_abs_correlation": combined_corr,
+                "sales_log_regression_beta": sales_beta,
+                "quantity_log_regression_beta": quantity_beta,
+                "estimated_sales_lift_pct": float((np.expm1(sales_beta)) * 100),
+                "estimated_quantity_lift_pct": float((np.expm1(quantity_beta)) * 100),
+                "kept_for_model": bool(combined_corr >= threshold and active_rows >= 100),
+            }
+        )
+    effects = pd.DataFrame(rows).sort_values("combined_abs_correlation", ascending=False)
+    effects.to_csv(output_dir / "promotion_regression_effects.csv", index=False)
+    return set(effects.loc[effects["kept_for_model"], "event_name"].astype(str))
+
+
+def select_model_features(
+    feature_cols: list[str],
+    selected_events: set[str],
+    event_names: list[str],
+) -> list[str]:
+    if not selected_events:
+        return feature_cols
+    selected: list[str] = []
+    for feature in feature_cols:
+        event_name = promotion_feature_event_name(feature, event_names)
+        if event_name and event_name not in selected_events:
+            continue
+        selected.append(feature)
+    return selected
 
 
 def make_preprocessor(categorical_cols: list[str], numeric_cols: list[str]) -> ColumnTransformer:
@@ -709,7 +803,18 @@ def main() -> None:
         "reviews_posted",
         "reviews_total",
     }
-    feature_cols = [c for c in dataset.columns if c not in leakage_cols]
+    all_feature_cols = [c for c in dataset.columns if c not in leakage_cols]
+    selected_promotion_events = write_promotion_regression_effects(
+        args.output_dir,
+        late_train,
+        args.event_strength_file,
+        args.promotion_correlation_threshold,
+    )
+    feature_cols = select_model_features(
+        all_feature_cols,
+        selected_promotion_events,
+        event_names_from_strength_file(args.event_strength_file),
+    )
     categorical_cols = ["genre_id", "ranking_group"]
     numeric_cols = [c for c in feature_cols if c not in categorical_cols]
     X_test = test[feature_cols]
@@ -758,6 +863,8 @@ def main() -> None:
             "max_date": str(dataset["date"].max().date()),
             "test_start": str(test["date"].min().date()),
             "regime_cutoff": str(regime_cutoff.date()),
+            "promotion_correlation_threshold": float(args.promotion_correlation_threshold),
+            "selected_promotion_events": sorted(selected_promotion_events),
             "target": "daily genre sales yen",
             "model": "two-regime pre-2024 and 2024+ models with online Rakuten event strength, promotion-effect dashboard lift features, upcoming holiday features, and absolute-error histogram gradient boosting on log sales",
         }
@@ -782,6 +889,8 @@ def main() -> None:
             "max_date": str(dataset["date"].max().date()),
             "test_start": str(test["date"].min().date()),
             "regime_cutoff": str(regime_cutoff.date()),
+            "promotion_correlation_threshold": float(args.promotion_correlation_threshold),
+            "selected_promotion_events": sorted(selected_promotion_events),
             "target": "daily genre quantity sold",
             "model": "two-regime pre-2024 and 2024+ models with online Rakuten event strength, promotion-effect dashboard lift features, upcoming holiday features, and absolute-error histogram gradient boosting on log quantity",
         }

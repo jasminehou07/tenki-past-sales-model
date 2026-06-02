@@ -33,6 +33,7 @@ Outputs:
 - `sales_event_feature_importance.png`: top feature chart
 - `model_struggles.csv`: genre-level holdout error summary
 - `promotion_impact.csv`: promotion-level holdout error summary
+- `promotion_regression_effects.csv`: train-period promotion regression/correlation table and keep/drop decision
 - `sales_event_model.joblib`: trained model and feature column list
 
 ## Modeling Notes
@@ -40,6 +41,10 @@ Outputs:
 The default validation split uses the final 180 days as the holdout. This keeps
 the evaluation honest for forecasting-style use: the model trains on earlier
 history and predicts later history.
+
+Promotion regressions are calculated on the 2024+ training regime before the
+holdout. Individual promotion event features are kept only when their absolute
+sales/quantity correlation passes the configured threshold.
 
 For SKU/item-level prediction, keep this genre-level model as the baseline first.
 The item-level table is sparse, so an item model should usually add item

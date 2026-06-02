@@ -21,6 +21,7 @@ final 180 days.
 - `outputs/sales_event_feature_importance.png`: feature importance chart
 - `outputs/model_struggles.csv`: genre-level holdout error summary
 - `outputs/promotion_impact.csv`: holdout accuracy during Rakuten events
+- `outputs/promotion_regression_effects.csv`: train-period promotion regressions/correlations and model selection flag
 - `outputs/sales_event_model.joblib`: trained model artifact
 - `data/japan_holidays.csv`: official Japan holiday calendar used for holiday lookahead features
 - `data/promotion_effects/`: promotion lift summaries copied from the TENKI dashboard
@@ -86,12 +87,12 @@ work/.venv/bin/python outputs/sales_event_model.py
 - Test period starts: 2025-12-03
 - Data through: 2026-05-31
 - Genres: 100
-- Sales R2: 0.853
-- Sales WAPE: 27.5%
-- Sales MAE: 107,616 yen daily genre sales
-- Quantity R2: 0.863
-- Quantity WAPE: 23.4%
-- Quantity MAE: 13.2 items per daily genre row
+- Sales R2: 0.855
+- Sales WAPE: 27.7%
+- Sales MAE: 108,590 yen daily genre sales
+- Quantity R2: 0.861
+- Quantity WAPE: 23.5%
+- Quantity MAE: 13.3 items per daily genre row
 
 This pass trains two separate models split at 2024-01-01, so pre-2024 data and
 the post-COVID, higher-seller marketplace do not have to share one demand
@@ -101,4 +102,7 @@ from `events.parquet`, pre-event and post-event timing windows, official Japan
 holidays, combined promo-or-holiday lookahead features, and promotion lift
 estimates from the TENKI dashboard by ranking group. This version also adds
 online-sourced Rakuten event strength features, including point multipliers,
-bonus multipliers, point caps, and shop-around scope.
+bonus multipliers, point caps, and shop-around scope. Individual promotion
+features are filtered by train-period correlation in the 2024+ regime; the
+current threshold keeps `zero-five`, `supersale`, `marathon`, `black-friday`,
+and `thank-you`.
