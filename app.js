@@ -120,6 +120,7 @@ async function loadData() {
   }));
   state.features = parseCsv(featureText).map((row) => ({
     name: row.feature,
+    displayName: row.display_name || friendlyFeature(row.feature),
     value: Number(row.importance_mean),
   }));
   state.struggles = parseCsv(struggleText).map((row) => ({
@@ -389,7 +390,7 @@ function renderFeatureBars() {
       const width = `${Math.max(2, (item.value / max) * 100)}%`;
       return `
         <div class="feature" title="${item.name}">
-          <span class="feature-name">${friendlyFeature(item.name)}</span>
+          <span class="feature-name">${escapeHtml(item.displayName)}</span>
           <span class="track"><span class="fill" style="width:${width}"></span></span>
           <span class="feature-value">${item.value.toFixed(3)}</span>
         </div>

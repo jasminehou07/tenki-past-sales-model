@@ -17,7 +17,7 @@ final 180 days.
 - `outputs/sales_event_predictions.csv`: actual vs predicted holdout sales
 - `outputs/quantity_event_metrics.json`: latest holdout metrics for quantity sold
 - `outputs/quantity_event_predictions.csv`: actual vs predicted holdout quantity sold
-- `outputs/sales_event_feature_importance.csv`: feature importance table
+- `outputs/sales_event_feature_importance.csv`: feature importance table with readable `display_name` labels
 - `outputs/sales_event_feature_importance.png`: feature importance chart
 - `outputs/model_struggles.csv`: genre-level holdout error summary
 - `outputs/promotion_impact.csv`: holdout accuracy during Rakuten events

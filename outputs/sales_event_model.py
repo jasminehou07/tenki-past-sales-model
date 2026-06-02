@@ -11,6 +11,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 from pathlib import Path
 
 os.environ.setdefault("MPLCONFIGDIR", str(Path("work/model_cache/matplotlib").resolve()))
@@ -442,6 +443,118 @@ def metrics_frame(y_true: pd.Series, pred: np.ndarray) -> dict[str, float]:
     }
 
 
+def readable_feature_name(name: str) -> str:
+    def days_text(days: str) -> str:
+        return "1 day" if str(days) == "1" else f"{days} days"
+
+    event_names = {
+        "zero-five": "5 and 0 day",
+        "marathon": "Shopping Marathon",
+        "supersale": "Rakuten Super Sale",
+        "black-friday": "Black Friday",
+        "ichiba-day": "18th Ichiba Day",
+        "wonderful-day": "Wonderful Day",
+        "thank-you": "Thanksgiving Festival",
+        "eagles": "Sports win campaign",
+        "39shop": "39 Shop campaign",
+        "point-back": "Point-back campaign",
+        "point-up": "Point-up campaign",
+    }
+    direct_names = {
+        "genre_id": "Genre",
+        "ranking_group": "Ranking group",
+        "active_items": "Active items that day",
+        "active_shops": "Active shops that day",
+        "ranked_items": "Ranked items that day",
+        "ranked_shops": "Ranked shops that day",
+        "best_rank": "Best ranking position",
+        "mean_rank": "Average ranking position",
+        "median_price": "Median ranked item price",
+        "min_price": "Lowest ranked item price",
+        "max_price": "Highest ranked item price",
+        "event_count": "Number of active Rakuten events",
+        "any_event": "Any Rakuten event active",
+        "event_max_point_multiplier": "Largest active event point multiplier",
+        "event_bonus_point_multiplier": "Active event bonus point multiplier",
+        "event_point_cap": "Active event point cap",
+        "event_strength_score": "Active event strength score",
+        "event_shoparound_strength": "Active shop-around promotion strength",
+        "event_requires_entry_count": "Active events requiring entry",
+        "days_since_event": "Days since previous Rakuten event",
+        "days_to_event": "Days until next Rakuten event",
+        "is_holiday": "Japan holiday that day",
+        "days_since_holiday": "Days since previous Japan holiday",
+        "days_to_holiday": "Days until next Japan holiday",
+        "days_to_promo_or_holiday": "Days until next promotion or holiday",
+        "sales_promo_lift_today": "Expected sales lift from today's promotion",
+        "items_promo_lift_today": "Expected quantity lift from today's promotion",
+        "sales_promo_lift_next_3d": "Expected sales lift from promotions in next 3 days",
+        "items_promo_lift_next_3d": "Expected quantity lift from promotions in next 3 days",
+        "sales_promo_lift_next_7d": "Expected sales lift from promotions in next 7 days",
+        "items_promo_lift_next_7d": "Expected quantity lift from promotions in next 7 days",
+        "day_of_week": "Day of week",
+        "day_of_month": "Day of month",
+        "week_of_year": "Week of year",
+        "month": "Month",
+        "quarter": "Quarter",
+        "year": "Year",
+        "is_weekend": "Weekend",
+        "is_month_start": "Start of month",
+        "is_month_end": "End of month",
+        "sin_dow": "Weekly seasonality pattern",
+        "cos_dow": "Weekly seasonality pattern",
+        "sin_month": "Yearly seasonality pattern",
+        "cos_month": "Yearly seasonality pattern",
+    }
+    if name in direct_names:
+        return direct_names[name]
+
+    strength_match = re.fullmatch(r"event_(max_point_multiplier|bonus_point_multiplier|point_cap|strength_score|shoparound_strength)_(in|next)_(\d+)d", name)
+    if strength_match:
+        metric = direct_names.get(f"event_{strength_match.group(1)}", strength_match.group(1).replace("_", " "))
+        if strength_match.group(2) == "next":
+            return f"{metric} over next {days_text(strength_match.group(3))}"
+        return f"{metric} in {days_text(strength_match.group(3))}"
+
+    for prefix, label in [("sales", "sales"), ("items", "quantity")]:
+        lag_match = re.fullmatch(rf"{prefix}_lag_(\d+)d", name)
+        if lag_match:
+            return f"{label.title()} from {days_text(lag_match.group(1))} earlier"
+        roll_match = re.fullmatch(rf"{prefix}_roll_mean_(\d+)d", name)
+        if roll_match:
+            return f"Average {label} over previous {days_text(roll_match.group(1))}"
+
+    event_match = re.fullmatch(r"event_(.+?)(?:_in_(\d+)d|_after_(\d+)d)?", name)
+    if event_match:
+        event_label = event_names.get(event_match.group(1), event_match.group(1).replace("-", " ").title())
+        if event_match.group(2):
+            return f"{event_label} in {days_text(event_match.group(2))}"
+        if event_match.group(3):
+            return f"{event_label} {days_text(event_match.group(3))} ago"
+        return f"{event_label} active today"
+
+    count_match = re.fullmatch(r"(event|holiday)_count_(next|prev)_(\d+)d", name)
+    if count_match:
+        kind = "Rakuten events" if count_match.group(1) == "event" else "Japan holidays"
+        direction = "next" if count_match.group(2) == "next" else "previous"
+        return f"Number of {kind} in {direction} {days_text(count_match.group(3))}"
+
+    holiday_match = re.fullmatch(r"holiday_(in|after)_(\d+)d", name)
+    if holiday_match:
+        if holiday_match.group(1) == "in":
+            return f"Japan holiday in {days_text(holiday_match.group(2))}"
+        return f"Japan holiday {days_text(holiday_match.group(2))} ago"
+
+    promo_match = re.fullmatch(r"promo_or_holiday_count_next_(\d+)d", name)
+    if promo_match:
+        return f"Promotions or holidays in next {days_text(promo_match.group(1))}"
+    any_match = re.fullmatch(r"any_promo_or_holiday_next_(\d+)d", name)
+    if any_match:
+        return f"Any promotion or holiday in next {days_text(any_match.group(1))}"
+
+    return name.replace("_", " ").replace("-", " ").title()
+
+
 def make_preprocessor(categorical_cols: list[str], numeric_cols: list[str]) -> ColumnTransformer:
     return ColumnTransformer(
         [
@@ -703,6 +816,7 @@ def main() -> None:
     importance_df = pd.DataFrame(
         {
             "feature": feature_cols,
+            "display_name": [readable_feature_name(feature) for feature in feature_cols],
             "importance_mean": importance.importances_mean,
             "importance_std": importance.importances_std,
         }
@@ -723,7 +837,7 @@ def main() -> None:
 
     top = importance_df.head(20).sort_values("importance_mean")
     plt.figure(figsize=(9, 7))
-    plt.barh(top["feature"], top["importance_mean"])
+    plt.barh(top["display_name"], top["importance_mean"])
     plt.title("Top sales model features")
     plt.xlabel("Permutation importance")
     plt.tight_layout()

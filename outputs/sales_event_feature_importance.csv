@@ -1,297 +1,297 @@
-feature,importance_mean,importance_std
-sales_roll_mean_7d,0.5727613043512283,0.0054098301297291485
-sales_lag_1d,0.31690680602673743,0.007551940575645452
-active_items,0.1395684492657499,0.0063957660094205015
-event_max_point_multiplier,0.10546383898990949,0.0033141434327863964
-sales_roll_mean_28d,0.08800455186703418,0.0007547581535250942
-items_roll_mean_7d,0.06879382299452556,0.004199136220020953
-items_roll_mean_28d,0.05703134824473215,0.003164165530462517
-event_zero-five,0.02218694443606506,0.0012246321822196318
-items_lag_1d,0.01198372906033116,0.0006972275564759276
-ranking_group,0.009413193170151435,0.0003054291059835433
-event_strength_score_in_1d,0.008700555351617335,0.0005237312429017064
-sales_lag_14d,0.008445676890510678,0.0010555061652446642
-event_count_prev_7d,0.006996543480093975,0.0011826521119085625
-sales_promo_lift_today,0.006850284584133615,0.0011725783328492157
-day_of_week,0.006249363777742367,0.0007500800490654506
-items_promo_lift_today,0.005038714123275922,0.0013588517399594608
-event_count_after_1d,0.004598306261812101,0.00025029833754158836
-genre_id,0.0042689718980634785,0.0006861279392994805
-sales_lag_28d,0.00421914381750661,0.0011640548757086882
-ranked_shops,0.003388997107229197,0.0005509907474075281
-items_lag_14d,0.003063511626352744,0.00019925623265548614
-sales_lag_7d,0.00285214368530442,0.001063563333238039
-max_price,0.002575282477827523,0.0003001147268605521
-days_to_promo_or_holiday,0.0025617212328202577,0.000317478416353176
-active_shops,0.0024518332777731635,0.00040073671492977375
-event_count,0.002070481480949926,0.0005131297566157691
-items_promo_lift_next_3d,0.0019772076570415686,0.0004387613126372042
-min_price,0.0019280541416219154,0.0005918342665042651
-items_lag_7d,0.0018601260188575886,0.0005361408095226636
-event_count_prev_3d,0.0015082943491827815,0.00018706713821261113
-day_of_month,0.0010932017789835769,0.00019440915148036806
-event_strength_score_in_2d,0.0010907098819746609,0.00010476530577299204
-sales_promo_lift_next_3d,0.0009844700683800944,0.00018828427072567174
-event_strength_score_next_3d,0.0009157272558690144,0.00015060822706124558
-is_holiday,0.0008088547402756774,0.00018300036343516153
-items_promo_lift_next_7d,0.0007783824410069418,0.0002284212580121181
-event_count_in_1d,0.0007594953215717571,0.0001305620141546392
-sales_promo_lift_next_7d,0.000633882904741423,0.0004095443640299288
-event_marathon_in_1d,0.0006214282395510029,0.00017975333096154728
-event_ichiba-day,0.0006179601806634904,7.354570039529474e-05
-event_marathon_in_7d,0.0005672810853496024,0.00019732468069306587
-event_ichiba-day_in_7d,0.0005129347698629383,6.800431889875644e-05
-holiday_in_1d,0.0004526352437543402,0.000313751995550426
-event_supersale_after_7d,0.0004275613998953709,0.00021759907815754214
-event_strength_score_next_7d,0.00042023753768380965,0.00024853220625322195
-event_count_in_7d,0.0004054232731651064,7.177912507764878e-05
-median_price,0.00036303941938513605,0.0004973212453847605
-event_supersale_after_2d,0.00035608689292130344,0.0001773525193479211
-ranked_items,0.0003511258572800768,0.0002280756223610318
-event_bonus_point_multiplier_next_7d,0.00032784112357893137,7.513397872830489e-05
-cos_dow,0.0003084343001435785,0.00024153441349605154
-days_to_event,0.00024603117359012217,0.0001403620753201067
-event_zero-five_in_2d,0.00024454229101120715,0.0001970463265605413
-event_wonderful-day,0.00024237292986546423,5.345624119294709e-05
-event_wonderful-day_after_3d,0.00022891159382121273,5.0019553558909076e-05
-event_fashionthesale_after_2d,0.00021582673306803636,4.4716396205594005e-05
-days_since_holiday,0.00020800058417793643,0.0002982247084433753
-event_marathon_in_3d,0.00020073129776685406,0.00012546129262598892
-event_point_cap_next_3d,0.00019901805040833942,4.6912264521593934e-05
-promo_or_holiday_count_next_14d,0.00019372125291832186,0.00010816015591869588
-event_count_next_3d,0.00018809487603126395,7.045332350157759e-05
-event_zero-five_after_1d,0.00016790332277663022,0.00034253228021687883
-days_to_holiday,0.0001650045961944846,0.0003613123560517503
-promo_or_holiday_count_next_3d,0.0001515180372374969,5.032966146856868e-05
-event_fashionthesale,0.00014765940025602832,1.8898934900024405e-05
-is_month_start,0.0001370937555151608,8.362713077628304e-05
-items_lag_28d,0.00012396343078577843,0.0002036804425945496
-event_marathon_in_2d,0.0001202297108235495,7.848640084930678e-05
-event_marathon_after_2d,0.0001170639383130112,0.00017133383396279056
-event_count_after_2d,0.0001034684617019277,7.794604363143259e-05
-event_wonderful-day_in_7d,0.00010235815774037871,9.035964471517294e-05
-event_supersale_after_3d,0.00010229020492580343,5.6683044340358167e-05
-holiday_after_2d,0.00010149908598273693,1.4024364289287792e-05
-event_shoparound_strength_next_3d,9.268077256265883e-05,4.243649378336895e-05
-event_ichiba-day_in_3d,8.317789197751502e-05,8.192864261277998e-05
-event_wonderful-day_in_3d,8.307355162027186e-05,8.785457666037637e-06
-event_supersale_after_1d,8.247243594927678e-05,7.1516422106699724e-06
-event_thank-you_in_1d,7.313589172215362e-05,5.266742914966594e-05
-event_count_prev_14d,7.123139414941804e-05,0.0004073730341820201
-week_of_year,6.848453980390357e-05,0.00044167369219220716
-holiday_count_next_7d,6.844184325411895e-05,4.330559320165233e-05
-event_ichiba-day_after_3d,6.444038176440791e-05,1.3727606784374343e-05
-holiday_count_prev_14d,6.298888181950346e-05,8.810545697364866e-05
-event_ichiba-day_after_1d,6.054730422115906e-05,7.616577941246481e-05
-event_fashionthesale_in_1d,5.7451227693783305e-05,1.669267178626943e-05
-sin_month,5.2343865286763604e-05,7.918222796790157e-05
-event_zero-five_in_1d,5.041258015818784e-05,2.8034657112473666e-05
-holiday_count_prev_3d,4.769709717216131e-05,7.835494593322762e-05
-event_ichiba-day_after_2d,4.528301674018298e-05,1.889836656167253e-05
-event_supersale_in_3d,4.44390383929294e-05,5.02348712682198e-05
-event_thank-you_after_1d,4.4336664770594505e-05,2.1562292860864186e-05
-event_supersale_in_2d,3.1483046209790365e-05,8.662441030662985e-06
-holiday_in_3d,3.0578759551480594e-05,3.883633812162839e-05
-event_fashionthesale_after_7d,2.9549986190025023e-05,7.502295905801429e-06
-event_marathon_after_7d,2.5601634976490927e-05,6.23436675421369e-05
-event_supersale_in_7d,2.357154733596545e-05,2.017886909799966e-05
-event_wonderful-day_after_1d,2.1788601925387675e-05,6.460674522837072e-06
-event_zero-five_in_7d,1.768976008964529e-05,7.189032413939361e-05
-event_thank-you,1.518862286773448e-05,1.3477939937495489e-05
-event_count_in_2d,1.360858143786281e-05,2.23441987695717e-05
-holiday_after_14d,1.3417374233459789e-05,1.7783527859541185e-05
-holiday_count_next_3d,1.23052153134795e-05,5.57945556728626e-05
-event_count_in_3d,1.062254306107846e-05,1.218007934019389e-05
-event_wonderful-day_after_7d,9.78404767368879e-06,6.926878488514657e-06
-event_marathon_after_3d,9.010199188441703e-06,6.922769274689107e-05
-event_fashionthesale_in_7d,8.873212100124483e-06,5.9457762958764944e-06
-event_wonderful-day_after_2d,8.483957390281738e-06,1.3721587312630949e-05
-sin_dow,8.06559411339336e-06,0.0001380056415567545
-holiday_in_14d,6.6309600953440295e-06,1.6365517164389804e-05
-holiday_after_1d,3.1924298230734395e-06,2.837805405624894e-05
-event_ichiba-day_in_1d,1.4842983897533912e-06,2.3998915173889836e-05
-event_ichiba-day_in_2d,1.4450865469806118e-06,3.112279708458889e-06
-event_39shop_in_3d,0.0,0.0
-event_fathers-day_in_3d,0.0,0.0
-event_fathers-day_after_3d,0.0,0.0
-quarter,0.0,0.0
-year,0.0,0.0
-is_weekend,0.0,0.0
-event_39shop_in_1d,0.0,0.0
-event_39shop_after_1d,0.0,0.0
-event_fathers-day_after_2d,0.0,0.0
-best_rank,0.0,0.0
-event_39shop_after_3d,0.0,0.0
-event_fathers-day_in_2d,0.0,0.0
-event_39shop_in_2d,0.0,0.0
-event_fathers-day_after_7d,0.0,0.0
-event_39shop_after_2d,0.0,0.0
-event_fathers-day_after_1d,0.0,0.0
-event_fathers-day_in_1d,0.0,0.0
-event_39shop_after_7d,0.0,0.0
-event_39shop_in_7d,0.0,0.0
-event_fathers-day_in_7d,0.0,0.0
-event_mothers-day_after_2d,0.0,0.0
-event_mothers-day_in_1d,0.0,0.0
-event_mothers-day_after_1d,0.0,0.0
-any_promo_or_holiday_next_14d,0.0,0.0
-event_user-ranking,0.0,0.0
-event_bonus_point_multiplier_in_1d,0.0,0.0
-event_bonus_point_multiplier_in_2d,0.0,0.0
-event_bonus_point_multiplier_in_3d,0.0,0.0
-event_bonus_point_multiplier_in_7d,0.0,0.0
-event_requires_entry_count,0.0,0.0
-event_shoparound_strength,0.0,0.0
-event_strength_score,0.0,0.0
-event_point_cap,0.0,0.0
-event_bonus_point_multiplier,0.0,0.0
-event_point-up,0.0,0.0
-event_shoparound_strength_in_1d,0.0,0.0
-event_shoparound_strength_in_2d,0.0,0.0
-event_shoparound_strength_in_3d,0.0,0.0
-event_shoparound_strength_in_7d,0.0,0.0
-event_eagles,0.0,0.0
-event_point_cap_in_1d,0.0,0.0
-event_point_cap_in_2d,0.0,0.0
-event_point_cap_in_3d,0.0,0.0
-event_point_cap_in_7d,0.0,0.0
-event_singles-day,0.0,0.0
-event_barcelona,0.0,0.0
-event_mothers-day_after_7d,0.0,0.0
-event_mothers-day_in_7d,0.0,0.0
-event_mothers-day_after_3d,0.0,0.0
-event_mothers-day_in_3d,0.0,0.0
-any_promo_or_holiday_next_7d,0.0,0.0
-event_mothers-day_in_2d,0.0,0.0
-any_promo_or_holiday_next_3d,0.0,0.0
-event_black-friday,0.0,0.0
-event_singles-day_in_7d,0.0,0.0
-event_point-up_in_2d,0.0,0.0
-event_point-up_in_3d,0.0,0.0
-event_point-up_after_3d,0.0,0.0
-event_point-up_in_7d,0.0,0.0
-event_point-up_after_7d,0.0,0.0
-event_eagles_in_1d,0.0,0.0
-event_eagles_after_1d,0.0,0.0
-event_eagles_in_2d,0.0,0.0
-event_eagles_after_2d,0.0,0.0
-event_eagles_in_3d,0.0,0.0
-event_eagles_after_3d,0.0,0.0
-event_eagles_in_7d,0.0,0.0
-event_eagles_after_7d,0.0,0.0
-event_singles-day_in_1d,0.0,0.0
-event_singles-day_after_1d,0.0,0.0
-event_singles-day_in_2d,0.0,0.0
-event_singles-day_after_2d,0.0,0.0
-event_singles-day_in_3d,0.0,0.0
-event_singles-day_after_3d,0.0,0.0
-event_singles-day_after_7d,0.0,0.0
-event_black-friday_in_1d,0.0,0.0
-event_black-friday_after_1d,0.0,0.0
-event_black-friday_in_2d,0.0,0.0
-event_black-friday_after_2d,0.0,0.0
-event_point-up_after_2d,0.0,0.0
-event_point-up_after_1d,0.0,0.0
-event_black-friday_after_3d,0.0,0.0
-event_point-up_in_1d,0.0,0.0
-event_thanks-giving,0.0,0.0
-event_newyear-sale,0.0,0.0
-event_event,0.0,0.0
-event_39shop,0.0,0.0
-event_fathers-day,0.0,0.0
-event_mothers-day,0.0,0.0
-any_event,0.0,0.0
-event_barcelona_in_1d,0.0,0.0
-event_barcelona_after_1d,0.0,0.0
-event_barcelona_in_2d,0.0,0.0
-event_barcelona_after_2d,0.0,0.0
-event_barcelona_in_3d,0.0,0.0
-event_barcelona_after_3d,0.0,0.0
-event_barcelona_in_7d,0.0,0.0
-event_barcelona_after_7d,0.0,0.0
-event_user-ranking_in_1d,0.0,0.0
-event_user-ranking_after_1d,0.0,0.0
-event_user-ranking_in_2d,0.0,0.0
-event_user-ranking_after_2d,0.0,0.0
-event_user-ranking_in_3d,0.0,0.0
-event_user-ranking_after_3d,0.0,0.0
-event_user-ranking_in_7d,0.0,0.0
-event_user-ranking_after_7d,0.0,0.0
-event_black-friday_in_3d,0.0,0.0
-event_event_after_3d,0.0,0.0
-event_thanks-giving_after_3d,0.0,0.0
-event_thanks-giving_in_3d,0.0,0.0
-event_thank-you_in_3d,0.0,0.0
-event_newyear-sale_after_7d,0.0,0.0
-event_event_in_2d,0.0,0.0
-event_event_after_1d,0.0,0.0
-event_thanks-giving_in_1d,0.0,0.0
-event_thanks-giving_after_1d,0.0,0.0
-event_thanks-giving_in_2d,0.0,0.0
-event_thanks-giving_after_2d,0.0,0.0
-event_event_in_1d,0.0,0.0
-event_event_in_3d,0.0,0.0
-event_thanks-giving_in_7d,0.0,0.0
-event_thanks-giving_after_7d,0.0,0.0
-event_newyear-sale_in_1d,0.0,0.0
-event_newyear-sale_after_1d,0.0,0.0
-event_newyear-sale_in_2d,0.0,0.0
-event_newyear-sale_after_2d,0.0,0.0
-event_newyear-sale_in_3d,0.0,0.0
-event_newyear-sale_after_3d,0.0,0.0
-event_event_after_2d,0.0,0.0
-event_newyear-sale_in_7d,0.0,0.0
-event_point-back,0.0,0.0
-event_event_after_7d,0.0,0.0
-event_event_in_7d,0.0,0.0
-event_thank-you_in_2d,0.0,0.0
-event_fashionthesale_in_2d,0.0,0.0
-event_black-friday_in_7d,0.0,0.0
-event_point-back_after_7d,0.0,0.0
-event_point-back_in_7d,0.0,0.0
-event_point-back_in_1d,0.0,0.0
-event_point-back_after_3d,0.0,0.0
-event_point-back_in_3d,0.0,0.0
-event_point-back_after_2d,0.0,0.0
-event_point-back_after_1d,0.0,0.0
-event_point-back_in_2d,0.0,0.0
-is_month_end,-2.401874218405098e-07,2.564499898342343e-06
-event_black-friday_after_7d,-1.2786975215561825e-06,1.0184391213947604e-05
-event_fashionthesale_in_3d,-2.383429130348169e-06,1.0816739230654059e-05
-event_zero-five_after_7d,-2.6044552355886097e-06,5.145712786213296e-05
-holiday_in_7d,-2.750834294795723e-06,1.59996945633001e-05
-holiday_in_2d,-2.823653971928408e-06,3.300620320367169e-06
-event_supersale_in_1d,-3.83471272447089e-06,1.0412728813809038e-05
-promo_or_holiday_count_next_7d,-4.565331671746442e-06,0.00010555300331386588
-event_zero-five_in_3d,-5.327959626777456e-06,6.001413294465402e-05
-holiday_count_next_14d,-6.095732315802849e-06,5.0509135582671406e-05
-event_ichiba-day_after_7d,-7.235041751951776e-06,7.3513797303012926e-06
-event_zero-five_after_3d,-1.1538985365611155e-05,2.6108311731660736e-05
-event_wonderful-day_in_2d,-1.2121982715385116e-05,9.561485892945359e-06
-event_wonderful-day_in_1d,-1.5096610310716408e-05,2.135247660318903e-06
-event_thank-you_after_3d,-1.557634132258734e-05,1.2193628169745892e-05
-event_fashionthesale_after_3d,-1.699654180646881e-05,1.868839817135419e-06
-holiday_after_7d,-2.0631110879776314e-05,5.386255380315391e-05
-event_thank-you_after_2d,-2.2200567403629633e-05,1.0157055187415909e-05
-event_fashionthesale_after_1d,-2.5170868481150244e-05,1.609121729872282e-05
-event_strength_score_in_3d,-2.913447844612449e-05,5.8957789200751237e-05
-event_zero-five_after_2d,-3.557753820337961e-05,3.1696532999957954e-05
-event_thank-you_in_7d,-4.5341287190114875e-05,3.099278610278129e-05
-event_bonus_point_multiplier_next_3d,-4.6996595875814506e-05,3.7735114240242493e-05
-event_point_cap_next_7d,-5.6966657026991105e-05,2.5650763146309553e-05
-event_marathon,-5.757464872897522e-05,6.972823244855508e-05
-event_supersale,-6.233113526397105e-05,8.13389977160805e-05
-event_count_after_7d,-7.016443473695233e-05,0.00012418962859002045
-holiday_count_prev_7d,-7.394268768610158e-05,3.45196738599195e-05
-holiday_after_3d,-9.625604265834919e-05,3.441662589327154e-05
-event_thank-you_after_7d,-0.00011047894544189419,4.458100680077994e-05
-event_marathon_after_1d,-0.0001222481547999088,8.144360658759728e-05
-cos_month,-0.00016628934621203405,6.901677510339148e-05
-event_shoparound_strength_next_7d,-0.00019006118506013082,0.00011453338797013747
-event_count_next_7d,-0.00021297257568015927,7.767434757850689e-05
-mean_rank,-0.00021681250811669272,0.0004278962360526594
-event_count_next_14d,-0.00023321661011026505,5.772114251665568e-05
-event_strength_score_in_7d,-0.0002639758148227811,0.00019315727339273958
-event_count_after_3d,-0.0002697286755360295,0.00017507365972057695
-days_since_event,-0.0003943823471247887,0.00013156320608669837
-month,-0.0010159939108991712,0.00038879803072684694
+feature,display_name,importance_mean,importance_std
+sales_roll_mean_7d,Average sales over previous 7 days,0.5727613043512283,0.0054098301297291
+sales_lag_1d,Sales from 1 day earlier,0.3169068060267374,0.0075519405756454
+active_items,Active items that day,0.1395684492657499,0.0063957660094205
+event_max_point_multiplier,Largest active event point multiplier,0.1054638389899094,0.0033141434327863
+sales_roll_mean_28d,Average sales over previous 28 days,0.0880045518670341,0.000754758153525
+items_roll_mean_7d,Average quantity over previous 7 days,0.0687938229945255,0.0041991362200209
+items_roll_mean_28d,Average quantity over previous 28 days,0.0570313482447321,0.0031641655304625
+event_zero-five,5 and 0 day active today,0.022186944436065,0.0012246321822196
+items_lag_1d,Quantity from 1 day earlier,0.0119837290603311,0.0006972275564759
+ranking_group,Ranking group,0.0094131931701514,0.0003054291059835
+event_strength_score_in_1d,Active event strength score in 1 day,0.0087005553516173,0.0005237312429017
+sales_lag_14d,Sales from 14 days earlier,0.0084456768905106,0.0010555061652446
+event_count_prev_7d,Count_Prev_7D active today,0.0069965434800939,0.0011826521119085
+sales_promo_lift_today,Expected sales lift from today's promotion,0.0068502845841336,0.0011725783328492
+day_of_week,Day of week,0.0062493637777423,0.0007500800490654
+items_promo_lift_today,Expected quantity lift from today's promotion,0.0050387141232759,0.0013588517399594
+event_count_after_1d,Count 1 day ago,0.0045983062618121,0.0002502983375415
+genre_id,Genre,0.0042689718980634,0.0006861279392994
+sales_lag_28d,Sales from 28 days earlier,0.0042191438175066,0.0011640548757086
+ranked_shops,Ranked shops that day,0.0033889971072291,0.0005509907474075
+items_lag_14d,Quantity from 14 days earlier,0.0030635116263527,0.0001992562326554
+sales_lag_7d,Sales from 7 days earlier,0.0028521436853044,0.001063563333238
+max_price,Highest ranked item price,0.0025752824778275,0.0003001147268605
+days_to_promo_or_holiday,Days until next promotion or holiday,0.0025617212328202,0.0003174784163531
+active_shops,Active shops that day,0.0024518332777731,0.0004007367149297
+event_count,Number of active Rakuten events,0.0020704814809499,0.0005131297566157
+items_promo_lift_next_3d,Expected quantity lift from promotions in next 3 days,0.0019772076570415,0.0004387613126372
+min_price,Lowest ranked item price,0.0019280541416219,0.0005918342665042
+items_lag_7d,Quantity from 7 days earlier,0.0018601260188575,0.0005361408095226
+event_count_prev_3d,Count_Prev_3D active today,0.0015082943491827,0.0001870671382126
+day_of_month,Day of month,0.0010932017789835,0.0001944091514803
+event_strength_score_in_2d,Active event strength score in 2 days,0.0010907098819746,0.0001047653057729
+sales_promo_lift_next_3d,Expected sales lift from promotions in next 3 days,0.00098447006838,0.0001882842707256
+event_strength_score_next_3d,Active event strength score over next 3 days,0.000915727255869,0.0001506082270612
+is_holiday,Japan holiday that day,0.0008088547402756,0.0001830003634351
+items_promo_lift_next_7d,Expected quantity lift from promotions in next 7 days,0.0007783824410069,0.0002284212580121
+event_count_in_1d,Count in 1 day,0.0007594953215717,0.0001305620141546
+sales_promo_lift_next_7d,Expected sales lift from promotions in next 7 days,0.0006338829047414,0.0004095443640299
+event_marathon_in_1d,Shopping Marathon in 1 day,0.000621428239551,0.0001797533309615
+event_ichiba-day,18th Ichiba Day active today,0.0006179601806634,7.354570039529474e-05
+event_marathon_in_7d,Shopping Marathon in 7 days,0.0005672810853496,0.000197324680693
+event_ichiba-day_in_7d,18th Ichiba Day in 7 days,0.0005129347698629,6.800431889875644e-05
+holiday_in_1d,Japan holiday in 1 day,0.0004526352437543,0.0003137519955504
+event_supersale_after_7d,Rakuten Super Sale 7 days ago,0.0004275613998953,0.0002175990781575
+event_strength_score_next_7d,Active event strength score over next 7 days,0.0004202375376838,0.0002485322062532
+event_count_in_7d,Count in 7 days,0.0004054232731651,7.177912507764878e-05
+median_price,Median ranked item price,0.0003630394193851,0.0004973212453847
+event_supersale_after_2d,Rakuten Super Sale 2 days ago,0.0003560868929213,0.0001773525193479
+ranked_items,Ranked items that day,0.00035112585728,0.000228075622361
+event_bonus_point_multiplier_next_7d,Active event bonus point multiplier over next 7 days,0.0003278411235789,7.513397872830489e-05
+cos_dow,Weekly seasonality pattern,0.0003084343001435,0.000241534413496
+days_to_event,Days until next Rakuten event,0.0002460311735901,0.0001403620753201
+event_zero-five_in_2d,5 and 0 day in 2 days,0.0002445422910112,0.0001970463265605
+event_wonderful-day,Wonderful Day active today,0.0002423729298654,5.345624119294709e-05
+event_wonderful-day_after_3d,Wonderful Day 3 days ago,0.0002289115938212,5.001955355890907e-05
+event_fashionthesale_after_2d,Fashionthesale 2 days ago,0.000215826733068,4.4716396205594005e-05
+days_since_holiday,Days since previous Japan holiday,0.0002080005841779,0.0002982247084433
+event_marathon_in_3d,Shopping Marathon in 3 days,0.0002007312977668,0.0001254612926259
+event_point_cap_next_3d,Active event point cap over next 3 days,0.0001990180504083,4.6912264521593934e-05
+promo_or_holiday_count_next_14d,Promotions or holidays in next 14 days,0.0001937212529183,0.0001081601559186
+event_count_next_3d,Count_Next_3D active today,0.0001880948760312,7.045332350157759e-05
+event_zero-five_after_1d,5 and 0 day 1 day ago,0.0001679033227766,0.0003425322802168
+days_to_holiday,Days until next Japan holiday,0.0001650045961944,0.0003613123560517
+promo_or_holiday_count_next_3d,Promotions or holidays in next 3 days,0.0001515180372374,5.032966146856868e-05
+event_fashionthesale,Fashionthesale active today,0.000147659400256,1.8898934900024405e-05
+is_month_start,Start of month,0.0001370937555151,8.362713077628304e-05
+items_lag_28d,Quantity from 28 days earlier,0.0001239634307857,0.0002036804425945
+event_marathon_in_2d,Shopping Marathon in 2 days,0.0001202297108235,7.848640084930678e-05
+event_marathon_after_2d,Shopping Marathon 2 days ago,0.000117063938313,0.0001713338339627
+event_count_after_2d,Count 2 days ago,0.0001034684617019,7.794604363143259e-05
+event_wonderful-day_in_7d,Wonderful Day in 7 days,0.0001023581577403,9.035964471517294e-05
+event_supersale_after_3d,Rakuten Super Sale 3 days ago,0.0001022902049258,5.6683044340358167e-05
+holiday_after_2d,Japan holiday 2 days ago,0.0001014990859827,1.4024364289287792e-05
+event_shoparound_strength_next_3d,Active shop-around promotion strength over next 3 days,9.268077256265884e-05,4.243649378336895e-05
+event_ichiba-day_in_3d,18th Ichiba Day in 3 days,8.317789197751502e-05,8.192864261277998e-05
+event_wonderful-day_in_3d,Wonderful Day in 3 days,8.307355162027186e-05,8.785457666037637e-06
+event_supersale_after_1d,Rakuten Super Sale 1 day ago,8.247243594927678e-05,7.1516422106699724e-06
+event_thank-you_in_1d,Thanksgiving Festival in 1 day,7.313589172215362e-05,5.266742914966594e-05
+event_count_prev_14d,Count_Prev_14D active today,7.123139414941804e-05,0.000407373034182
+week_of_year,Week of year,6.848453980390357e-05,0.0004416736921922
+holiday_count_next_7d,Number of Japan holidays in next 7 days,6.844184325411895e-05,4.330559320165233e-05
+event_ichiba-day_after_3d,18th Ichiba Day 3 days ago,6.444038176440791e-05,1.3727606784374344e-05
+holiday_count_prev_14d,Number of Japan holidays in previous 14 days,6.298888181950346e-05,8.810545697364866e-05
+event_ichiba-day_after_1d,18th Ichiba Day 1 day ago,6.054730422115906e-05,7.616577941246481e-05
+event_fashionthesale_in_1d,Fashionthesale in 1 day,5.7451227693783305e-05,1.669267178626943e-05
+sin_month,Yearly seasonality pattern,5.23438652867636e-05,7.918222796790157e-05
+event_zero-five_in_1d,5 and 0 day in 1 day,5.041258015818784e-05,2.8034657112473663e-05
+holiday_count_prev_3d,Number of Japan holidays in previous 3 days,4.769709717216131e-05,7.835494593322762e-05
+event_ichiba-day_after_2d,18th Ichiba Day 2 days ago,4.528301674018298e-05,1.889836656167253e-05
+event_supersale_in_3d,Rakuten Super Sale in 3 days,4.44390383929294e-05,5.02348712682198e-05
+event_thank-you_after_1d,Thanksgiving Festival 1 day ago,4.4336664770594505e-05,2.1562292860864186e-05
+event_supersale_in_2d,Rakuten Super Sale in 2 days,3.1483046209790365e-05,8.662441030662985e-06
+holiday_in_3d,Japan holiday in 3 days,3.0578759551480594e-05,3.883633812162839e-05
+event_fashionthesale_after_7d,Fashionthesale 7 days ago,2.9549986190025023e-05,7.502295905801429e-06
+event_marathon_after_7d,Shopping Marathon 7 days ago,2.5601634976490927e-05,6.23436675421369e-05
+event_supersale_in_7d,Rakuten Super Sale in 7 days,2.357154733596545e-05,2.017886909799966e-05
+event_wonderful-day_after_1d,Wonderful Day 1 day ago,2.1788601925387675e-05,6.460674522837072e-06
+event_zero-five_in_7d,5 and 0 day in 7 days,1.768976008964529e-05,7.189032413939361e-05
+event_thank-you,Thanksgiving Festival active today,1.518862286773448e-05,1.3477939937495489e-05
+event_count_in_2d,Count in 2 days,1.360858143786281e-05,2.23441987695717e-05
+holiday_after_14d,Japan holiday 14 days ago,1.3417374233459789e-05,1.7783527859541185e-05
+holiday_count_next_3d,Number of Japan holidays in next 3 days,1.23052153134795e-05,5.57945556728626e-05
+event_count_in_3d,Count in 3 days,1.062254306107846e-05,1.218007934019389e-05
+event_wonderful-day_after_7d,Wonderful Day 7 days ago,9.78404767368879e-06,6.926878488514657e-06
+event_marathon_after_3d,Shopping Marathon 3 days ago,9.010199188441705e-06,6.922769274689107e-05
+event_fashionthesale_in_7d,Fashionthesale in 7 days,8.873212100124483e-06,5.9457762958764944e-06
+event_wonderful-day_after_2d,Wonderful Day 2 days ago,8.483957390281738e-06,1.3721587312630949e-05
+sin_dow,Weekly seasonality pattern,8.06559411339336e-06,0.0001380056415567
+holiday_in_14d,Japan holiday in 14 days,6.6309600953440295e-06,1.6365517164389804e-05
+holiday_after_1d,Japan holiday 1 day ago,3.1924298230734395e-06,2.837805405624894e-05
+event_ichiba-day_in_1d,18th Ichiba Day in 1 day,1.4842983897533912e-06,2.3998915173889836e-05
+event_ichiba-day_in_2d,18th Ichiba Day in 2 days,1.4450865469806118e-06,3.112279708458889e-06
+event_39shop_in_3d,39 Shop campaign in 3 days,0.0,0.0
+event_fathers-day_in_3d,Fathers Day in 3 days,0.0,0.0
+event_fathers-day_after_3d,Fathers Day 3 days ago,0.0,0.0
+quarter,Quarter,0.0,0.0
+year,Year,0.0,0.0
+is_weekend,Weekend,0.0,0.0
+event_39shop_in_1d,39 Shop campaign in 1 day,0.0,0.0
+event_39shop_after_1d,39 Shop campaign 1 day ago,0.0,0.0
+event_fathers-day_after_2d,Fathers Day 2 days ago,0.0,0.0
+best_rank,Best ranking position,0.0,0.0
+event_39shop_after_3d,39 Shop campaign 3 days ago,0.0,0.0
+event_fathers-day_in_2d,Fathers Day in 2 days,0.0,0.0
+event_39shop_in_2d,39 Shop campaign in 2 days,0.0,0.0
+event_fathers-day_after_7d,Fathers Day 7 days ago,0.0,0.0
+event_39shop_after_2d,39 Shop campaign 2 days ago,0.0,0.0
+event_fathers-day_after_1d,Fathers Day 1 day ago,0.0,0.0
+event_fathers-day_in_1d,Fathers Day in 1 day,0.0,0.0
+event_39shop_after_7d,39 Shop campaign 7 days ago,0.0,0.0
+event_39shop_in_7d,39 Shop campaign in 7 days,0.0,0.0
+event_fathers-day_in_7d,Fathers Day in 7 days,0.0,0.0
+event_mothers-day_after_2d,Mothers Day 2 days ago,0.0,0.0
+event_mothers-day_in_1d,Mothers Day in 1 day,0.0,0.0
+event_mothers-day_after_1d,Mothers Day 1 day ago,0.0,0.0
+any_promo_or_holiday_next_14d,Any promotion or holiday in next 14 days,0.0,0.0
+event_user-ranking,User Ranking active today,0.0,0.0
+event_bonus_point_multiplier_in_1d,Active event bonus point multiplier in 1 day,0.0,0.0
+event_bonus_point_multiplier_in_2d,Active event bonus point multiplier in 2 days,0.0,0.0
+event_bonus_point_multiplier_in_3d,Active event bonus point multiplier in 3 days,0.0,0.0
+event_bonus_point_multiplier_in_7d,Active event bonus point multiplier in 7 days,0.0,0.0
+event_requires_entry_count,Active events requiring entry,0.0,0.0
+event_shoparound_strength,Active shop-around promotion strength,0.0,0.0
+event_strength_score,Active event strength score,0.0,0.0
+event_point_cap,Active event point cap,0.0,0.0
+event_bonus_point_multiplier,Active event bonus point multiplier,0.0,0.0
+event_point-up,Point-up campaign active today,0.0,0.0
+event_shoparound_strength_in_1d,Active shop-around promotion strength in 1 day,0.0,0.0
+event_shoparound_strength_in_2d,Active shop-around promotion strength in 2 days,0.0,0.0
+event_shoparound_strength_in_3d,Active shop-around promotion strength in 3 days,0.0,0.0
+event_shoparound_strength_in_7d,Active shop-around promotion strength in 7 days,0.0,0.0
+event_eagles,Sports win campaign active today,0.0,0.0
+event_point_cap_in_1d,Active event point cap in 1 day,0.0,0.0
+event_point_cap_in_2d,Active event point cap in 2 days,0.0,0.0
+event_point_cap_in_3d,Active event point cap in 3 days,0.0,0.0
+event_point_cap_in_7d,Active event point cap in 7 days,0.0,0.0
+event_singles-day,Singles Day active today,0.0,0.0
+event_barcelona,Barcelona active today,0.0,0.0
+event_mothers-day_after_7d,Mothers Day 7 days ago,0.0,0.0
+event_mothers-day_in_7d,Mothers Day in 7 days,0.0,0.0
+event_mothers-day_after_3d,Mothers Day 3 days ago,0.0,0.0
+event_mothers-day_in_3d,Mothers Day in 3 days,0.0,0.0
+any_promo_or_holiday_next_7d,Any promotion or holiday in next 7 days,0.0,0.0
+event_mothers-day_in_2d,Mothers Day in 2 days,0.0,0.0
+any_promo_or_holiday_next_3d,Any promotion or holiday in next 3 days,0.0,0.0
+event_black-friday,Black Friday active today,0.0,0.0
+event_singles-day_in_7d,Singles Day in 7 days,0.0,0.0
+event_point-up_in_2d,Point-up campaign in 2 days,0.0,0.0
+event_point-up_in_3d,Point-up campaign in 3 days,0.0,0.0
+event_point-up_after_3d,Point-up campaign 3 days ago,0.0,0.0
+event_point-up_in_7d,Point-up campaign in 7 days,0.0,0.0
+event_point-up_after_7d,Point-up campaign 7 days ago,0.0,0.0
+event_eagles_in_1d,Sports win campaign in 1 day,0.0,0.0
+event_eagles_after_1d,Sports win campaign 1 day ago,0.0,0.0
+event_eagles_in_2d,Sports win campaign in 2 days,0.0,0.0
+event_eagles_after_2d,Sports win campaign 2 days ago,0.0,0.0
+event_eagles_in_3d,Sports win campaign in 3 days,0.0,0.0
+event_eagles_after_3d,Sports win campaign 3 days ago,0.0,0.0
+event_eagles_in_7d,Sports win campaign in 7 days,0.0,0.0
+event_eagles_after_7d,Sports win campaign 7 days ago,0.0,0.0
+event_singles-day_in_1d,Singles Day in 1 day,0.0,0.0
+event_singles-day_after_1d,Singles Day 1 day ago,0.0,0.0
+event_singles-day_in_2d,Singles Day in 2 days,0.0,0.0
+event_singles-day_after_2d,Singles Day 2 days ago,0.0,0.0
+event_singles-day_in_3d,Singles Day in 3 days,0.0,0.0
+event_singles-day_after_3d,Singles Day 3 days ago,0.0,0.0
+event_singles-day_after_7d,Singles Day 7 days ago,0.0,0.0
+event_black-friday_in_1d,Black Friday in 1 day,0.0,0.0
+event_black-friday_after_1d,Black Friday 1 day ago,0.0,0.0
+event_black-friday_in_2d,Black Friday in 2 days,0.0,0.0
+event_black-friday_after_2d,Black Friday 2 days ago,0.0,0.0
+event_point-up_after_2d,Point-up campaign 2 days ago,0.0,0.0
+event_point-up_after_1d,Point-up campaign 1 day ago,0.0,0.0
+event_black-friday_after_3d,Black Friday 3 days ago,0.0,0.0
+event_point-up_in_1d,Point-up campaign in 1 day,0.0,0.0
+event_thanks-giving,Thanks Giving active today,0.0,0.0
+event_newyear-sale,Newyear Sale active today,0.0,0.0
+event_event,Event active today,0.0,0.0
+event_39shop,39 Shop campaign active today,0.0,0.0
+event_fathers-day,Fathers Day active today,0.0,0.0
+event_mothers-day,Mothers Day active today,0.0,0.0
+any_event,Any Rakuten event active,0.0,0.0
+event_barcelona_in_1d,Barcelona in 1 day,0.0,0.0
+event_barcelona_after_1d,Barcelona 1 day ago,0.0,0.0
+event_barcelona_in_2d,Barcelona in 2 days,0.0,0.0
+event_barcelona_after_2d,Barcelona 2 days ago,0.0,0.0
+event_barcelona_in_3d,Barcelona in 3 days,0.0,0.0
+event_barcelona_after_3d,Barcelona 3 days ago,0.0,0.0
+event_barcelona_in_7d,Barcelona in 7 days,0.0,0.0
+event_barcelona_after_7d,Barcelona 7 days ago,0.0,0.0
+event_user-ranking_in_1d,User Ranking in 1 day,0.0,0.0
+event_user-ranking_after_1d,User Ranking 1 day ago,0.0,0.0
+event_user-ranking_in_2d,User Ranking in 2 days,0.0,0.0
+event_user-ranking_after_2d,User Ranking 2 days ago,0.0,0.0
+event_user-ranking_in_3d,User Ranking in 3 days,0.0,0.0
+event_user-ranking_after_3d,User Ranking 3 days ago,0.0,0.0
+event_user-ranking_in_7d,User Ranking in 7 days,0.0,0.0
+event_user-ranking_after_7d,User Ranking 7 days ago,0.0,0.0
+event_black-friday_in_3d,Black Friday in 3 days,0.0,0.0
+event_event_after_3d,Event 3 days ago,0.0,0.0
+event_thanks-giving_after_3d,Thanks Giving 3 days ago,0.0,0.0
+event_thanks-giving_in_3d,Thanks Giving in 3 days,0.0,0.0
+event_thank-you_in_3d,Thanksgiving Festival in 3 days,0.0,0.0
+event_newyear-sale_after_7d,Newyear Sale 7 days ago,0.0,0.0
+event_event_in_2d,Event in 2 days,0.0,0.0
+event_event_after_1d,Event 1 day ago,0.0,0.0
+event_thanks-giving_in_1d,Thanks Giving in 1 day,0.0,0.0
+event_thanks-giving_after_1d,Thanks Giving 1 day ago,0.0,0.0
+event_thanks-giving_in_2d,Thanks Giving in 2 days,0.0,0.0
+event_thanks-giving_after_2d,Thanks Giving 2 days ago,0.0,0.0
+event_event_in_1d,Event in 1 day,0.0,0.0
+event_event_in_3d,Event in 3 days,0.0,0.0
+event_thanks-giving_in_7d,Thanks Giving in 7 days,0.0,0.0
+event_thanks-giving_after_7d,Thanks Giving 7 days ago,0.0,0.0
+event_newyear-sale_in_1d,Newyear Sale in 1 day,0.0,0.0
+event_newyear-sale_after_1d,Newyear Sale 1 day ago,0.0,0.0
+event_newyear-sale_in_2d,Newyear Sale in 2 days,0.0,0.0
+event_newyear-sale_after_2d,Newyear Sale 2 days ago,0.0,0.0
+event_newyear-sale_in_3d,Newyear Sale in 3 days,0.0,0.0
+event_newyear-sale_after_3d,Newyear Sale 3 days ago,0.0,0.0
+event_event_after_2d,Event 2 days ago,0.0,0.0
+event_newyear-sale_in_7d,Newyear Sale in 7 days,0.0,0.0
+event_point-back,Point-back campaign active today,0.0,0.0
+event_event_after_7d,Event 7 days ago,0.0,0.0
+event_event_in_7d,Event in 7 days,0.0,0.0
+event_thank-you_in_2d,Thanksgiving Festival in 2 days,0.0,0.0
+event_fashionthesale_in_2d,Fashionthesale in 2 days,0.0,0.0
+event_black-friday_in_7d,Black Friday in 7 days,0.0,0.0
+event_point-back_after_7d,Point-back campaign 7 days ago,0.0,0.0
+event_point-back_in_7d,Point-back campaign in 7 days,0.0,0.0
+event_point-back_in_1d,Point-back campaign in 1 day,0.0,0.0
+event_point-back_after_3d,Point-back campaign 3 days ago,0.0,0.0
+event_point-back_in_3d,Point-back campaign in 3 days,0.0,0.0
+event_point-back_after_2d,Point-back campaign 2 days ago,0.0,0.0
+event_point-back_after_1d,Point-back campaign 1 day ago,0.0,0.0
+event_point-back_in_2d,Point-back campaign in 2 days,0.0,0.0
+is_month_end,End of month,-2.401874218405098e-07,2.564499898342343e-06
+event_black-friday_after_7d,Black Friday 7 days ago,-1.2786975215561823e-06,1.0184391213947604e-05
+event_fashionthesale_in_3d,Fashionthesale in 3 days,-2.383429130348169e-06,1.081673923065406e-05
+event_zero-five_after_7d,5 and 0 day 7 days ago,-2.6044552355886097e-06,5.145712786213296e-05
+holiday_in_7d,Japan holiday in 7 days,-2.750834294795723e-06,1.59996945633001e-05
+holiday_in_2d,Japan holiday in 2 days,-2.823653971928408e-06,3.300620320367169e-06
+event_supersale_in_1d,Rakuten Super Sale in 1 day,-3.83471272447089e-06,1.0412728813809038e-05
+promo_or_holiday_count_next_7d,Promotions or holidays in next 7 days,-4.565331671746442e-06,0.0001055530033138
+event_zero-five_in_3d,5 and 0 day in 3 days,-5.327959626777456e-06,6.001413294465402e-05
+holiday_count_next_14d,Number of Japan holidays in next 14 days,-6.095732315802849e-06,5.0509135582671406e-05
+event_ichiba-day_after_7d,18th Ichiba Day 7 days ago,-7.235041751951776e-06,7.3513797303012926e-06
+event_zero-five_after_3d,5 and 0 day 3 days ago,-1.1538985365611156e-05,2.6108311731660736e-05
+event_wonderful-day_in_2d,Wonderful Day in 2 days,-1.2121982715385116e-05,9.56148589294536e-06
+event_wonderful-day_in_1d,Wonderful Day in 1 day,-1.5096610310716408e-05,2.135247660318903e-06
+event_thank-you_after_3d,Thanksgiving Festival 3 days ago,-1.557634132258734e-05,1.2193628169745892e-05
+event_fashionthesale_after_3d,Fashionthesale 3 days ago,-1.699654180646881e-05,1.868839817135419e-06
+holiday_after_7d,Japan holiday 7 days ago,-2.063111087977631e-05,5.386255380315391e-05
+event_thank-you_after_2d,Thanksgiving Festival 2 days ago,-2.2200567403629633e-05,1.0157055187415907e-05
+event_fashionthesale_after_1d,Fashionthesale 1 day ago,-2.5170868481150244e-05,1.609121729872282e-05
+event_strength_score_in_3d,Active event strength score in 3 days,-2.913447844612449e-05,5.895778920075124e-05
+event_zero-five_after_2d,5 and 0 day 2 days ago,-3.557753820337961e-05,3.1696532999957954e-05
+event_thank-you_in_7d,Thanksgiving Festival in 7 days,-4.5341287190114875e-05,3.099278610278129e-05
+event_bonus_point_multiplier_next_3d,Active event bonus point multiplier over next 3 days,-4.6996595875814506e-05,3.7735114240242493e-05
+event_point_cap_next_7d,Active event point cap over next 7 days,-5.6966657026991105e-05,2.5650763146309553e-05
+event_marathon,Shopping Marathon active today,-5.757464872897522e-05,6.972823244855508e-05
+event_supersale,Rakuten Super Sale active today,-6.233113526397105e-05,8.13389977160805e-05
+event_count_after_7d,Count 7 days ago,-7.016443473695233e-05,0.00012418962859
+holiday_count_prev_7d,Number of Japan holidays in previous 7 days,-7.394268768610158e-05,3.45196738599195e-05
+holiday_after_3d,Japan holiday 3 days ago,-9.62560426583492e-05,3.441662589327154e-05
+event_thank-you_after_7d,Thanksgiving Festival 7 days ago,-0.0001104789454418,4.458100680077994e-05
+event_marathon_after_1d,Shopping Marathon 1 day ago,-0.0001222481547999,8.144360658759728e-05
+cos_month,Yearly seasonality pattern,-0.000166289346212,6.901677510339148e-05
+event_shoparound_strength_next_7d,Active shop-around promotion strength over next 7 days,-0.0001900611850601,0.0001145333879701
+event_count_next_7d,Count_Next_7D active today,-0.0002129725756801,7.767434757850689e-05
+mean_rank,Average ranking position,-0.0002168125081166,0.0004278962360526
+event_count_next_14d,Count_Next_14D active today,-0.0002332166101102,5.772114251665568e-05
+event_strength_score_in_7d,Active event strength score in 7 days,-0.0002639758148227,0.0001931572733927
+event_count_after_3d,Count 3 days ago,-0.000269728675536,0.0001750736597205
+days_since_event,Days since previous Rakuten event,-0.0003943823471247,0.0001315632060866
+month,Month,-0.0010159939108991,0.0003887980307268
