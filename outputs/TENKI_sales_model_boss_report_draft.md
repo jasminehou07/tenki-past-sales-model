@@ -86,23 +86,6 @@ Main limitations:
 - Future forecasting will require a confirmed future Rakuten promotion calendar.
 - Some categories have high error because of volatile demand, sparse sales, or major product mix changes.
 
-## Item Name File Needed
-
-The next important file from the team should map item IDs to readable item names or FTP titles.
-
-Ideal columns:
-
-| Column | Why It Helps |
-|---|---|
-| `item_id` | Connects the file to the current TENKI item IDs |
-| `item_name` or `ftp_title` | Lets the dashboard show actual product names |
-| `genre_id` | Confirms the item belongs to the right category |
-| `shop_id` or `shop_code` | Allows seller/store-level modeling later |
-| `price` or `list_price` | Helps model demand changes from price |
-| `jan` / SKU / product code | Helps identify the same product across files |
-
-Once this file is available, the dashboard can replace fallback item labels with real product names and support more useful item-level reporting.
-
 ## Recommended Next Steps
 
 1. Add the item-name / FTP-title file and update the item dropdown.
@@ -112,11 +95,3 @@ Once this file is available, the dashboard can replace fallback item labels with
 5. Create client/store-specific model views once seller identifiers are available.
 6. Calibrate confidence ranges using true forecast error, not only display caps.
 7. Convert this report into a short boss-facing PDF or slide deck after item names are added.
-
-## Suggested Boss Talking Points
-
-- The model already captures broad sales and quantity patterns with R2 around 0.86.
-- Promotion events clearly matter and should be included in any future demand forecast.
-- The dashboard can estimate how many units sellers should prepare for a selected date range.
-- Accuracy is promising for a first backtesting tool, but production forecasting needs better product, price, and stock data.
-- The next highest-value improvement is mapping item IDs to real item names or FTP titles.
