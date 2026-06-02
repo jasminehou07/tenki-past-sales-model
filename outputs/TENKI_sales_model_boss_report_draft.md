@@ -86,7 +86,7 @@ Main limitations:
 - Future forecasting will require a confirmed future Rakuten promotion calendar.
 - Some categories have high error because of volatile demand, sparse sales, or major product mix changes.
 
-## Recommended Next Steps
+## Next Steps Plan
 
 1. Add the item-name / FTP-title file and update the item dropdown.
 2. Add price, discount, coupon, and point-back features.
