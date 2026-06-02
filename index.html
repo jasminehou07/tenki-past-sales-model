@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>TENKI Sales Model</title>
-    <link rel="stylesheet" href="styles.css?v=viewport-capped-charts" />
+    <link rel="stylesheet" href="styles.css?v=organized-dashboard" />
   </head>
   <body>
     <header class="topbar">
@@ -82,27 +82,36 @@
           <span>Sales MAE</span>
           <strong id="metricMae">--</strong>
         </article>
-        <article class="metric">
-          <span>Holdout Rows</span>
-          <strong id="metricRows">--</strong>
-        </article>
+      </section>
+
+      <section class="table-section priority-section">
+        <div class="panel-head">
+          <div>
+            <h2>Confidence Range</h2>
+            <p id="confidenceCaption">Predicted range for the selected dates</p>
+          </div>
+        </div>
+        <div class="confidence-grid">
+          <article class="metric">
+            <span>Predicted Sales Range</span>
+            <strong id="salesRange">--</strong>
+          </article>
+          <article class="metric">
+            <span>Actual Sales</span>
+            <strong id="actualSalesRange">--</strong>
+          </article>
+          <article class="metric">
+            <span>Units to Prepare Range</span>
+            <strong id="inventoryRange">--</strong>
+          </article>
+          <article class="metric">
+            <span>Actual Units Sold</span>
+            <strong id="actualInventoryRange">--</strong>
+          </article>
+        </div>
       </section>
 
       <section class="workspace">
-        <article class="panel wide">
-          <div class="panel-head">
-            <div>
-              <h2>Actual vs Predicted Sales</h2>
-              <p id="chartCaption">Daily holdout predictions</p>
-            </div>
-            <div class="legend">
-              <span><i class="actual"></i>Actual</span>
-              <span><i class="predicted"></i>Predicted</span>
-            </div>
-          </div>
-          <canvas id="salesChart" height="340"></canvas>
-        </article>
-
         <section class="metric-grid inline-metrics" aria-label="Quantity prediction metrics">
           <article class="metric">
             <span>Quantity R2</span>
@@ -116,11 +125,21 @@
             <span>Quantity MAE</span>
             <strong id="quantityMetricMae">--</strong>
           </article>
-          <article class="metric">
-            <span>Holdout Rows</span>
-            <strong id="quantityMetricRows">--</strong>
-          </article>
         </section>
+
+        <article class="panel wide">
+          <div class="panel-head">
+            <div>
+              <h2>Actual vs Predicted Sales</h2>
+              <p id="chartCaption">Daily holdout predictions</p>
+            </div>
+            <div class="legend">
+              <span><i class="actual"></i>Actual</span>
+              <span><i class="predicted"></i>Predicted</span>
+            </div>
+          </div>
+          <canvas id="salesChart" height="340"></canvas>
+        </article>
 
         <article class="panel">
           <div class="panel-head">
@@ -155,33 +174,6 @@
           </div>
           <div id="featureBars" class="feature-bars"></div>
         </article>
-      </section>
-
-      <section class="table-section">
-        <div class="panel-head">
-          <div>
-            <h2>Confidence Range</h2>
-            <p id="confidenceCaption">Predicted range for the selected dates</p>
-          </div>
-        </div>
-        <div class="confidence-grid">
-          <article class="metric">
-            <span>Predicted Sales Range</span>
-            <strong id="salesRange">--</strong>
-          </article>
-          <article class="metric">
-            <span>Actual Sales</span>
-            <strong id="actualSalesRange">--</strong>
-          </article>
-          <article class="metric">
-            <span>Units to Prepare Range</span>
-            <strong id="inventoryRange">--</strong>
-          </article>
-          <article class="metric">
-            <span>Actual Units Sold</span>
-            <strong id="actualInventoryRange">--</strong>
-          </article>
-        </div>
       </section>
 
       <section class="table-section">
@@ -259,8 +251,43 @@
           </table>
         </div>
       </section>
+
+      <section class="table-section model-details">
+        <div class="panel-head">
+          <div>
+            <h2>Model Details</h2>
+            <p>Technical validation notes kept separate from the main report view</p>
+          </div>
+        </div>
+        <div class="detail-grid">
+          <article>
+            <span>Backtest Period</span>
+            <strong id="detailTestPeriod">--</strong>
+          </article>
+          <article>
+            <span>Training Rows</span>
+            <strong id="detailTrainingRows">--</strong>
+          </article>
+          <article>
+            <span>Holdout Rows</span>
+            <strong id="detailHoldoutRows">--</strong>
+          </article>
+          <article>
+            <span>Genres Tested</span>
+            <strong id="detailGenres">--</strong>
+          </article>
+          <article>
+            <span>Model Split</span>
+            <strong id="detailRegime">--</strong>
+          </article>
+          <article>
+            <span>Promotions Used</span>
+            <strong id="detailPromotions">--</strong>
+          </article>
+        </div>
+      </section>
     </main>
 
-    <script src="app.js?v=viewport-capped-charts"></script>
+    <script src="app.js?v=organized-dashboard"></script>
   </body>
 </html>

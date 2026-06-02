@@ -128,7 +128,7 @@ button:hover {
 
 .metric-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 12px;
   margin: 14px 0;
 }
@@ -141,6 +141,10 @@ button:hover {
 
 .inline-metrics {
   margin: 0;
+}
+
+.priority-section {
+  margin-top: 14px;
 }
 
 .report-summary {
@@ -321,6 +325,40 @@ canvas {
   padding: 16px;
 }
 
+.model-details {
+  background: #fbfcfa;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.detail-grid article {
+  min-height: 84px;
+  padding: 12px;
+  border: 1px solid #edf0ed;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.detail-grid span {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.detail-grid strong {
+  display: block;
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
 .table-wrap {
   max-height: 460px;
   overflow: auto;
@@ -377,6 +415,7 @@ tbody tr:hover {
   .metric-grid,
   .confidence-grid,
   .summary-grid,
+  .detail-grid,
   .workspace {
     grid-template-columns: 1fr;
   }
@@ -389,6 +428,10 @@ tbody tr:hover {
 @media (max-width: 620px) {
   .metric-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .detail-grid {
+    grid-template-columns: 1fr;
   }
 
   .panel-head {

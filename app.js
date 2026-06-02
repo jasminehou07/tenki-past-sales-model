@@ -54,14 +54,18 @@ const el = {
   summaryInventory: document.getElementById("summaryInventory"),
   summaryAccuracy: document.getElementById("summaryAccuracy"),
   summaryCaveat: document.getElementById("summaryCaveat"),
+  detailTestPeriod: document.getElementById("detailTestPeriod"),
+  detailTrainingRows: document.getElementById("detailTrainingRows"),
+  detailHoldoutRows: document.getElementById("detailHoldoutRows"),
+  detailGenres: document.getElementById("detailGenres"),
+  detailRegime: document.getElementById("detailRegime"),
+  detailPromotions: document.getElementById("detailPromotions"),
   metricR2: document.getElementById("metricR2"),
   metricWape: document.getElementById("metricWape"),
   metricMae: document.getElementById("metricMae"),
-  metricRows: document.getElementById("metricRows"),
   quantityMetricR2: document.getElementById("quantityMetricR2"),
   quantityMetricWape: document.getElementById("quantityMetricWape"),
   quantityMetricMae: document.getElementById("quantityMetricMae"),
-  quantityMetricRows: document.getElementById("quantityMetricRows"),
 };
 
 function parseCsv(text) {
@@ -237,11 +241,17 @@ function updateMetrics() {
   el.metricR2.textContent = Number(state.metrics.r2).toFixed(3);
   el.metricWape.textContent = fmtPct.format(Number(state.metrics.wape));
   el.metricMae.textContent = fmtCurrency.format(Number(state.metrics.mae));
-  el.metricRows.textContent = fmtNumber.format(Number(state.metrics.test_rows));
   el.quantityMetricR2.textContent = Number(state.quantityMetrics.r2).toFixed(3);
   el.quantityMetricWape.textContent = fmtPct.format(Number(state.quantityMetrics.wape));
   el.quantityMetricMae.textContent = `${Number(state.quantityMetrics.mae).toFixed(1)} items`;
-  el.quantityMetricRows.textContent = fmtNumber.format(Number(state.quantityMetrics.test_rows));
+  el.detailTestPeriod.textContent = `${state.metrics.test_start} to ${state.metrics.max_date}`;
+  el.detailTrainingRows.textContent = fmtNumber.format(Number(state.metrics.train_rows));
+  el.detailHoldoutRows.textContent =
+    `${fmtNumber.format(Number(state.metrics.test_rows))} sales / ` +
+    `${fmtNumber.format(Number(state.quantityMetrics.test_rows))} quantity`;
+  el.detailGenres.textContent = fmtNumber.format(Number(state.metrics.genres));
+  el.detailRegime.textContent = `Split at ${state.metrics.regime_cutoff}`;
+  el.detailPromotions.textContent = titleCaseList(state.metrics.selected_promotion_events || []);
 }
 
 function filterRows() {
@@ -324,7 +334,7 @@ function updateView() {
     el.genreSelect.value === "all" ? "all genres" : genreLabel(el.genreSelect.value);
   const unit = el.viewMode.value === "weekly" ? "weekly" : "daily";
 
-  el.status.textContent = `${fmtNumber.format(state.filtered.length)} ${unit} rows`;
+  el.status.textContent = `${unit[0].toUpperCase()}${unit.slice(1)} report view`;
   el.chartCaption.textContent = `${selectedGenreLabel}, ${fmtCurrency.format(summary.sales)} actual sales`;
   el.quantityCaption.textContent =
     `${selectedGenreLabel}, ${fmtNumber.format(Math.round(quantitySummary.sales))} actual items, ` +
@@ -629,6 +639,17 @@ function formatBias(value) {
 
 function friendlyScope(value) {
   return String(value || "mixed").replaceAll("_", " ");
+}
+
+function titleCaseList(values) {
+  if (!values.length) return "--";
+  return values
+    .map((value) =>
+      String(value)
+        .replaceAll("-", " ")
+        .replace(/\b\w/g, (char) => char.toUpperCase()),
+    )
+    .join(", ");
 }
 
 function friendlyFeature(name) {
