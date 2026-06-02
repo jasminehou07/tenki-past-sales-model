@@ -85,13 +85,15 @@ work/.venv/bin/python outputs/sales_event_model.py
 - Genres: 100
 - Sales R2: 0.848
 - Sales WAPE: 27.7%
-- Sales MAE: 108,395 yen daily genre sales
-- Quantity R2: 0.850
-- Quantity WAPE: 23.9%
-- Quantity MAE: 13.5 items per daily genre row
+- Sales MAE: 108,307 yen daily genre sales
+- Quantity R2: 0.862
+- Quantity WAPE: 23.3%
+- Quantity MAE: 13.2 items per daily genre row
 
-This pass uses genre one-hot encoding, all event types from `events.parquet`,
-pre-event and post-event timing windows, official Japan holidays, combined
-promo-or-holiday lookahead features, and promotion lift estimates from the TENKI
-dashboard by ranking group. The strongest signals are recent demand, active item
-count, Rakuten event timing, promotion lift, and ranking group.
+This pass trains two separate models split at 2024-01-01, so pre-2024 data and
+the post-COVID, higher-seller marketplace do not have to share one demand
+pattern. The final holdout starts on 2025-12-03, so all visible dashboard test
+rows use the 2024+ model. It still uses genre one-hot encoding, all event types
+from `events.parquet`, pre-event and post-event timing windows, official Japan
+holidays, combined promo-or-holiday lookahead features, and promotion lift
+estimates from the TENKI dashboard by ranking group.

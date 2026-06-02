@@ -45,6 +45,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
     parser.add_argument("--holiday-file", type=Path, default=DEFAULT_HOLIDAY_FILE)
     parser.add_argument("--promotion-effect-dir", type=Path, default=DEFAULT_PROMOTION_EFFECT_DIR)
+    parser.add_argument(
+        "--regime-cutoff",
+        type=str,
+        default="2024-01-01",
+        help="Date where the marketplace changed enough to train a separate later-years model.",
+    )
     parser.add_argument("--rebuild-cache", action="store_true")
     parser.add_argument("--test-days", type=int, default=180)
     parser.add_argument(
@@ -375,6 +381,16 @@ def metrics_frame(y_true: pd.Series, pred: np.ndarray) -> dict[str, float]:
     }
 
 
+def make_preprocessor(categorical_cols: list[str], numeric_cols: list[str]) -> ColumnTransformer:
+    return ColumnTransformer(
+        [
+            ("category", OneHotEncoder(handle_unknown="ignore", sparse_output=False), categorical_cols),
+            ("numeric", "passthrough", numeric_cols),
+        ],
+        verbose_feature_names_out=False,
+    )
+
+
 def make_sales_model(preprocessor: ColumnTransformer) -> object:
     return make_pipeline(
         preprocessor,
@@ -391,6 +407,10 @@ def make_sales_model(preprocessor: ColumnTransformer) -> object:
 
 def train_log_model(model: object, X_train: pd.DataFrame, y_train: pd.Series, X_test: pd.DataFrame) -> np.ndarray:
     model.fit(X_train, np.log1p(y_train))
+    return np.expm1(model.predict(X_test)).clip(min=0)
+
+
+def predict_log_model(model: object, X_test: pd.DataFrame) -> np.ndarray:
     return np.expm1(model.predict(X_test)).clip(min=0)
 
 
@@ -419,8 +439,13 @@ def main() -> None:
     )
 
     cutoff = dataset["date"].max() - pd.Timedelta(days=args.test_days)
+    regime_cutoff = pd.Timestamp(args.regime_cutoff)
     train = dataset[dataset["date"] <= cutoff].copy()
     test = dataset[dataset["date"] > cutoff].copy()
+    early_train = train[train["date"] < regime_cutoff].copy()
+    late_train = train[train["date"] >= regime_cutoff].copy()
+    if early_train.empty or late_train.empty:
+        raise ValueError(f"Regime cutoff {regime_cutoff.date()} must leave training rows on both sides.")
 
     leakage_cols = {
         "date",
@@ -435,42 +460,54 @@ def main() -> None:
     feature_cols = [c for c in dataset.columns if c not in leakage_cols]
     categorical_cols = ["genre_id", "ranking_group"]
     numeric_cols = [c for c in feature_cols if c not in categorical_cols]
-    sales_preprocessor = ColumnTransformer(
-        [
-            ("genre", OneHotEncoder(handle_unknown="ignore", sparse_output=False), categorical_cols),
-            ("numeric", "passthrough", numeric_cols),
-        ],
-        verbose_feature_names_out=False,
-    )
-    quantity_preprocessor = ColumnTransformer(
-        [
-            ("genre", OneHotEncoder(handle_unknown="ignore", sparse_output=False), categorical_cols),
-            ("numeric", "passthrough", numeric_cols),
-        ],
-        verbose_feature_names_out=False,
-    )
-    X_train = train[feature_cols]
     X_test = test[feature_cols]
 
-    model = make_sales_model(sales_preprocessor)
+    early_sales_model = make_sales_model(make_preprocessor(categorical_cols, numeric_cols))
+    late_sales_model = make_sales_model(make_preprocessor(categorical_cols, numeric_cols))
     y_test = test["sales"]
-    pred = train_log_model(model, X_train, train["sales"], X_test)
+    early_sales_model.fit(early_train[feature_cols], np.log1p(early_train["sales"]))
+    late_sales_model.fit(late_train[feature_cols], np.log1p(late_train["sales"]))
+    pred = np.zeros(len(test))
+    early_test_mask = test["date"] < regime_cutoff
+    late_test_mask = ~early_test_mask
+    if early_test_mask.any():
+        pred[early_test_mask.to_numpy()] = predict_log_model(early_sales_model, test.loc[early_test_mask, feature_cols])
+    if late_test_mask.any():
+        pred[late_test_mask.to_numpy()] = predict_log_model(late_sales_model, test.loc[late_test_mask, feature_cols])
 
-    quantity_model = make_sales_model(quantity_preprocessor)
+    early_quantity_model = make_sales_model(make_preprocessor(categorical_cols, numeric_cols))
+    late_quantity_model = make_sales_model(make_preprocessor(categorical_cols, numeric_cols))
     quantity_y_test = test["sales_items"]
-    quantity_pred = train_log_model(quantity_model, X_train, train["sales_items"], X_test)
+    early_quantity_model.fit(early_train[feature_cols], np.log1p(early_train["sales_items"]))
+    late_quantity_model.fit(late_train[feature_cols], np.log1p(late_train["sales_items"]))
+    quantity_pred = np.zeros(len(test))
+    if early_test_mask.any():
+        quantity_pred[early_test_mask.to_numpy()] = predict_log_model(
+            early_quantity_model,
+            test.loc[early_test_mask, feature_cols],
+        )
+    if late_test_mask.any():
+        quantity_pred[late_test_mask.to_numpy()] = predict_log_model(
+            late_quantity_model,
+            test.loc[late_test_mask, feature_cols],
+        )
 
     metrics = metrics_frame(y_test, pred)
     metrics.update(
         {
             "train_rows": int(len(train)),
+            "train_rows_early": int(len(early_train)),
+            "train_rows_late": int(len(late_train)),
             "test_rows": int(len(test)),
+            "test_rows_early_model": int(early_test_mask.sum()),
+            "test_rows_late_model": int(late_test_mask.sum()),
             "genres": int(dataset["genre_id"].nunique()),
             "min_date": str(dataset["date"].min().date()),
             "max_date": str(dataset["date"].max().date()),
             "test_start": str(test["date"].min().date()),
+            "regime_cutoff": str(regime_cutoff.date()),
             "target": "daily genre sales yen",
-            "model": "one-hot genre + promotion-effect dashboard lift features + upcoming holiday features + absolute-error histogram gradient boosting on log sales",
+            "model": "two-regime pre-2024 and 2024+ models with promotion-effect dashboard lift features + upcoming holiday features + absolute-error histogram gradient boosting on log sales",
         }
     )
 
@@ -483,13 +520,18 @@ def main() -> None:
     quantity_metrics.update(
         {
             "train_rows": int(len(train)),
+            "train_rows_early": int(len(early_train)),
+            "train_rows_late": int(len(late_train)),
             "test_rows": int(len(test)),
+            "test_rows_early_model": int(early_test_mask.sum()),
+            "test_rows_late_model": int(late_test_mask.sum()),
             "genres": int(dataset["genre_id"].nunique()),
             "min_date": str(dataset["date"].min().date()),
             "max_date": str(dataset["date"].max().date()),
             "test_start": str(test["date"].min().date()),
+            "regime_cutoff": str(regime_cutoff.date()),
             "target": "daily genre quantity sold",
-            "model": "one-hot genre + promotion-effect dashboard lift features + upcoming holiday features + absolute-error histogram gradient boosting on log quantity",
+            "model": "two-regime pre-2024 and 2024+ models with promotion-effect dashboard lift features + upcoming holiday features + absolute-error histogram gradient boosting on log quantity",
         }
     )
 
@@ -511,7 +553,7 @@ def main() -> None:
         sample = sample.sample(args.max_importance_rows, random_state=42)
         sample_y = sample_y.loc[sample.index]
     importance = permutation_importance(
-        model,
+        late_sales_model,
         sample,
         sample_y,
         n_repeats=5,
@@ -529,9 +571,12 @@ def main() -> None:
 
     joblib.dump(
         {
-            "sales_model": model,
-            "quantity_model": quantity_model,
+            "sales_model_early": early_sales_model,
+            "sales_model_late": late_sales_model,
+            "quantity_model_early": early_quantity_model,
+            "quantity_model_late": late_quantity_model,
             "feature_cols": feature_cols,
+            "regime_cutoff": str(regime_cutoff.date()),
         },
         args.output_dir / "sales_event_model.joblib",
     )

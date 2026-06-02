@@ -10,6 +10,7 @@ level using:
 - promotion lift estimates: ranking-group-specific sales and quantity lifts from the TENKI dashboard
 - ranking context: ranked item count, shop count, rank, and price summaries
 - recent demand: lagged and rolling sales/sales item features
+- marketplace regime: separate pre-2024 and 2024+ models to avoid blending the older low-seller/COVID period with the later marketplace
 
 The model intentionally excludes same-day `pv`, `uv`, `orders`, and other
 conversion metrics from the feature set because those are usually outcomes of

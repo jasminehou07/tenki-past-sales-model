@@ -1,15 +1,20 @@
 {
-  "mae": 108394.87773593402,
-  "rmse": 287874.768503634,
-  "wape": 0.2767607639701851,
-  "median_absolute_pct_error": 0.2822007693993023,
-  "r2": 0.8484393410465898,
+  "mae": 108306.7921618132,
+  "rmse": 288675.0265215823,
+  "wape": 0.27653585822465887,
+  "median_absolute_pct_error": 0.2848927239585986,
+  "r2": 0.847595528191124,
   "train_rows": 222033,
+  "train_rows_early": 152679,
+  "train_rows_late": 69354,
   "test_rows": 17897,
+  "test_rows_early_model": 0,
+  "test_rows_late_model": 17897,
   "genres": 100,
   "min_date": "2018-10-29",
   "max_date": "2026-05-31",
   "test_start": "2025-12-03",
+  "regime_cutoff": "2024-01-01",
   "target": "daily genre sales yen",
-  "model": "one-hot genre + promotion-effect dashboard lift features + upcoming holiday features + absolute-error histogram gradient boosting on log sales"
+  "model": "two-regime pre-2024 and 2024+ models with promotion-effect dashboard lift features + upcoming holiday features + absolute-error histogram gradient boosting on log sales"
 }
