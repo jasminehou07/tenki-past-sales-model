@@ -66,7 +66,7 @@ These results suggest that promotion timing and promotion type are important for
 
 The dashboard is organized for both business review and model inspection:
 
-- **Report Summary**: gives a boss-ready summary for the selected date range, genre, and item.
+- **Report Summary**: gives a clear summary for the selected date range, genre, and item.
 - **Sales Metrics**: shows high-level sales model accuracy.
 - **Confidence Range**: estimates predicted sales range and units the seller should prepare to sell.
 - **Actual vs Predicted Charts**: compares sales and quantity predictions against actual holdout results.
