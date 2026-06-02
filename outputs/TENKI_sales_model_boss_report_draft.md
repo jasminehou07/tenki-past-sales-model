@@ -82,7 +82,6 @@ Main limitations:
 
 - Item names are not available yet, so item-level dropdowns still rely on item IDs or fallback labels.
 - Current inventory output is based on predicted quantity sold, not true warehouse stock or available inventory.
-- Price, discount, coupon, shipping, and stockout data are not included yet.
 - Future forecasting will require a confirmed future Rakuten promotion calendar.
 - Some categories have high error because of volatile demand, sparse sales, or major product mix changes.
 
