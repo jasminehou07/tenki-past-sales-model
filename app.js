@@ -159,7 +159,7 @@ async function loadData() {
   state.itemOptions = parseCsv(itemOptionText).map((row) => ({
     genre: row.genre_id,
     item: row.item,
-    label: row.item_label,
+    label: row.item_name || row.item_label,
     totalSales: Number(row.total_sales),
     totalQuantity: Number(row.total_quantity),
     activeDays: Number(row.active_days),

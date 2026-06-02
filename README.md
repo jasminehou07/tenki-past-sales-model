@@ -22,7 +22,7 @@ final 180 days.
 - `outputs/model_struggles.csv`: genre-level holdout error summary
 - `outputs/promotion_impact.csv`: holdout accuracy during Rakuten events
 - `outputs/promotion_regression_effects.csv`: train-period promotion regressions/correlations and model selection flag
-- `outputs/item_options.csv`: top selectable items for each genre in the holdout period; item titles are not available in the TENKI exports, so labels describe item rank, genre, sales, and units
+- `outputs/item_options.csv`: top selectable items for each genre in the holdout period; use the `item_name` column when a product-name mapping is available. The TENKI exports used here do not include item titles, so fallback labels describe item rank, genre, sales, and units.
 - `outputs/item_holdout_actuals.csv`: item-level actual sales and quantity sold for the selected holdout items
 - `outputs/sales_event_model.joblib`: trained model artifact
 - `data/japan_holidays.csv`: official Japan holiday calendar used for holiday lookahead features
