@@ -89,9 +89,7 @@ Main limitations:
 ## Next Steps Plan
 
 1. Build the next version of the model to predict future client sales, not only backtest past sales.
-2. Add client-specific inputs such as store, product, category, historical sales, quantity sold, and promotion participation.
-3. Add future-known business drivers, especially Rakuten promotion calendar dates, point multipliers, coupons, discounts, and holiday timing.
-4. Add product and pricing details so the model can forecast at a more useful item or client level.
-5. Validate the future forecast by training on earlier periods and testing on later unseen periods before using it for client planning.
-6. Turn the output into a client-ready planning view that shows predicted sales, units to prepare, confidence range, and categories/items that need caution.
-7. Use this current dashboard as the backtesting and explanation layer for why the future forecasting model can be trusted.
+2. Add client-specific product, store, historical sales, quantity, and promotion participation data.
+3. Include future-known drivers such as Rakuten promotion dates, point multipliers, coupons, discounts, holidays, and pricing changes.
+4. Validate the future forecast by testing on later unseen periods before using it for client planning.
+5. Turn the output into a client-ready planning view showing predicted sales, units to prepare, confidence range, and caution areas.
