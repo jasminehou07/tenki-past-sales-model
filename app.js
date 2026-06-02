@@ -223,7 +223,7 @@ function updateItemOptions() {
     `<option value="all">All items in genre</option>`,
     ...items.map(
       (item) =>
-        `<option value="${item.item}">${escapeHtml(item.label)} - ${fmtNumber.format(item.totalQuantity)} units</option>`,
+        `<option value="${item.item}">${escapeHtml(item.label)}</option>`,
     ),
   ].join("");
 }
