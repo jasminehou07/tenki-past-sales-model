@@ -22,6 +22,8 @@ final 180 days.
 - `outputs/model_struggles.csv`: genre-level holdout error summary
 - `outputs/promotion_impact.csv`: holdout accuracy during Rakuten events
 - `outputs/promotion_regression_effects.csv`: train-period promotion regressions/correlations and model selection flag
+- `outputs/item_options.csv`: top selectable items for each genre in the holdout period
+- `outputs/item_holdout_actuals.csv`: item-level actual sales and quantity sold for the selected holdout items
 - `outputs/sales_event_model.joblib`: trained model artifact
 - `data/japan_holidays.csv`: official Japan holiday calendar used for holiday lookahead features
 - `data/promotion_effects/`: promotion lift summaries copied from the TENKI dashboard
@@ -106,3 +108,8 @@ bonus multipliers, point caps, and shop-around scope. Individual promotion
 features are filtered by train-period correlation in the 2024+ regime; the
 current threshold keeps `zero-five`, `supersale`, `marathon`, `black-friday`,
 and `thank-you`.
+
+The dashboard confidence range summarizes the selected date window using
+historical holdout residuals. Item-level inventory uses quantity sold as the
+available proxy for stock needed because the TENKI files used here do not
+include stock-on-hand inventory.

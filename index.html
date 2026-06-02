@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>TENKI Sales Model</title>
-    <link rel="stylesheet" href="styles.css?v=promotion-impact-struggles" />
+    <link rel="stylesheet" href="styles.css?v=confidence-inventory" />
   </head>
   <body>
     <header class="topbar">
@@ -35,6 +35,10 @@
             <option value="daily">Daily</option>
             <option value="weekly">Weekly</option>
           </select>
+        </label>
+        <label>
+          Item
+          <select id="itemSelect"></select>
         </label>
       </section>
 
@@ -129,6 +133,33 @@
       <section class="table-section">
         <div class="panel-head">
           <div>
+            <h2>Confidence Range</h2>
+            <p id="confidenceCaption">Predicted range for the selected dates</p>
+          </div>
+        </div>
+        <div class="confidence-grid">
+          <article class="metric">
+            <span>Predicted Sales Range</span>
+            <strong id="salesRange">--</strong>
+          </article>
+          <article class="metric">
+            <span>Actual Sales</span>
+            <strong id="actualSalesRange">--</strong>
+          </article>
+          <article class="metric">
+            <span>Predicted Inventory Range</span>
+            <strong id="inventoryRange">--</strong>
+          </article>
+          <article class="metric">
+            <span>Actual Inventory Used</span>
+            <strong id="actualInventoryRange">--</strong>
+          </article>
+        </div>
+      </section>
+
+      <section class="table-section">
+        <div class="panel-head">
+          <div>
             <h2>Where the Model Struggles</h2>
             <p>Genres with the highest holdout error</p>
           </div>
@@ -204,6 +235,6 @@
       </section>
     </main>
 
-    <script src="app.js?v=promotion-impact-struggles"></script>
+    <script src="app.js?v=confidence-inventory"></script>
   </body>
 </html>

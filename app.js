@@ -4,6 +4,8 @@ const state = {
   features: [],
   struggles: [],
   promotions: [],
+  itemOptions: [],
+  itemActuals: [],
   genreLabels: new Map(),
   metrics: {},
   quantityMetrics: {},
@@ -26,6 +28,7 @@ const fmtPct = new Intl.NumberFormat("en-US", {
 const el = {
   status: document.getElementById("status"),
   genreSelect: document.getElementById("genreSelect"),
+  itemSelect: document.getElementById("itemSelect"),
   startDate: document.getElementById("startDate"),
   endDate: document.getElementById("endDate"),
   viewMode: document.getElementById("viewMode"),
@@ -41,6 +44,11 @@ const el = {
   quantityCaption: document.getElementById("quantityCaption"),
   errorCaption: document.getElementById("errorCaption"),
   tableCaption: document.getElementById("tableCaption"),
+  confidenceCaption: document.getElementById("confidenceCaption"),
+  salesRange: document.getElementById("salesRange"),
+  actualSalesRange: document.getElementById("actualSalesRange"),
+  inventoryRange: document.getElementById("inventoryRange"),
+  actualInventoryRange: document.getElementById("actualInventoryRange"),
   metricR2: document.getElementById("metricR2"),
   metricWape: document.getElementById("metricWape"),
   metricMae: document.getElementById("metricMae"),
@@ -90,6 +98,8 @@ async function loadData() {
     featureText,
     struggleText,
     promotionText,
+    itemOptionText,
+    itemActualText,
     labelText,
     metrics,
     quantityMetrics,
@@ -99,6 +109,8 @@ async function loadData() {
     fetchText("outputs/sales_event_feature_importance.csv"),
     fetchText("outputs/model_struggles.csv"),
     fetchText("outputs/promotion_impact.csv"),
+    fetchText("outputs/item_options.csv"),
+    fetchText("outputs/item_holdout_actuals.csv"),
     fetchText("data/genre_labels.csv"),
     fetchJson("outputs/sales_event_metrics.json"),
     fetchJson("outputs/quantity_event_metrics.json"),
@@ -144,6 +156,21 @@ async function loadData() {
     scope: row.scope,
     source: row.source_url,
   }));
+  state.itemOptions = parseCsv(itemOptionText).map((row) => ({
+    genre: row.genre_id,
+    item: row.item,
+    label: row.item_label,
+    totalSales: Number(row.total_sales),
+    totalQuantity: Number(row.total_quantity),
+    activeDays: Number(row.active_days),
+  }));
+  state.itemActuals = parseCsv(itemActualText).map((row) => ({
+    date: row.date,
+    genre: row.genre_id,
+    item: row.item,
+    sales: Number(row.sales),
+    quantity: Number(row.quantity),
+  }));
   state.genreLabels = new Map(parseCsv(labelText).map((row) => [row.genre_id, row.label]));
   state.metrics = metrics;
   state.quantityMetrics = quantityMetrics;
@@ -165,6 +192,7 @@ function setupControls() {
     `<option value="all">All genres</option>`,
     ...genres.map((genre) => `<option value="${genre}">${escapeHtml(genreLabel(genre))}</option>`),
   ].join("");
+  updateItemOptions();
 
   const dates = state.predictions.map((row) => row.date).sort();
   el.startDate.value = dates[0];
@@ -174,10 +202,30 @@ function setupControls() {
   el.endDate.min = dates[0];
   el.endDate.max = dates.at(-1);
 
-  [el.genreSelect, el.startDate, el.endDate, el.viewMode].forEach((control) => {
+  [el.startDate, el.endDate, el.viewMode].forEach((control) => {
     control.addEventListener("change", updateView);
   });
+  el.genreSelect.addEventListener("change", () => {
+    updateItemOptions();
+    updateView();
+  });
+  el.itemSelect.addEventListener("change", updateView);
   el.downloadCsv.addEventListener("click", downloadFilteredCsv);
+}
+
+function updateItemOptions() {
+  const genre = el.genreSelect.value;
+  const items = state.itemOptions
+    .filter((item) => genre !== "all" && item.genre === genre)
+    .sort((a, b) => b.totalSales - a.totalSales);
+  el.itemSelect.disabled = genre === "all" || !items.length;
+  el.itemSelect.innerHTML = [
+    `<option value="all">All items in genre</option>`,
+    ...items.map(
+      (item) =>
+        `<option value="${item.item}">${escapeHtml(item.label)} - ${fmtNumber.format(item.totalQuantity)} units</option>`,
+    ),
+  ].join("");
 }
 
 function updateMetrics() {
@@ -296,9 +344,96 @@ function updateView() {
     { key: "error", label: "Absolute Error", color: "#b23b3b" },
   ]);
   renderFeatureBars();
+  renderConfidenceRange(summary, quantitySummary, selectedGenreLabel);
   renderStruggles();
   renderPromotions();
   renderRows();
+}
+
+function renderConfidenceRange(summary, quantitySummary, selectedGenreLabel) {
+  const item = el.itemSelect.value;
+  const itemData = getSelectedItemData();
+  const salesBase = itemData ? itemData.predictedSales : summary.predicted;
+  const quantityBase = itemData ? itemData.predictedQuantity : quantitySummary.predicted;
+  const actualSales = itemData ? itemData.actualSales : summary.sales;
+  const actualQuantity = itemData ? itemData.actualQuantity : quantitySummary.sales;
+  const confidence = confidenceForSelection(itemData);
+
+  el.salesRange.textContent = `${fmtCurrency.format(salesBase * confidence.salesLow)} - ${fmtCurrency.format(
+    salesBase * confidence.salesHigh,
+  )}`;
+  el.actualSalesRange.textContent = fmtCurrency.format(actualSales);
+  el.inventoryRange.textContent = `${fmtNumber.format(Math.round(quantityBase * confidence.quantityLow))} - ${fmtNumber.format(
+    Math.round(quantityBase * confidence.quantityHigh),
+  )} units`;
+  el.actualInventoryRange.textContent = `${fmtNumber.format(Math.round(actualQuantity))} units`;
+  const itemLabel = itemData ? `, ${itemData.label}` : "";
+  el.confidenceCaption.textContent = `${selectedGenreLabel}${itemLabel}, ${el.startDate.value} to ${el.endDate.value}`;
+}
+
+function confidenceForSelection(itemData) {
+  const genre = el.genreSelect.value;
+  const sourceRows =
+    genre === "all" ? state.predictions : state.predictions.filter((row) => row.genre === genre);
+  const quantityRows =
+    genre === "all"
+      ? state.quantityPredictions
+      : state.quantityPredictions.filter((row) => row.genre === genre);
+  const salesRatios = sourceRows
+    .filter((row) => row.predicted > 0 && row.sales > 0)
+    .map((row) => clamp(row.sales / row.predicted, 0.15, 3));
+  const quantityRatios = quantityRows
+    .filter((row) => row.predicted > 0 && row.sales > 0)
+    .map((row) => clamp(row.sales / row.predicted, 0.15, 3));
+  const fallback = itemData ? 0.35 : 0.25;
+  return {
+    salesLow: quantile(salesRatios, 0.1) || 1 - fallback,
+    salesHigh: quantile(salesRatios, 0.9) || 1 + fallback,
+    quantityLow: quantile(quantityRatios, 0.1) || 1 - fallback,
+    quantityHigh: quantile(quantityRatios, 0.9) || 1 + fallback,
+  };
+}
+
+function getSelectedItemData() {
+  const genre = el.genreSelect.value;
+  const item = el.itemSelect.value;
+  if (genre === "all" || item === "all") return null;
+  const option = state.itemOptions.find((row) => row.genre === genre && row.item === item);
+  const itemRows = state.itemActuals.filter(
+    (row) => row.genre === genre && row.item === item && row.date >= el.startDate.value && row.date <= el.endDate.value,
+  );
+  const actualSales = itemRows.reduce((sum, row) => sum + row.sales, 0);
+  const actualQuantity = itemRows.reduce((sum, row) => sum + row.quantity, 0);
+  const genreRows = state.itemActuals.filter(
+    (row) => row.genre === genre && row.date >= el.startDate.value && row.date <= el.endDate.value,
+  );
+  const genreSales = genreRows.reduce((sum, row) => sum + row.sales, 0);
+  const genreQuantity = genreRows.reduce((sum, row) => sum + row.quantity, 0);
+  const genrePredSales = state.filtered.reduce((sum, row) => sum + row.predicted, 0);
+  const genrePredQuantity = state.filteredQuantity.reduce((sum, row) => sum + row.predicted, 0);
+  const salesShare = genreSales > 0 ? actualSales / genreSales : 0;
+  const quantityShare = genreQuantity > 0 ? actualQuantity / genreQuantity : salesShare;
+  return {
+    label: option?.label || `Item #${item}`,
+    actualSales,
+    actualQuantity,
+    predictedSales: genrePredSales * salesShare,
+    predictedQuantity: genrePredQuantity * quantityShare,
+  };
+}
+
+function quantile(values, q) {
+  if (!values.length) return 0;
+  const sorted = [...values].sort((a, b) => a - b);
+  const pos = (sorted.length - 1) * q;
+  const base = Math.floor(pos);
+  const rest = pos - base;
+  if (sorted[base + 1] === undefined) return sorted[base];
+  return sorted[base] + rest * (sorted[base + 1] - sorted[base]);
+}
+
+function clamp(value, min, max) {
+  return Math.min(max, Math.max(min, value));
 }
 
 function drawLineChart(canvas, rows, series, valueFormatter = shortMoney) {

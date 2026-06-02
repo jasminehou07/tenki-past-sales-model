@@ -79,7 +79,7 @@ main {
 
 .controls {
   display: grid;
-  grid-template-columns: minmax(180px, 1.4fr) repeat(3, minmax(140px, 1fr));
+  grid-template-columns: minmax(220px, 1.4fr) repeat(3, minmax(140px, 1fr)) minmax(220px, 1.2fr);
   gap: 12px;
   padding: 14px;
   border: 1px solid var(--line);
@@ -131,6 +131,12 @@ button:hover {
   grid-template-columns: repeat(4, 1fr);
   gap: 12px;
   margin: 14px 0;
+}
+
+.confidence-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
 }
 
 .inline-metrics {
@@ -330,6 +336,7 @@ tbody tr:hover {
 
   .controls,
   .metric-grid,
+  .confidence-grid,
   .workspace {
     grid-template-columns: 1fr;
   }
