@@ -385,10 +385,11 @@ function confidenceForSelection(itemData) {
   const quantityRatios = quantityRows
     .filter((row) => row.predicted > 0 && row.sales > 0)
     .map((row) => clamp(row.sales / row.predicted, 0.15, 3));
-  const fallback = itemData ? 0.18 : 0.15;
+  const fallback = itemData ? 0.12 : 0.1;
+  const maxSpread = itemData ? 0.15 : 0.12;
   const tighten = (value, fallbackValue) => {
     const ratio = value || fallbackValue;
-    return 1 + (ratio - 1) * 0.55;
+    return clamp(1 + (ratio - 1) * 0.3, 1 - maxSpread, 1 + maxSpread);
   };
   return {
     salesLow: tighten(quantile(salesRatios, 0.25), 1 - fallback),
