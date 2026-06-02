@@ -487,12 +487,16 @@ function drawLineChart(canvas, rows, series, valueFormatter = shortMoney) {
   const ctx = canvas.getContext("2d");
   const ratio = window.devicePixelRatio || 1;
   const rect = canvas.getBoundingClientRect();
+  const requestedHeight = Number(canvas.getAttribute("height")) || 300;
+  const maxChartHeight = Math.max(180, window.innerHeight - 190);
+  const chartHeight = Math.min(requestedHeight, maxChartHeight);
   canvas.width = Math.max(320, Math.floor(rect.width * ratio));
-  canvas.height = Math.floor(Number(canvas.getAttribute("height")) * ratio);
+  canvas.height = Math.floor(chartHeight * ratio);
+  canvas.style.height = `${chartHeight}px`;
   ctx.scale(ratio, ratio);
 
   const width = canvas.width / ratio;
-  const height = canvas.height / ratio;
+  const height = chartHeight;
   const pad = { top: 20, right: 20, bottom: 34, left: 72 };
   ctx.clearRect(0, 0, width, height);
 
