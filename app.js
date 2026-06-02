@@ -2,6 +2,8 @@ const state = {
   predictions: [],
   quantityPredictions: [],
   features: [],
+  struggles: [],
+  promotions: [],
   genreLabels: new Map(),
   metrics: {},
   quantityMetrics: {},
@@ -31,6 +33,8 @@ const el = {
   quantityChart: document.getElementById("quantityChart"),
   errorChart: document.getElementById("errorChart"),
   featureBars: document.getElementById("featureBars"),
+  struggleRows: document.getElementById("struggleRows"),
+  promotionRows: document.getElementById("promotionRows"),
   rows: document.getElementById("predictionRows"),
   downloadCsv: document.getElementById("downloadCsv"),
   chartCaption: document.getElementById("chartCaption"),
@@ -80,13 +84,24 @@ function parseCsvLine(line) {
 }
 
 async function loadData() {
-  const [predictionText, quantityText, featureText, labelText, metrics, quantityMetrics] = await Promise.all([
-    fetch("outputs/sales_event_predictions.csv").then((res) => res.text()),
-    fetch("outputs/quantity_event_predictions.csv").then((res) => res.text()),
-    fetch("outputs/sales_event_feature_importance.csv").then((res) => res.text()),
-    fetch("data/genre_labels.csv").then((res) => res.text()),
-    fetch("outputs/sales_event_metrics.json").then((res) => res.json()),
-    fetch("outputs/quantity_event_metrics.json").then((res) => res.json()),
+  const [
+    predictionText,
+    quantityText,
+    featureText,
+    struggleText,
+    promotionText,
+    labelText,
+    metrics,
+    quantityMetrics,
+  ] = await Promise.all([
+    fetchText("outputs/sales_event_predictions.csv"),
+    fetchText("outputs/quantity_event_predictions.csv"),
+    fetchText("outputs/sales_event_feature_importance.csv"),
+    fetchText("outputs/model_struggles.csv"),
+    fetchText("outputs/promotion_impact.csv"),
+    fetchText("data/genre_labels.csv"),
+    fetchJson("outputs/sales_event_metrics.json"),
+    fetchJson("outputs/quantity_event_metrics.json"),
   ]);
 
   state.predictions = parseCsv(predictionText).map((row) => ({
@@ -107,9 +122,38 @@ async function loadData() {
     name: row.feature,
     value: Number(row.importance_mean),
   }));
+  state.struggles = parseCsv(struggleText).map((row) => ({
+    genre: row.genre_id,
+    group: row.ranking_group,
+    salesWape: Number(row.sales_wape),
+    quantityWape: Number(row.quantity_wape),
+    salesBias: Number(row.sales_bias),
+    quantityBias: Number(row.quantity_bias),
+    actualSales: Number(row.actual_sales),
+  }));
+  state.promotions = parseCsv(promotionText).map((row) => ({
+    name: row.display_name || row.event_name,
+    eventName: row.event_name,
+    days: Number(row.days),
+    actualSales: Number(row.actual_sales),
+    salesWape: Number(row.sales_wape),
+    quantityWape: Number(row.quantity_wape),
+    maxPoint: Number(row.max_point_multiplier),
+    bonusPoint: Number(row.bonus_point_multiplier),
+    scope: row.scope,
+    source: row.source_url,
+  }));
   state.genreLabels = new Map(parseCsv(labelText).map((row) => [row.genre_id, row.label]));
   state.metrics = metrics;
   state.quantityMetrics = quantityMetrics;
+}
+
+function fetchText(path) {
+  return fetch(`${path}?v=event-strength-struggles`, { cache: "no-store" }).then((res) => res.text());
+}
+
+function fetchJson(path) {
+  return fetch(`${path}?v=event-strength-struggles`, { cache: "no-store" }).then((res) => res.json());
 }
 
 function setupControls() {
@@ -251,6 +295,8 @@ function updateView() {
     { key: "error", label: "Absolute Error", color: "#b23b3b" },
   ]);
   renderFeatureBars();
+  renderStruggles();
+  renderPromotions();
   renderRows();
 }
 
@@ -350,6 +396,56 @@ function renderFeatureBars() {
       `;
     })
     .join("");
+}
+
+function renderStruggles() {
+  const rows = state.struggles.slice(0, 12);
+  el.struggleRows.innerHTML = rows
+    .map(
+      (row) => `
+        <tr>
+          <td>${escapeHtml(genreLabel(row.genre))}</td>
+          <td>${escapeHtml(row.group || "Unknown")}</td>
+          <td>${fmtPct.format(row.salesWape)}</td>
+          <td>${formatBias(row.salesBias)}</td>
+          <td>${fmtPct.format(row.quantityWape)}</td>
+          <td>${fmtCurrency.format(row.actualSales)}</td>
+        </tr>
+      `,
+    )
+    .join("");
+}
+
+function renderPromotions() {
+  const rows = [...state.promotions].sort((a, b) => b.actualSales - a.actualSales).slice(0, 12);
+  el.promotionRows.innerHTML = rows
+    .map((row) => {
+      const source = row.source
+        ? `<a href="${escapeHtml(row.source)}" target="_blank" rel="noreferrer">Rules</a>`
+        : "--";
+      return `
+        <tr>
+          <td>${escapeHtml(row.name)}</td>
+          <td>${row.maxPoint ? `${row.maxPoint.toFixed(0)}x` : "--"}</td>
+          <td>${escapeHtml(friendlyScope(row.scope))}</td>
+          <td>${fmtNumber.format(row.days)}</td>
+          <td>${fmtCurrency.format(row.actualSales)}</td>
+          <td>${fmtPct.format(row.salesWape)}</td>
+          <td>${fmtPct.format(row.quantityWape)}</td>
+          <td>${source}</td>
+        </tr>
+      `;
+    })
+    .join("");
+}
+
+function formatBias(value) {
+  const label = value > 0 ? "over" : "under";
+  return `${fmtPct.format(Math.abs(value))} ${label}`;
+}
+
+function friendlyScope(value) {
+  return String(value || "mixed").replaceAll("_", " ");
 }
 
 function friendlyFeature(name) {

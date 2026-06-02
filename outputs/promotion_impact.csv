@@ -1,0 +1,11 @@
+event_name,display_name,rows,days,actual_sales,predicted_sales,sales_wape,actual_quantity,predicted_quantity,quantity_wape,max_point_multiplier,bonus_point_multiplier,point_cap,scope,source_url
+marathon,Shopping Marathon,6076,61,2915050128.0,2731622823.216345,0.2546597506823049,431576.0,408876.1053463493,0.22875860544897078,10.0,9.0,7000.0,shop_around,https://event.rakuten.co.jp/campaign/point-up/marathon/guide/
+zero-five,5 and 0 day,3484,35,2749726416.0,2708660477.4861784,0.2517972448604079,401815.0,379048.436850648,0.21996270716644936,4.0,3.0,1000.0,all_shop_card_users,https://event.rakuten.co.jp/campaign/card/pointday/
+supersale,Rakuten Super Sale,1590,16,1157109803.0,1186827301.2150452,0.26899956102522304,173850.0,168482.97707636666,0.23598217461029328,10.0,9.0,7000.0,shop_around,https://event.rakuten.co.jp/campaign/supersale/guide/
+fashionthesale,Rakuten Fashion sale,1398,14,520147077.0,394649011.2376247,0.32669749194034114,72867.0,59859.80236795197,0.27689841969038154,2.0,1.0,1000.0,category_specific,
+thank-you,Rakuten Thanksgiving Festival,792,8,388271299.0,403371677.09518075,0.23869829337621923,51452.0,53221.92665738592,0.20563611878174123,10.0,9.0,7000.0,shop_around,https://event.rakuten.co.jp/campaign/thanks
+fathers-day,Father's Day seasonal event,799,8,386094019.0,357286925.832439,0.2872472456712375,57296.0,55090.06634519257,0.23951977882305442,1.0,0.0,0.0,seasonal,
+mothers-day,Mother's Day seasonal event,799,8,386094019.0,357286925.832439,0.2872472456712375,57296.0,55090.06634519257,0.23951977882305442,1.0,0.0,0.0,seasonal,
+ichiba-day,18th Ichiba Day,598,6,225450977.0,186665442.76879215,0.2754693151112351,31751.0,26511.31186117576,0.24218120780291982,4.0,3.0,1000.0,rank_member,https://event.rakuten.co.jp/campaign/rank/point/
+point-back,Point-back campaign,495,5,191477082.0,199068367.37511915,0.32338574857647456,24431.0,25599.07509048054,0.25345179397698187,5.0,4.0,3000.0,eligible_items,https://event.rakuten.co.jp/incentive/ichiba/henbai/monthly/202606015x/
+wonderful-day,Wonderful Day,399,4,176338523.0,145053353.3847495,0.3213024595324658,24928.0,21179.228784946856,0.2933439046760701,3.0,2.0,1000.0,all_shops,https://event.rakuten.co.jp/campaign/point-up/wonderfulday/

@@ -1,9 +1,9 @@
 {
-  "mae": 108306.7921618132,
-  "rmse": 288675.0265215823,
-  "wape": 0.27653585822465887,
-  "median_absolute_pct_error": 0.2848927239585986,
-  "r2": 0.847595528191124,
+  "mae": 107615.86502125794,
+  "rmse": 283644.2268372303,
+  "wape": 0.2747717386715776,
+  "median_absolute_pct_error": 0.2840050522709268,
+  "r2": 0.8528612106096822,
   "train_rows": 222033,
   "train_rows_early": 152679,
   "train_rows_late": 69354,
@@ -16,5 +16,5 @@
   "test_start": "2025-12-03",
   "regime_cutoff": "2024-01-01",
   "target": "daily genre sales yen",
-  "model": "two-regime pre-2024 and 2024+ models with promotion-effect dashboard lift features + upcoming holiday features + absolute-error histogram gradient boosting on log sales"
+  "model": "two-regime pre-2024 and 2024+ models with online Rakuten event strength, promotion-effect dashboard lift features, upcoming holiday features, and absolute-error histogram gradient boosting on log sales"
 }

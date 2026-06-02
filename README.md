@@ -19,9 +19,12 @@ final 180 days.
 - `outputs/quantity_event_predictions.csv`: actual vs predicted holdout quantity sold
 - `outputs/sales_event_feature_importance.csv`: feature importance table
 - `outputs/sales_event_feature_importance.png`: feature importance chart
+- `outputs/model_struggles.csv`: genre-level holdout error summary
+- `outputs/promotion_impact.csv`: holdout accuracy during Rakuten events
 - `outputs/sales_event_model.joblib`: trained model artifact
 - `data/japan_holidays.csv`: official Japan holiday calendar used for holiday lookahead features
 - `data/promotion_effects/`: promotion lift summaries copied from the TENKI dashboard
+- `data/rakuten_event_strength.csv`: online-sourced Rakuten event point multipliers and caps
 
 ## Data
 
@@ -83,11 +86,11 @@ work/.venv/bin/python outputs/sales_event_model.py
 - Test period starts: 2025-12-03
 - Data through: 2026-05-31
 - Genres: 100
-- Sales R2: 0.848
-- Sales WAPE: 27.7%
-- Sales MAE: 108,307 yen daily genre sales
-- Quantity R2: 0.862
-- Quantity WAPE: 23.3%
+- Sales R2: 0.853
+- Sales WAPE: 27.5%
+- Sales MAE: 107,616 yen daily genre sales
+- Quantity R2: 0.863
+- Quantity WAPE: 23.4%
 - Quantity MAE: 13.2 items per daily genre row
 
 This pass trains two separate models split at 2024-01-01, so pre-2024 data and
@@ -96,4 +99,6 @@ pattern. The final holdout starts on 2025-12-03, so all visible dashboard test
 rows use the 2024+ model. It still uses genre one-hot encoding, all event types
 from `events.parquet`, pre-event and post-event timing windows, official Japan
 holidays, combined promo-or-holiday lookahead features, and promotion lift
-estimates from the TENKI dashboard by ranking group.
+estimates from the TENKI dashboard by ranking group. This version also adds
+online-sourced Rakuten event strength features, including point multipliers,
+bonus multipliers, point caps, and shop-around scope.

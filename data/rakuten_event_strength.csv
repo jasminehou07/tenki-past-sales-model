@@ -1,0 +1,21 @@
+event_name,display_name,max_point_multiplier,bonus_point_multiplier,point_cap,requires_entry,scope,source_url,notes
+zero-five,5 and 0 day,4,3,1000,1,all_shop_card_users,https://event.rakuten.co.jp/campaign/card/pointday/,Monthly 5/10/15/20/25/30 card campaign; official page currently describes +3x for 4x total.
+marathon,Shopping Marathon,10,9,7000,1,shop_around,https://event.rakuten.co.jp/campaign/point-up/marathon/guide/,Shop-around campaign; max 10x total at 10 shops on official guide.
+supersale,Rakuten Super Sale,10,9,7000,1,shop_around,https://event.rakuten.co.jp/campaign/supersale/guide/,Super Sale guide describes shop-around max 10x total plus sale/discount items.
+black-friday,Black Friday,10,9,7000,1,shop_around,https://event.rakuten.co.jp/campaign/point-up/blackfriday/guide/,Black Friday guide describes shop-around max 10x total.
+thank-you,Rakuten Thanksgiving Festival,10,9,7000,1,shop_around,https://event.rakuten.co.jp/campaign/thanks,Thanksgiving is treated as a shop-around point-up event.
+wonderful-day,Wonderful Day,3,2,1000,1,all_shops,https://event.rakuten.co.jp/campaign/point-up/wonderfulday/,Official page describes all-shop 3x total for 3000 yen or more.
+ichiba-day,18th Ichiba Day,4,3,1000,1,rank_member,https://event.rakuten.co.jp/campaign/rank/point/,Monthly 18th customer-appreciation day; official page describes up to 4x.
+eagles,Sports win campaign,3,2,1000,1,all_shops,https://event.rakuten.co.jp/campaign/sports/,Official sports campaign examples show 2x for one team and 3x for two teams.
+39shop,39 Shop point campaign,2,1,3000,1,eligible_shops,https://event.rakuten.co.jp/campaign/39shop/,39 Shop campaigns vary; encoded conservatively as a small eligible-shop point-up.
+point-up,Point-up campaign,5,4,3000,1,eligible_items,https://event.rakuten.co.jp/incentive/ichiba/henbai/monthly/202606015x/,Representative Rakuten incentive page describes 5x total with +4x bonus.
+point-back,Point-back campaign,5,4,3000,1,eligible_items,https://event.rakuten.co.jp/incentive/ichiba/henbai/monthly/202606015x/,Representative point incentive strength when specific campaign rules are not available in TENKI.
+event,Other Rakuten event,2,1,1000,1,mixed,,Generic event fallback.
+fashionthesale,Rakuten Fashion sale,2,1,1000,1,category_specific,,Category sale fallback; exact discount depth is not represented in TENKI event file.
+fathers-day,Father's Day seasonal event,1,0,0,0,seasonal,,Seasonal merchandising event rather than a clear point multiplier.
+mothers-day,Mother's Day seasonal event,1,0,0,0,seasonal,,Seasonal merchandising event rather than a clear point multiplier.
+newyear-sale,New Year sale,2,1,1000,1,seasonal,,Seasonal sale fallback.
+singles-day,Singles Day sale,2,1,1000,1,seasonal,,Seasonal sale fallback.
+user-ranking,User ranking event,1,0,0,0,content,,Ranking/content event fallback.
+barcelona,Sports event,2,1,1000,1,all_shops,,Sports/event fallback.
+thanks-giving,Thanksgiving sale,10,9,7000,1,shop_around,https://event.rakuten.co.jp/campaign/thanks,Thanksgiving sale fallback to shop-around mechanics.

@@ -8,6 +8,7 @@ level using:
 - Japan holidays: same-day flags, nearby holiday windows, and days to/from the next holiday
 - combined lookahead: whether a promotion or holiday is coming in the next 3, 7, or 14 days
 - promotion lift estimates: ranking-group-specific sales and quantity lifts from the TENKI dashboard
+- online event strength: Rakuten event point multipliers, bonus multipliers, point caps, and shop-around scope
 - ranking context: ranked item count, shop count, rank, and price summaries
 - recent demand: lagged and rolling sales/sales item features
 - marketplace regime: separate pre-2024 and 2024+ models to avoid blending the older low-seller/COVID period with the later marketplace
@@ -30,6 +31,8 @@ Outputs:
 - `sales_event_predictions.csv`: actual vs predicted sales for the holdout period
 - `sales_event_feature_importance.csv`: model feature influence
 - `sales_event_feature_importance.png`: top feature chart
+- `model_struggles.csv`: genre-level holdout error summary
+- `promotion_impact.csv`: promotion-level holdout error summary
 - `sales_event_model.joblib`: trained model and feature column list
 
 ## Modeling Notes

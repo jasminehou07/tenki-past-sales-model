@@ -35,7 +35,8 @@ DEFAULT_CACHE_DIR = Path("work/model_cache")
 DEFAULT_OUTPUT_DIR = Path("outputs")
 DEFAULT_HOLIDAY_FILE = Path("data/japan_holidays.csv")
 DEFAULT_PROMOTION_EFFECT_DIR = Path("data/promotion_effects")
-CACHE_NAME = "daily_genre_dataset_v5.parquet"
+DEFAULT_EVENT_STRENGTH_FILE = Path("data/rakuten_event_strength.csv")
+CACHE_NAME = "daily_genre_dataset_v6.parquet"
 
 
 def parse_args() -> argparse.Namespace:
@@ -45,6 +46,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
     parser.add_argument("--holiday-file", type=Path, default=DEFAULT_HOLIDAY_FILE)
     parser.add_argument("--promotion-effect-dir", type=Path, default=DEFAULT_PROMOTION_EFFECT_DIR)
+    parser.add_argument("--event-strength-file", type=Path, default=DEFAULT_EVENT_STRENGTH_FILE)
     parser.add_argument(
         "--regime-cutoff",
         type=str,
@@ -114,6 +116,40 @@ def add_event_timing_features(event_daily: pd.DataFrame, min_date: pd.Timestamp,
     return out
 
 
+def add_event_strength_features(event_daily: pd.DataFrame, strength_file: Path) -> pd.DataFrame:
+    out = event_daily.copy()
+    for col in [
+        "event_max_point_multiplier",
+        "event_bonus_point_multiplier",
+        "event_point_cap",
+        "event_strength_score",
+        "event_shoparound_strength",
+        "event_requires_entry_count",
+    ]:
+        out[col] = 0.0
+    if not strength_file.exists():
+        return out
+
+    strengths = pd.read_csv(strength_file)
+    for row in strengths.itertuples(index=False):
+        event_col = f"event_{row.event_name}"
+        if event_col not in out.columns:
+            continue
+        active = out[event_col].fillna(0)
+        max_multiplier = float(row.max_point_multiplier)
+        bonus_multiplier = float(row.bonus_point_multiplier)
+        point_cap = float(row.point_cap)
+        strength_score = bonus_multiplier + np.log1p(point_cap) / 5
+        out["event_max_point_multiplier"] += active * max_multiplier
+        out["event_bonus_point_multiplier"] += active * bonus_multiplier
+        out["event_point_cap"] += active * point_cap
+        out["event_strength_score"] += active * strength_score
+        out["event_requires_entry_count"] += active * float(row.requires_entry)
+        if row.scope == "shop_around":
+            out["event_shoparound_strength"] += active * bonus_multiplier
+    return out
+
+
 def add_holiday_features(holiday_file: Path, min_date: pd.Timestamp, max_date: pd.Timestamp) -> pd.DataFrame:
     holidays = pd.read_csv(holiday_file)
     holidays["date"] = pd.to_datetime(holidays["date"])
@@ -158,6 +194,28 @@ def add_combined_upcoming_features(df: pd.DataFrame) -> pd.DataFrame:
             out[f"any_promo_or_holiday_next_{days}d"] = (out[f"promo_or_holiday_count_next_{days}d"] > 0).astype(int)
     if "days_to_event" in out.columns and "days_to_holiday" in out.columns:
         out["days_to_promo_or_holiday"] = np.minimum(out["days_to_event"], out["days_to_holiday"])
+    for col in [
+        "event_strength_score",
+        "event_bonus_point_multiplier",
+        "event_shoparound_strength",
+        "event_point_cap",
+    ]:
+        if col not in out.columns:
+            continue
+        for days in [1, 2, 3, 7]:
+            out[f"{col}_in_{days}d"] = out.groupby("genre_id")[col].shift(-days).fillna(0)
+        for window in [3, 7]:
+            out[f"{col}_next_{window}d"] = (
+                out.groupby("genre_id")[col]
+                .shift(-1)
+                .groupby(out["genre_id"])
+                .rolling(window, min_periods=1)
+                .sum()
+                .reset_index(level=0, drop=True)
+                .groupby(out["genre_id"])
+                .shift(-(window - 1))
+                .fillna(0)
+            )
     return out
 
 
@@ -329,6 +387,7 @@ def build_dataset(
     rebuild_cache: bool,
     holiday_file: Path = DEFAULT_HOLIDAY_FILE,
     promotion_effect_dir: Path = DEFAULT_PROMOTION_EFFECT_DIR,
+    event_strength_file: Path = DEFAULT_EVENT_STRENGTH_FILE,
 ) -> pd.DataFrame:
     cache_dir.mkdir(parents=True, exist_ok=True)
     cache_path = cache_dir / CACHE_NAME
@@ -343,6 +402,7 @@ def build_dataset(
         pd.Timestamp(sales["date"].min()),
         pd.Timestamp(sales["date"].max()),
     )
+    event_daily = add_event_strength_features(event_daily, event_strength_file)
     holiday_daily = add_holiday_features(
         holiday_file,
         pd.Timestamp(sales["date"].min()),
@@ -358,6 +418,7 @@ def build_dataset(
     holiday_cols = [c for c in dataset.columns if "holiday" in c]
     for col in holiday_cols:
         dataset[col] = dataset[col].fillna(0)
+    dataset = dataset.sort_values(["genre_id", "date"]).reset_index(drop=True)
     dataset = add_combined_upcoming_features(dataset)
     dataset = add_promotion_effect_features(dataset, promotion_effect_dir)
     dataset = add_calendar_features(dataset)
@@ -414,6 +475,83 @@ def predict_log_model(model: object, X_test: pd.DataFrame) -> np.ndarray:
     return np.expm1(model.predict(X_test)).clip(min=0)
 
 
+def write_model_analysis_outputs(
+    output_dir: Path,
+    test: pd.DataFrame,
+    pred: np.ndarray,
+    quantity_pred: np.ndarray,
+    event_strength_file: Path,
+) -> None:
+    analysis = test[["date", "genre_id", "ranking_group", "sales", "sales_items"]].copy()
+    analysis["predicted_sales"] = pred
+    analysis["sales_error"] = (analysis["sales"] - analysis["predicted_sales"]).abs()
+    analysis["predicted_sales_items"] = quantity_pred
+    analysis["quantity_error"] = (analysis["sales_items"] - analysis["predicted_sales_items"]).abs()
+
+    struggle = (
+        analysis.groupby(["genre_id", "ranking_group"], as_index=False)
+        .agg(
+            rows=("date", "count"),
+            actual_sales=("sales", "sum"),
+            predicted_sales=("predicted_sales", "sum"),
+            sales_mae=("sales_error", "mean"),
+            sales_total_error=("sales_error", "sum"),
+            actual_quantity=("sales_items", "sum"),
+            predicted_quantity=("predicted_sales_items", "sum"),
+            quantity_mae=("quantity_error", "mean"),
+            quantity_total_error=("quantity_error", "sum"),
+        )
+    )
+    struggle["sales_wape"] = struggle["sales_total_error"] / struggle["actual_sales"].clip(lower=1)
+    struggle["quantity_wape"] = struggle["quantity_total_error"] / struggle["actual_quantity"].clip(lower=1)
+    struggle["sales_bias"] = (struggle["predicted_sales"] - struggle["actual_sales"]) / struggle["actual_sales"].clip(lower=1)
+    struggle["quantity_bias"] = (
+        (struggle["predicted_quantity"] - struggle["actual_quantity"]) / struggle["actual_quantity"].clip(lower=1)
+    )
+    struggle.sort_values(["sales_wape", "sales_total_error"], ascending=False).to_csv(
+        output_dir / "model_struggles.csv",
+        index=False,
+    )
+
+    if not event_strength_file.exists():
+        return
+    strengths = pd.read_csv(event_strength_file)
+    promo_rows: list[dict[str, object]] = []
+    for event in strengths.itertuples(index=False):
+        event_col = f"event_{event.event_name}"
+        if event_col not in test.columns:
+            continue
+        mask = test[event_col].fillna(0).gt(0)
+        if not mask.any():
+            continue
+        subset = analysis.loc[mask]
+        sales_error = subset["sales_error"].sum()
+        quantity_error = subset["quantity_error"].sum()
+        promo_rows.append(
+            {
+                "event_name": event.event_name,
+                "display_name": event.display_name,
+                "rows": int(len(subset)),
+                "days": int(test.loc[mask, "date"].nunique()),
+                "actual_sales": float(subset["sales"].sum()),
+                "predicted_sales": float(subset["predicted_sales"].sum()),
+                "sales_wape": float(sales_error / max(subset["sales"].sum(), 1)),
+                "actual_quantity": float(subset["sales_items"].sum()),
+                "predicted_quantity": float(subset["predicted_sales_items"].sum()),
+                "quantity_wape": float(quantity_error / max(subset["sales_items"].sum(), 1)),
+                "max_point_multiplier": float(event.max_point_multiplier),
+                "bonus_point_multiplier": float(event.bonus_point_multiplier),
+                "point_cap": float(event.point_cap),
+                "scope": event.scope,
+                "source_url": event.source_url,
+            }
+        )
+    pd.DataFrame(promo_rows).sort_values(["actual_sales", "rows"], ascending=False).to_csv(
+        output_dir / "promotion_impact.csv",
+        index=False,
+    )
+
+
 def main() -> None:
     args = parse_args()
     args.output_dir.mkdir(parents=True, exist_ok=True)
@@ -424,6 +562,7 @@ def main() -> None:
         args.rebuild_cache,
         args.holiday_file,
         args.promotion_effect_dir,
+        args.event_strength_file,
     )
     dataset = dataset.dropna(subset=["sales_lag_28d", "sales_roll_mean_28d"]).copy()
     dataset = dataset.fillna(
@@ -507,7 +646,7 @@ def main() -> None:
             "test_start": str(test["date"].min().date()),
             "regime_cutoff": str(regime_cutoff.date()),
             "target": "daily genre sales yen",
-            "model": "two-regime pre-2024 and 2024+ models with promotion-effect dashboard lift features + upcoming holiday features + absolute-error histogram gradient boosting on log sales",
+            "model": "two-regime pre-2024 and 2024+ models with online Rakuten event strength, promotion-effect dashboard lift features, upcoming holiday features, and absolute-error histogram gradient boosting on log sales",
         }
     )
 
@@ -531,7 +670,7 @@ def main() -> None:
             "test_start": str(test["date"].min().date()),
             "regime_cutoff": str(regime_cutoff.date()),
             "target": "daily genre quantity sold",
-            "model": "two-regime pre-2024 and 2024+ models with promotion-effect dashboard lift features + upcoming holiday features + absolute-error histogram gradient boosting on log quantity",
+            "model": "two-regime pre-2024 and 2024+ models with online Rakuten event strength, promotion-effect dashboard lift features, upcoming holiday features, and absolute-error histogram gradient boosting on log quantity",
         }
     )
 
@@ -546,6 +685,7 @@ def main() -> None:
         json.dump(metrics, fh, indent=2)
     with (args.output_dir / "quantity_event_metrics.json").open("w", encoding="utf-8") as fh:
         json.dump(quantity_metrics, fh, indent=2)
+    write_model_analysis_outputs(args.output_dir, test, pred, quantity_pred, args.event_strength_file)
 
     sample = X_test
     sample_y = np.log1p(y_test)

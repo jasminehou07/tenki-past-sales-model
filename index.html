@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>TENKI Sales Model</title>
-    <link rel="stylesheet" href="styles.css?v=prediction-quantity-table" />
+    <link rel="stylesheet" href="styles.css?v=promotion-impact-struggles" />
   </head>
   <body>
     <header class="topbar">
@@ -129,6 +129,56 @@
       <section class="table-section">
         <div class="panel-head">
           <div>
+            <h2>Where the Model Struggles</h2>
+            <p>Genres with the highest holdout error</p>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Genre</th>
+                <th>Group</th>
+                <th>Sales WAPE</th>
+                <th>Sales Bias</th>
+                <th>Quantity WAPE</th>
+                <th>Actual Sales</th>
+              </tr>
+            </thead>
+            <tbody id="struggleRows"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="table-section">
+        <div class="panel-head">
+          <div>
+            <h2>Promotion Impact</h2>
+            <p>Holdout accuracy during Rakuten events</p>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Promotion</th>
+                <th>Point Max</th>
+                <th>Scope</th>
+                <th>Days</th>
+                <th>Actual Sales</th>
+                <th>Sales WAPE</th>
+                <th>Quantity WAPE</th>
+                <th>Source</th>
+              </tr>
+            </thead>
+            <tbody id="promotionRows"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="table-section">
+        <div class="panel-head">
+          <div>
             <h2>Prediction Rows</h2>
             <p id="tableCaption">Largest errors in the selected view</p>
           </div>
@@ -154,6 +204,6 @@
       </section>
     </main>
 
-    <script src="app.js?v=prediction-quantity-table"></script>
+    <script src="app.js?v=promotion-impact-struggles"></script>
   </body>
 </html>
